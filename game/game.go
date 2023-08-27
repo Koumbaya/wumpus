@@ -44,6 +44,7 @@ func (g *Game) Loop() {
 		input = clean(input)
 
 		if strings.EqualFold(input, "exit") {
+			fmt.Println(dia.Exit)
 			return
 		}
 
@@ -203,7 +204,7 @@ func (g *Game) whereToArrow() {
 }
 
 func (g *Game) explore() bool {
-	fmt.Printf(dia.MovedTo, g.l.Player()+1)
+	fmt.Printf(dia.MovedTo(), g.l.Player()+1)
 	return g.hazards()
 }
 

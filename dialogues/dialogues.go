@@ -1,5 +1,7 @@
 package dialogues
 
+import "math/rand"
+
 const (
 	resetColor = "\033[0m"
 	dim        = "\033[2m"
@@ -25,11 +27,21 @@ const (
 	KilledByWumpus  = red + "☠It ate you!☠" + resetColor
 	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + resetColor
 	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + resetColor
-	MovedTo         = "You took the tunnel and arrive in cavern %d\n"
+	MovedTo0        = "Venturing forth, you emerge in cavern %d\n"
+	MovedTo1        = "Navigating the dimly lit tunnels, you find yourself in cavern %d.\n"
+	MovedTo2        = "With cautious steps, you transition into the embrace of cavern %d.\n"
+	MovedTo3        = "The winding paths lead you onward to the heart of cavern %d.\n"
+	MovedTo4        = "A gentle echo announces your arrival in cavern %d.\n"
+	MovedTo5        = "The path unfolds before you, revealing the secrets of cavern %d.\n"
+	MovedTo6        = "Pushing forth, the mysteries of cavern %d lay before you.\n"
+	MovedTo7        = "The tunnel's end opens up to the expanse of cavern %d.\n"
+	MovedTo8        = "With each step, the ambiance changes, signaling your entry into cavern %d.\n"
+	MovedTo9        = "Leaving the familiar behind, you're greeted by the sights and sounds of cavern %d.\n"
+	MovedTo10       = "As the previous chamber fades, the allure of cavern %d beckons.\n"
 	PlayAGain       = bold + "Would you like to venture again into the unknown? (Y/N):" + resetColor
 	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + resetColor
 	FireArrow       = "You fired a curved arrow ➶"
-	ArrowTravel     = "➵ The curved arrow flew through the tunnel and arrive in cavern %d.\n"
+	ArrowTravel     = "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n"
 	KilledWumpus    = yellow + "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!" + resetColor
 	ArrowStartle    = yellow + "➴ The curved arrow struck the ground, startling the Wumpus !" + resetColor
 	ArrowFell       = "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
@@ -37,3 +49,20 @@ const (
 	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + resetColor
 	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + resetColor
 )
+
+func MovedTo() string {
+	r := []string{
+		MovedTo0,
+		MovedTo1,
+		MovedTo2,
+		MovedTo3,
+		MovedTo4,
+		MovedTo5,
+		MovedTo6,
+		MovedTo7,
+		MovedTo8,
+		MovedTo9,
+		MovedTo10,
+	}
+	return r[rand.Intn(len(r))]
+}
