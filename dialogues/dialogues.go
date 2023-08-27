@@ -8,30 +8,30 @@ const (
 )
 
 const (
-	Start           = "You wake up in a giant cavern..."
+	Start           = "Your eyes adjust to the dim light, revealing a vast cavern..."
 	Room            = "You are in cavern %d.\n"
 	Tunnels         = "Tunnels lead to %s.\n"
-	BatsNearby      = "You hear bats nearby!"
-	PitsNearby      = "You feel a strong draft!"
-	WumpusNearby    = "You smell a Wumpus!"
+	BatsNearby      = "The distant fluttering of bats reaches your ears!"
+	PitsNearby      = "A chilling draft suggests the presence of a pit nearby!"
+	WumpusNearby    = "An unmistakable scent hints at a Wumpus lurking nearby!"
 	ChoiceShootMove = "Move or Shoot ? (M/S): "
 	WhereTo         = "Where to ? (%d/%d/%d): "
-	WhereToArrow    = "➵ Where to ? (%d/%d/%d): "
+	WhereToArrow    = "➵ Aim your arrow: (%d/%d/%d): "
 	NotNumber       = dim + "This is not a number." + resetColor
-	NotValidDest    = dim + "You can't go there from here!" + resetColor
-	StumbledWumpus  = "You stumbled upon the Wumpus!"
-	StartledWumpus  = "You startled it, it ran away!"
+	NotValidDest    = dim + "That path is blocked. Choose another direction!" + resetColor
+	StumbledWumpus  = "You accidentally stumbled upon the Wumpus!"
+	StartledWumpus  = "Your presence spooked the Wumpus, causing it to flee!"
 	KilledByWumpus  = red + "☠It ate you!☠" + resetColor
 	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + resetColor
-	FellIntoPit     = red + "☠You fell into a bottomless pit!☠" + resetColor
+	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + resetColor
 	MovedTo         = "You took the tunnel and arrive in cavern %d\n"
-	PlayAGain       = "Do you want to play again ? (Y/N)"
+	PlayAGain       = "Would you like to venture again into the unknown? (Y/N)"
 	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + resetColor
 	FireArrow       = "You fired a curved arrow ➶"
 	ArrowTravel     = "➵ The curved arrow flew through the tunnel and arrive in cavern %d.\n"
-	KilledWumpus    = yellow + "➵ The curved arrow struck the Wumpus! It died ☠! You won!" + resetColor
+	KilledWumpus    = yellow + "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!" + resetColor
 	ArrowStartle    = yellow + "➴ The curved arrow struck the ground, startling the Wumpus !" + resetColor
-	ArrowFell       = "➴ The curved arrow fell to the ground silently."
-	ArrowPlayer     = red + "➴ The curved arrow struck you ! You died ☠!" + resetColor
-	WumpusTrample   = red + "The Wumpus trampled you in its escape! You died ☠!" + resetColor
+	ArrowFell       = "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
+	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + resetColor
+	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + resetColor
 )
