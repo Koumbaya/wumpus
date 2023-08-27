@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"bufio"
@@ -6,15 +6,15 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	dia "wumpus/dialogues"
-	"wumpus/labyrinth"
+
+	dia "github.com/koumbaya/wumpus/dialogues"
+	"github.com/koumbaya/wumpus/labyrinth"
 )
 
 type state int
 
 const (
-	startSt state = iota
-	waitShootMove
+	waitShootMove state = iota
 	waitWhereTo
 	waitPlayAgain
 	waitArrowWhereTo
@@ -35,6 +35,7 @@ func NewGame(l labyrinth.Labyrinth) Game {
 func (g *Game) Loop() {
 	reader := bufio.NewReader(os.Stdin)
 	g.start()
+
 	for {
 		input, err := reader.ReadString('\n')
 		if err != nil {
@@ -47,10 +48,10 @@ func (g *Game) Loop() {
 		}
 
 		g.playerState(input)
-		//reader.Reset(os.Stdin)
 	}
 }
 
+// playerState is the main state machine.
 func (g *Game) playerState(input string) {
 	switch g.state {
 	case waitShootMove:

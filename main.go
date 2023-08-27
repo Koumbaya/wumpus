@@ -1,9 +1,12 @@
 package main
 
-import "wumpus/labyrinth"
+import (
+	"github.com/koumbaya/wumpus/game"
+	"github.com/koumbaya/wumpus/labyrinth"
+)
 
 func main() {
 	l := labyrinth.NewLabyrinth()
-	g := NewGame(l)
+	g := game.NewGame(l)
 	g.Loop()
 }
