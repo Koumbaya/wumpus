@@ -1,5 +1,5 @@
 # Wumpus
-This is a vanilla go implementation of the 1973 classic text-based computer first developed by Gregory Yob [Hunt The Wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus).
+This is a vanilla go implementation of the 1973 classic text-based computer game first developed by Gregory Yob [Hunt The Wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus).
 
 ### Gameplay:
 
