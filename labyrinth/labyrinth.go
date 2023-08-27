@@ -161,7 +161,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 func (l *Labyrinth) StartleWumpus() bool {
 	if rand.Intn(2) == 1 {
 		var move int
-		for move = rand.Intn(RandRoom); move == l.wumpus || move == l.player; {
+		for move = rand.Intn(RandRoom); move == l.wumpus; {
 		}
 
 		l.wumpus = move
@@ -172,10 +172,12 @@ func (l *Labyrinth) StartleWumpus() bool {
 	return false
 }
 
+// Arrow current location of the arrow.
 func (l *Labyrinth) Arrow() int {
 	return l.arrow
 }
 
+// FireArrow sets the arrow position to that of the player and reset its travel capacity.
 func (l *Labyrinth) FireArrow() {
 	l.arrow = l.player
 	l.arrowTravel = 5
@@ -185,6 +187,7 @@ func (l *Labyrinth) PowerRemaining() int {
 	return l.arrowTravel
 }
 
+// MoveArrow handle the location and travel of the arrow, reducing its capacity by one.
 func (l *Labyrinth) MoveArrow(target int) {
 	if target == l.Rooms[l.arrow].Neighbors[0] ||
 		target == l.Rooms[l.arrow].Neighbors[1] ||

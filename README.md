@@ -37,4 +37,6 @@ Type `exit` any time to close the game.
 * A prettier print would be great, maybe with a little bit of latency so as to feel more 1970s-ish.
 * Probably a few refactors of the state machine.
 * Provide a map with correctly numbered nodes.
+* Unexport labyrinth.Rooms
+* Maybe handle better the +1 offset ?
 * Tests
