@@ -5,6 +5,7 @@ const (
 	dim        = "\033[2m"
 	red        = "\033[31m"
 	yellow     = "\033[33m"
+	bold       = "\033[1m"
 )
 
 const (
@@ -14,9 +15,9 @@ const (
 	BatsNearby      = "The distant fluttering of bats reaches your ears!"
 	PitsNearby      = "A chilling draft suggests the presence of a pit nearby!"
 	WumpusNearby    = "An unmistakable scent hints at a Wumpus lurking nearby!"
-	ChoiceShootMove = "Move or Shoot ? (M/S): "
-	WhereTo         = "Where to ? (%d/%d/%d): "
-	WhereToArrow    = "➵ Aim your arrow: (%d/%d/%d): "
+	ChoiceShootMove = bold + "Move or Shoot ? (M/S): " + resetColor
+	WhereTo         = bold + "Where to ? (%d/%d/%d): " + resetColor
+	WhereToArrow    = bold + "➵ Aim your arrow: (%d/%d/%d): " + resetColor
 	NotNumber       = dim + "This is not a number." + resetColor
 	NotValidDest    = dim + "That path is blocked. Choose another direction!" + resetColor
 	StumbledWumpus  = "You accidentally stumbled upon the Wumpus!"
@@ -25,7 +26,7 @@ const (
 	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + resetColor
 	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + resetColor
 	MovedTo         = "You took the tunnel and arrive in cavern %d\n"
-	PlayAGain       = "Would you like to venture again into the unknown? (Y/N):"
+	PlayAGain       = bold + "Would you like to venture again into the unknown? (Y/N):" + resetColor
 	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + resetColor
 	FireArrow       = "You fired a curved arrow ➶"
 	ArrowTravel     = "➵ The curved arrow flew through the tunnel and arrive in cavern %d.\n"
@@ -34,5 +35,5 @@ const (
 	ArrowFell       = "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
 	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + resetColor
 	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + resetColor
-	Exit            = "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer."
+	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + resetColor
 )
