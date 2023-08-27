@@ -3,11 +3,11 @@ package dialogues
 import "math/rand"
 
 const (
-	resetColor = "\033[0m"
-	dim        = "\033[2m"
-	red        = "\033[31m"
-	yellow     = "\033[33m"
-	bold       = "\033[1m"
+	reset  = "\033[0m"
+	dim    = "\033[2m"
+	red    = "\033[31m"
+	yellow = "\033[33m"
+	bold   = "\033[1m"
 )
 
 const (
@@ -17,16 +17,16 @@ const (
 	BatsNearby      = "The distant fluttering of bats reaches your ears!"
 	PitsNearby      = "A chilling draft suggests the presence of a pit nearby!"
 	WumpusNearby    = "An unmistakable scent hints at a Wumpus lurking nearby!"
-	ChoiceShootMove = bold + "Move or Shoot ? (M/S): " + resetColor
-	WhereTo         = bold + "Where to ? (%d/%d/%d): " + resetColor
-	WhereToArrow    = bold + "➵ Aim your arrow: (%d/%d/%d): " + resetColor
-	NotNumber       = dim + "This is not a number." + resetColor
-	NotValidDest    = dim + "That path is blocked. Choose another direction!" + resetColor
+	ChoiceShootMove = bold + "Move or Shoot ? (M/S): " + reset
+	WhereTo         = bold + "Where to ? (%d/%d/%d): " + reset
+	WhereToArrow    = bold + "➵ Aim your arrow: (%d/%d/%d): " + reset
+	NotNumber       = dim + "This is not a number." + reset
+	NotValidDest    = dim + "That path is blocked. Choose another direction!" + reset
 	StumbledWumpus  = "You accidentally stumbled upon the Wumpus!"
 	StartledWumpus  = "Your presence spooked the Wumpus, causing it to flee!"
-	KilledByWumpus  = red + "☠It ate you!☠" + resetColor
-	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + resetColor
-	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + resetColor
+	KilledByWumpus  = red + "☠It ate you!☠" + reset
+	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + reset
+	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + reset
 	MovedTo0        = "Venturing forth, you emerge in cavern %d\n"
 	MovedTo1        = "Navigating the dimly lit tunnels, you find yourself in cavern %d.\n"
 	MovedTo2        = "With cautious steps, you transition into the embrace of cavern %d.\n"
@@ -38,16 +38,17 @@ const (
 	MovedTo8        = "With each step, the ambiance changes, signaling your entry into cavern %d.\n"
 	MovedTo9        = "Leaving the familiar behind, you're greeted by the sights and sounds of cavern %d.\n"
 	MovedTo10       = "As the previous chamber fades, the allure of cavern %d beckons.\n"
-	PlayAGain       = bold + "Would you like to venture again into the unknown? (Y/N):" + resetColor
-	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + resetColor
+	PlayAGain       = bold + "Would you like to venture again into the unknown? (Y/N):" + reset
+	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + reset
 	FireArrow       = "You fired a curved arrow ➶"
 	ArrowTravel     = "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n"
-	KilledWumpus    = yellow + "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!" + resetColor
-	ArrowStartle    = yellow + "➴ The curved arrow struck the ground, startling the Wumpus !" + resetColor
+	KilledWumpus    = yellow + "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!" + reset
+	ArrowStartle    = yellow + "➴ The curved arrow struck the ground, startling the Wumpus !" + reset
 	ArrowFell       = "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
-	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + resetColor
-	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + resetColor
-	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + resetColor
+	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + reset
+	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + reset
+	Turns           = dim + "You won in %d turns, firing %d arrows and visiting %d caverns.\n" + reset
+	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + reset
 )
 
 func MovedTo() string {

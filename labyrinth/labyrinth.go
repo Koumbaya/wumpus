@@ -19,7 +19,8 @@ type Room struct {
 
 // Labyrinth is the collection of Rooms making up the dodecahedron.
 type Labyrinth struct {
-	Rooms []Room
+	Rooms   []Room
+	visited map[int]struct{}
 
 	// locations
 	player      int
@@ -33,8 +34,9 @@ type Labyrinth struct {
 // NewLabyrinth returns an initialized dodecahedron Labyrinth.
 func NewLabyrinth() Labyrinth {
 	l := Labyrinth{
-		bats: make([]int, 0, 2),
-		pits: make([]int, 0, 2),
+		bats:    make([]int, 0, 2),
+		pits:    make([]int, 0, 2),
+		visited: make(map[int]struct{}, 20),
 		// there is probably a way to do this mathematically but is it worth it ?
 		Rooms: []Room{
 			{ID: 0, Neighbors: []int{1, 5, 4}},
@@ -66,6 +68,7 @@ func NewLabyrinth() Labyrinth {
 
 // Init randomly places the player, wumpus, pits and bats.
 func (l *Labyrinth) Init() {
+	l.visited = make(map[int]struct{}, 20)
 	randRooms := make([]int, NbRooms)
 	for i := range randRooms {
 		randRooms[i] = i
@@ -85,6 +88,8 @@ func (l *Labyrinth) Init() {
 	// place the player in a location distinct from hazards
 	for l.player = randRooms[rand.Intn((RandRoom)-4)+4]; l.player == l.wumpus; {
 	}
+
+	l.visited[l.player] = struct{}{}
 }
 
 func (l *Labyrinth) Player() int {
@@ -207,11 +212,15 @@ func (l *Labyrinth) TryMovePlayer(target int) bool {
 		target == l.Rooms[l.player].Neighbors[1] ||
 		target == l.Rooms[l.player].Neighbors[2] {
 		l.player = target
-
+		l.visited[target] = struct{}{}
 		return true
 	}
 
 	return false
+}
+
+func (l *Labyrinth) Visited() int {
+	return len(l.visited)
 }
 
 func (l *Labyrinth) GetFmtNeighbors(n int) string {

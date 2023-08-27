@@ -23,6 +23,8 @@ const (
 type Game struct {
 	l labyrinth.Labyrinth
 	state
+	turns       int
+	arrowsFired int
 }
 
 func NewGame(l labyrinth.Labyrinth) Game {
@@ -62,6 +64,7 @@ func (g *Game) playerState(input string) bool {
 			g.l.FireArrow()
 			fmt.Println(dia.FireArrow)
 			g.whereToArrow()
+			g.arrowsFired++
 			g.state = waitArrowWhereTo
 		} else if strings.EqualFold(input, "M") {
 			g.whereTo()
@@ -74,6 +77,7 @@ func (g *Game) playerState(input string) bool {
 		if !g.tryMove(input) {
 			break // error parsing
 		}
+		g.turns++
 		if g.explore() { //dead
 			fmt.Print(dia.PlayAGain)
 			g.state = waitPlayAgain
@@ -117,6 +121,7 @@ func (g *Game) handleArrow() state {
 	fmt.Printf(dia.ArrowTravel, g.l.Arrow()+1)
 	if g.l.HasWumpus(g.l.Arrow()) {
 		fmt.Println(dia.KilledWumpus)
+		fmt.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
 		fmt.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}
@@ -147,6 +152,8 @@ func (g *Game) handleArrow() state {
 }
 
 func (g *Game) start() {
+	g.turns = 0
+	g.arrowsFired = 0
 	fmt.Println(dia.Start)
 	g.cavern()
 	g.describe()
