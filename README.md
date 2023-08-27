@@ -23,6 +23,8 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
    - **Losing**: The player loses by getting struck by an arrow, falling into a pit, or being eaten by the Wumpus.
 
+**A note on arrows**: It's unclear if the original version had the limit of 5 arrows. I implemented it but it can be disabled. Please note that there is no way to win the game once you're out of arrows.
+
 Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png))
 
 ### Running the game
@@ -34,6 +36,10 @@ Type `exit` any time to close the game.
 You can also run the game without the fake terminal delay with :
 ```
 go run . -nodelay
+```
+To play with infinite arrows:
+```
+go run . -arrows
 ```
 
 ![cover](cover.png)

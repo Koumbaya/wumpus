@@ -19,6 +19,8 @@ const (
 	waitArrowWhereTo
 )
 
+const maxArrows = 4
+
 type Printer interface {
 	Printf(f string, a ...any)
 	Print(s string)
@@ -29,15 +31,17 @@ type Game struct {
 	l labyrinth.Labyrinth
 	p Printer
 	state
-	turns       int
-	arrowsFired int
+	turns          int
+	arrowsFired    int
+	infiniteArrows bool
 }
 
-func NewGame(l labyrinth.Labyrinth, p Printer) Game {
+func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows bool) Game {
 	return Game{
-		l:     l,
-		p:     p,
-		state: waitShootMove,
+		l:              labyrinth,
+		p:              printer,
+		state:          waitShootMove,
+		infiniteArrows: arrows,
 	}
 }
 
@@ -68,8 +72,16 @@ func (g *Game) playerState(input string) bool {
 	switch g.state {
 	case waitShootMove:
 		if strings.EqualFold(input, "S") {
+			if !g.infiniteArrows && g.arrowsFired >= maxArrows {
+				g.p.Println(dia.NoMoreArrows)
+				g.p.Print(dia.ChoiceShootMove)
+				break
+			}
 			g.l.FireArrow()
 			g.p.Println(dia.FireArrow)
+			if !g.infiniteArrows {
+				g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
+			}
 			g.whereToArrow()
 			g.arrowsFired++
 			g.state = waitArrowWhereTo

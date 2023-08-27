@@ -65,6 +65,8 @@ const (
 	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + reset
 	Turns           = dim + "You won in %d turns, firing %d arrows and visiting %d caverns.\n" + reset
 	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + reset
+	NoMoreArrows    = yellow + "➴ You don't have any arrows left !" + reset
+	RemainingArrows = "➵ You have %d remaining arrows.\n"
 )
 
 type Printer struct {

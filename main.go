@@ -9,10 +9,14 @@ import (
 	"github.com/koumbaya/wumpus/labyrinth"
 )
 
-var nodelay bool
+var (
+	nodelay bool
+	arrows  bool
+)
 
 func init() {
 	flag.BoolVar(&nodelay, "nodelay", false, "Disable the fake delay when printing text")
+	flag.BoolVar(&arrows, "arrows", false, "Gives infinite arrows")
 }
 
 func main() {
@@ -23,6 +27,6 @@ func main() {
 	}
 
 	l := labyrinth.NewLabyrinth()
-	g := game.NewGame(l, dialogues.NewPrinter(delay))
+	g := game.NewGame(l, dialogues.NewPrinter(delay), arrows)
 	g.Loop()
 }
