@@ -2,7 +2,6 @@ package game
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -20,16 +19,24 @@ const (
 	waitArrowWhereTo
 )
 
+type Printer interface {
+	Printf(f string, a ...any)
+	Print(s string)
+	Println(s string)
+}
+
 type Game struct {
 	l labyrinth.Labyrinth
+	p Printer
 	state
 	turns       int
 	arrowsFired int
 }
 
-func NewGame(l labyrinth.Labyrinth) Game {
+func NewGame(l labyrinth.Labyrinth, p Printer) Game {
 	return Game{
 		l:     l,
+		p:     p,
 		state: waitShootMove,
 	}
 }
@@ -46,7 +53,7 @@ func (g *Game) Loop() {
 		input = clean(input)
 
 		if strings.EqualFold(input, "exit") {
-			fmt.Println(dia.Exit)
+			g.p.Println(dia.Exit)
 			return
 		}
 
@@ -62,7 +69,7 @@ func (g *Game) playerState(input string) bool {
 	case waitShootMove:
 		if strings.EqualFold(input, "S") {
 			g.l.FireArrow()
-			fmt.Println(dia.FireArrow)
+			g.p.Println(dia.FireArrow)
 			g.whereToArrow()
 			g.arrowsFired++
 			g.state = waitArrowWhereTo
@@ -70,8 +77,8 @@ func (g *Game) playerState(input string) bool {
 			g.whereTo()
 			g.state = waitWhereTo
 		} else {
-			fmt.Println(dia.DontUnderstand)
-			fmt.Print(dia.ChoiceShootMove)
+			g.p.Println(dia.DontUnderstand)
+			g.p.Print(dia.ChoiceShootMove)
 		}
 	case waitWhereTo:
 		if !g.tryMove(input) {
@@ -79,12 +86,12 @@ func (g *Game) playerState(input string) bool {
 		}
 		g.turns++
 		if g.explore() { //dead
-			fmt.Print(dia.PlayAGain)
+			g.p.Print(dia.PlayAGain)
 			g.state = waitPlayAgain
 			break
 		}
 		g.describe()
-		fmt.Print(dia.ChoiceShootMove)
+		g.p.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
 	case waitArrowWhereTo:
 		if !g.tryArrow(input) {
@@ -97,7 +104,7 @@ func (g *Game) playerState(input string) bool {
 			g.start()
 			g.state = waitShootMove
 		} else {
-			fmt.Println(dia.Exit)
+			g.p.Println(dia.Exit)
 			return true
 		}
 	}
@@ -108,7 +115,7 @@ func (g *Game) playerState(input string) bool {
 func (g *Game) tryArrow(input string) bool {
 	d, err := strconv.Atoi(input)
 	if err != nil {
-		fmt.Println(dia.NotNumber)
+		g.p.Println(dia.NotNumber)
 		g.whereToArrow()
 		return false
 	}
@@ -118,33 +125,33 @@ func (g *Game) tryArrow(input string) bool {
 }
 
 func (g *Game) handleArrow() state {
-	fmt.Printf(dia.ArrowTravel, g.l.Arrow()+1)
+	g.p.Printf(dia.ArrowTravel, g.l.Arrow()+1)
 	if g.l.HasWumpus(g.l.Arrow()) {
-		fmt.Println(dia.KilledWumpus())
-		fmt.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
-		fmt.Print(dia.PlayAGain)
+		g.p.Println(dia.KilledWumpus())
+		g.p.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
+		g.p.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}
 
 	if g.l.Player() == g.l.Arrow() {
-		fmt.Println(dia.ArrowPlayer)
-		fmt.Print(dia.PlayAGain)
+		g.p.Println(dia.ArrowPlayer)
+		g.p.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}
 
 	if g.l.PowerRemaining() == 0 {
 		if g.l.StartleWumpus() {
-			fmt.Println(dia.ArrowStartle)
+			g.p.Println(dia.ArrowStartle)
 			// check 1/20 odds that the wumpus moved to player's cavern
 			if g.l.HasWumpus(g.l.Player()) {
-				fmt.Println(dia.WumpusTrample)
-				fmt.Print(dia.PlayAGain)
+				g.p.Println(dia.WumpusTrample)
+				g.p.Print(dia.PlayAGain)
 				return waitPlayAgain
 			}
 		} else {
-			fmt.Println(dia.ArrowFell)
+			g.p.Println(dia.ArrowFell)
 		}
-		fmt.Print(dia.ChoiceShootMove)
+		g.p.Print(dia.ChoiceShootMove)
 		return waitShootMove
 	}
 	g.whereToArrow()
@@ -154,22 +161,22 @@ func (g *Game) handleArrow() state {
 func (g *Game) start() {
 	g.turns = 0
 	g.arrowsFired = 0
-	fmt.Println(dia.Start)
+	g.p.Println(dia.Start)
 	g.cavern()
 	g.describe()
-	fmt.Print(dia.ChoiceShootMove)
+	g.p.Print(dia.ChoiceShootMove)
 }
 
 func (g *Game) tryMove(input string) bool {
 	d, err := strconv.Atoi(input)
 	if err != nil {
-		fmt.Println(dia.NotNumber)
+		g.p.Println(dia.NotNumber)
 		g.whereTo()
 		return false
 	}
 	moved := g.l.TryMovePlayer(d - 1)
 	if !moved {
-		fmt.Println(dia.NotValidDest)
+		g.p.Println(dia.NotValidDest)
 		g.whereTo()
 		return false
 	}
@@ -178,24 +185,24 @@ func (g *Game) tryMove(input string) bool {
 }
 
 func (g *Game) cavern() {
-	fmt.Printf(dia.Room, g.l.Player()+1)
+	g.p.Printf(dia.Room, g.l.Player()+1)
 }
 
 func (g *Game) describe() {
-	fmt.Printf(dia.Tunnels, g.l.GetFmtNeighbors(g.l.Player()))
+	g.p.Printf(dia.Tunnels, g.l.GetFmtNeighbors(g.l.Player()))
 	if g.l.BatsNearby() {
-		fmt.Println(dia.BatsNearby)
+		g.p.Println(dia.BatsNearby)
 	}
 	if g.l.PitNearby() {
-		fmt.Println(dia.PitsNearby)
+		g.p.Println(dia.PitsNearby)
 	}
 	if g.l.WumpusNearby() {
-		fmt.Println(dia.WumpusNearby)
+		g.p.Println(dia.WumpusNearby)
 	}
 }
 
 func (g *Game) whereTo() {
-	fmt.Printf(dia.WhereTo,
+	g.p.Printf(dia.WhereTo,
 		g.l.Rooms[g.l.Player()].Neighbors[0]+1,
 		g.l.Rooms[g.l.Player()].Neighbors[1]+1,
 		g.l.Rooms[g.l.Player()].Neighbors[2]+1,
@@ -203,7 +210,7 @@ func (g *Game) whereTo() {
 }
 
 func (g *Game) whereToArrow() {
-	fmt.Printf(dia.WhereToArrow,
+	g.p.Printf(dia.WhereToArrow,
 		g.l.Rooms[g.l.Arrow()].Neighbors[0]+1,
 		g.l.Rooms[g.l.Arrow()].Neighbors[1]+1,
 		g.l.Rooms[g.l.Arrow()].Neighbors[2]+1,
@@ -211,7 +218,7 @@ func (g *Game) whereToArrow() {
 }
 
 func (g *Game) explore() bool {
-	fmt.Printf(dia.MovedTo(), g.l.Player()+1)
+	g.p.Printf(dia.MovedTo(), g.l.Player()+1)
 	return g.hazards()
 }
 
@@ -221,22 +228,22 @@ func (g *Game) explore() bool {
 func (g *Game) hazards() bool {
 	// the wumpus is immune to hazards, so we check for it first
 	if g.l.HasWumpus(g.l.Player()) {
-		fmt.Println(dia.StumbledWumpus)
+		g.p.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
-			fmt.Println(dia.KilledByWumpus())
+			g.p.Println(dia.KilledByWumpus())
 			return true
 		}
-		fmt.Println(dia.StartledWumpus)
+		g.p.Println(dia.StartledWumpus)
 	}
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
 	if g.l.HasBat(g.l.Player()) {
-		fmt.Printf(dia.BatTeleport, g.l.ActivateBat())
+		g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
 		return g.hazards()
 	}
 
 	if g.l.HasPit(g.l.Player()) {
-		fmt.Println(dia.FellIntoPit())
+		g.p.Println(dia.FellIntoPit())
 		return true
 	}
 

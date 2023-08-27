@@ -1,6 +1,10 @@
 package dialogues
 
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 const (
 	reset  = "\033[0m"
@@ -62,6 +66,50 @@ const (
 	Turns           = dim + "You won in %d turns, firing %d arrows and visiting %d caverns.\n" + reset
 	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + reset
 )
+
+type Printer struct {
+	delay time.Duration
+}
+
+func NewPrinter(t time.Duration) *Printer {
+	return &Printer{delay: t}
+}
+
+func (p *Printer) Printf(f string, a ...any) {
+	if p.delay == 0 {
+		fmt.Printf(f, a...)
+		return
+	}
+
+	r := fmt.Sprintf(f, a...)
+	for _, c := range r {
+		time.Sleep(p.delay)
+		fmt.Print(string(c))
+	}
+}
+
+func (p *Printer) Print(s string) {
+	if p.delay == 0 {
+		fmt.Print(s)
+		return
+	}
+	for _, c := range s {
+		time.Sleep(p.delay)
+		fmt.Print(string(c))
+	}
+}
+
+func (p *Printer) Println(s string) {
+	if p.delay == 0 {
+		fmt.Println(s)
+		return
+	}
+	for _, c := range s {
+		time.Sleep(p.delay)
+		fmt.Print(string(c))
+	}
+	fmt.Println()
+}
 
 func KilledWumpus() string {
 	r := []string{

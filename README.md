@@ -31,12 +31,16 @@ go run .
 ```
 Type `exit` any time to close the game.
 
+You can also run the game without the fake terminal delay with :
+```
+go run . -nodelay
+```
+
 ![cover](cover.png)
 
 ![screenshot](screenshot.png)
 
 ### TODO:
-* A prettier print would be great, maybe with a little bit of latency so as to feel more 1970s-ish.
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
 * Provide a map with correctly numbered nodes.
