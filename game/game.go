@@ -47,12 +47,14 @@ func (g *Game) Loop() {
 			return
 		}
 
-		g.playerState(input)
+		if g.playerState(input) {
+			return
+		}
 	}
 }
 
 // playerState is the main state machine.
-func (g *Game) playerState(input string) {
+func (g *Game) playerState(input string) bool {
 	switch g.state {
 	case waitShootMove:
 		if strings.EqualFold(input, "S") {
@@ -65,19 +67,19 @@ func (g *Game) playerState(input string) {
 			g.state = waitWhereTo
 		} else {
 			fmt.Println(dia.DontUnderstand)
-			g.choiceSM()
+			fmt.Print(dia.ChoiceShootMove)
 		}
 	case waitWhereTo:
 		if !g.tryMove(input) {
 			break // error parsing
 		}
 		if g.explore() { //dead
-			fmt.Println(dia.PlayAGain)
+			fmt.Print(dia.PlayAGain)
 			g.state = waitPlayAgain
 			break
 		}
 		g.describe()
-		g.choiceSM()
+		fmt.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
 	case waitArrowWhereTo:
 		if !g.tryArrow(input) {
@@ -90,10 +92,12 @@ func (g *Game) playerState(input string) {
 			g.start()
 			g.state = waitShootMove
 		} else {
-			fmt.Println("Goodbye")
-			os.Exit(0)
+			fmt.Println(dia.Exit)
+			return true
 		}
 	}
+
+	return false
 }
 
 func (g *Game) tryArrow(input string) bool {
@@ -112,13 +116,13 @@ func (g *Game) handleArrow() state {
 	fmt.Printf(dia.ArrowTravel, g.l.Arrow()+1)
 	if g.l.HasWumpus(g.l.Arrow()) {
 		fmt.Println(dia.KilledWumpus)
-		fmt.Println(dia.PlayAGain)
+		fmt.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}
 
 	if g.l.Player() == g.l.Arrow() {
 		fmt.Println(dia.ArrowPlayer)
-		fmt.Println(dia.PlayAGain)
+		fmt.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}
 
@@ -128,13 +132,13 @@ func (g *Game) handleArrow() state {
 			// check 1/20 odds that the wumpus moved to player's cavern
 			if g.l.HasWumpus(g.l.Player()) {
 				fmt.Println(dia.WumpusTrample)
-				fmt.Println(dia.PlayAGain)
+				fmt.Print(dia.PlayAGain)
 				return waitPlayAgain
 			}
 		} else {
 			fmt.Println(dia.ArrowFell)
 		}
-		g.choiceSM()
+		fmt.Print(dia.ChoiceShootMove)
 		return waitShootMove
 	}
 	g.whereToArrow()
@@ -145,7 +149,7 @@ func (g *Game) start() {
 	fmt.Println(dia.Start)
 	g.cavern()
 	g.describe()
-	g.choiceSM()
+	fmt.Print(dia.ChoiceShootMove)
 }
 
 func (g *Game) tryMove(input string) bool {
@@ -180,10 +184,6 @@ func (g *Game) describe() {
 	if g.l.WumpusNearby() {
 		fmt.Println(dia.WumpusNearby)
 	}
-}
-
-func (g *Game) choiceSM() {
-	fmt.Print(dia.ChoiceShootMove)
 }
 
 func (g *Game) whereTo() {

@@ -25,7 +25,7 @@ const (
 	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + resetColor
 	FellIntoPit     = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + resetColor
 	MovedTo         = "You took the tunnel and arrive in cavern %d\n"
-	PlayAGain       = "Would you like to venture again into the unknown? (Y/N)"
+	PlayAGain       = "Would you like to venture again into the unknown? (Y/N):"
 	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + resetColor
 	FireArrow       = "You fired a curved arrow ➶"
 	ArrowTravel     = "➵ The curved arrow flew through the tunnel and arrive in cavern %d.\n"
@@ -34,4 +34,5 @@ const (
 	ArrowFell       = "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
 	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + resetColor
 	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + resetColor
+	Exit            = "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer."
 )
