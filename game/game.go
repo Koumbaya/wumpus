@@ -266,6 +266,7 @@ func (g *Game) hazards() bool {
 
 func clean(input string) string {
 	input = strings.TrimRight(input, "\n")
+	input = strings.TrimRight(input, "\r\n")
 	input = strings.ReplaceAll(input, " ", "")
 	var stack []rune
 	for _, r := range input {
