@@ -134,6 +134,7 @@ func (g *Game) handleArrow() state {
 		} else {
 			fmt.Println(dia.ArrowFell)
 		}
+		g.choiceSM()
 		return waitShootMove
 	}
 	g.whereToArrow()
