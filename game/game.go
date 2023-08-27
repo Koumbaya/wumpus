@@ -58,6 +58,7 @@ func (g *Game) Loop() {
 
 		if strings.EqualFold(input, "exit") {
 			g.p.Println(dia.Exit)
+			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 			return
 		}
 
@@ -256,6 +257,7 @@ func (g *Game) hazards() bool {
 
 	if g.l.HasPit(g.l.Player()) {
 		g.p.Println(dia.FellIntoPit())
+		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 		return true
 	}
 

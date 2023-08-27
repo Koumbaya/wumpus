@@ -126,6 +126,10 @@ func (l *Labyrinth) PitNearby() bool {
 	return false
 }
 
+func (l *Labyrinth) Wumpus() int {
+	return l.wumpus + 1
+}
+
 func (l *Labyrinth) HasWumpus(n int) bool {
 	return n == l.wumpus
 }
