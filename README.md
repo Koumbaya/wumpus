@@ -33,6 +33,8 @@ Type `exit` any time to close the game.
 
 ![cover](cover.png)
 
+![screenshot](screenshot.png)
+
 ### TODO:
 * A prettier print would be great, maybe with a little bit of latency so as to feel more 1970s-ish.
 * Add a way to move directly instead of move + number
