@@ -120,7 +120,7 @@ func (g *Game) tryArrow(input string) bool {
 func (g *Game) handleArrow() state {
 	fmt.Printf(dia.ArrowTravel, g.l.Arrow()+1)
 	if g.l.HasWumpus(g.l.Arrow()) {
-		fmt.Println(dia.KilledWumpus)
+		fmt.Println(dia.KilledWumpus())
 		fmt.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
 		fmt.Print(dia.PlayAGain)
 		return waitPlayAgain
@@ -223,7 +223,7 @@ func (g *Game) hazards() bool {
 	if g.l.HasWumpus(g.l.Player()) {
 		fmt.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
-			fmt.Println(dia.KilledByWumpus)
+			fmt.Println(dia.KilledByWumpus())
 			return true
 		}
 		fmt.Println(dia.StartledWumpus)
@@ -236,7 +236,7 @@ func (g *Game) hazards() bool {
 	}
 
 	if g.l.HasPit(g.l.Player()) {
-		fmt.Println(dia.FellIntoPit)
+		fmt.Println(dia.FellIntoPit())
 		return true
 	}
 
