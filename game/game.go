@@ -17,6 +17,7 @@ const (
 	waitWhereTo
 	waitPlayAgain
 	waitArrowWhereTo
+	waitArrowPower
 )
 
 const maxArrows = 4
@@ -79,14 +80,8 @@ func (g *Game) playerState(input string) bool {
 				g.p.Print(dia.ChoiceShootMove)
 				break
 			}
-			g.l.FireArrow()
-			g.p.Println(dia.FireArrow)
-			if !g.infiniteArrows {
-				g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
-			}
-			g.whereToArrow()
-			g.arrowsFired++
-			g.state = waitArrowWhereTo
+			g.p.Print(dia.SelectPower)
+			g.state = waitArrowPower
 		} else if strings.EqualFold(input, "M") {
 			g.whereTo()
 			g.state = waitWhereTo
@@ -107,6 +102,15 @@ func (g *Game) playerState(input string) bool {
 		g.describe()
 		g.p.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
+	case waitArrowPower:
+		g.l.FireArrow(input)
+		g.p.Println(dia.FireArrow)
+		if !g.infiniteArrows {
+			g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
+		}
+		g.whereToArrow()
+		g.arrowsFired++
+		g.state = waitArrowWhereTo
 	case waitArrowWhereTo:
 		if !g.tryArrow(input) {
 			break

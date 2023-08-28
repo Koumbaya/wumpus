@@ -48,6 +48,7 @@ const (
 	PlayAGain       = bold + "Would you like to venture again into the unknown? (Y/N):" + reset
 	DontUnderstand  = dim + "I'm sorry I couldn't quite catch that..." + reset
 	FireArrow       = "You fired a curved arrow ➶"
+	SelectPower     = bold + "How far into the caverns will you let the arrow fly? (1-5):" + reset
 	ArrowTravel     = "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n"
 	KilledWumpus0   = yellow + "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!" + reset
 	KilledWumpus1   = yellow + "➵ With a resounding impact, your arrow finds its mark! The Wumpus falls defeated! Victory is yours! ☠" + reset

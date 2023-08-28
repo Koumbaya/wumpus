@@ -4,6 +4,7 @@ package labyrinth
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
 )
 
 const (
@@ -19,16 +20,16 @@ type Room struct {
 
 // Labyrinth is the collection of Rooms making up the dodecahedron.
 type Labyrinth struct {
-	Rooms   []Room
-	visited map[int]struct{}
+	Rooms       []Room
+	visited     map[int]struct{}
+	arrowTravel int
 
 	// locations
-	player      int
-	arrow       int
-	arrowTravel int
-	wumpus      int
-	bats        []int
-	pits        []int
+	player int
+	arrow  int
+	wumpus int
+	bats   []int
+	pits   []int
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth.
@@ -187,9 +188,14 @@ func (l *Labyrinth) Arrow() int {
 }
 
 // FireArrow sets the arrow position to that of the player and reset its travel capacity.
-func (l *Labyrinth) FireArrow() {
+func (l *Labyrinth) FireArrow(input string) {
+	p, err := strconv.Atoi(input)
+	if err != nil || p > 5 || p == 0 {
+		p = 5
+	}
+
 	l.arrow = l.player
-	l.arrowTravel = 5
+	l.arrowTravel = p
 }
 
 func (l *Labyrinth) PowerRemaining() int {

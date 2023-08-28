@@ -40,6 +40,7 @@ const (
 	PlayAGain       = "Would you like to venture again into the unknown? (Y/N):"
 	DontUnderstand  = "I'm sorry I couldn't quite catch that..."
 	FireArrow       = "You fired a curved arrow ->"
+	SelectPower     = "How far into the caverns will you let the arrow fly? (1-5):"
 	ArrowTravel     = "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n"
 	KilledWumpus0   = "-> With a triumphant strike, your arrow fells the Wumpus! Victory is yours!"
 	KilledWumpus1   = "-> With a resounding impact, your arrow finds its mark! The Wumpus falls defeated! Victory is yours!"
