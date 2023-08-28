@@ -65,6 +65,7 @@ func (g *Game) Loop() {
 		if g.playerState(input) {
 			return
 		}
+		reader.Reset(reader)
 	}
 }
 
