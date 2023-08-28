@@ -49,7 +49,4 @@ go run . -arrows
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
-* Provide a map with correctly numbered nodes.
-* Unexport labyrinth.Rooms
-* Maybe handle better the +1 offset ?
 * Tests

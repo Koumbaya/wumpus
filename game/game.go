@@ -203,7 +203,7 @@ func (g *Game) tryMove(input string) bool {
 }
 
 func (g *Game) cavern() {
-	g.p.Printf(dia.Room, g.l.Player()+1)
+	g.p.Printf(dia.Room, g.l.PlayerPOV())
 }
 
 func (g *Game) describe() {
@@ -221,22 +221,18 @@ func (g *Game) describe() {
 
 func (g *Game) whereTo() {
 	g.p.Printf(dia.WhereTo,
-		g.l.Rooms[g.l.Player()].Neighbors[0]+1,
-		g.l.Rooms[g.l.Player()].Neighbors[1]+1,
-		g.l.Rooms[g.l.Player()].Neighbors[2]+1,
+		g.l.GetFmtNeighbors(g.l.Player()),
 	)
 }
 
 func (g *Game) whereToArrow() {
 	g.p.Printf(dia.WhereToArrow,
-		g.l.Rooms[g.l.Arrow()].Neighbors[0]+1,
-		g.l.Rooms[g.l.Arrow()].Neighbors[1]+1,
-		g.l.Rooms[g.l.Arrow()].Neighbors[2]+1,
+		g.l.GetFmtNeighbors(g.l.Arrow()),
 	)
 }
 
 func (g *Game) explore() bool {
-	g.p.Printf(dia.MovedTo(), g.l.Player()+1)
+	g.p.Printf(dia.MovedTo(), g.l.PlayerPOV())
 	return g.hazards()
 }
 

@@ -18,8 +18,8 @@ const (
 	PitsNearby      = "A chilling draft suggests the presence of a pit nearby!"
 	WumpusNearby    = "An unmistakable scent hints at a Wumpus lurking nearby!"
 	ChoiceShootMove = bold + "Move or Shoot ? ( M / S ): " + reset
-	WhereTo         = bold + "Where to ? ( %d / %d / %d ): " + reset
-	WhereToArrow    = bold + "➵ Aim your arrow: ( %d / %d / %d ): " + reset
+	WhereTo         = bold + "Where to ? ( %s ): " + reset
+	WhereToArrow    = bold + "➵ Aim your arrow: ( %s ): " + reset
 	NotNumber       = dim + "This is not a number." + reset
 	NotValidDest    = dim + "That path is blocked. Choose another direction!" + reset
 	StumbledWumpus  = "You accidentally stumbled upon the Wumpus!"
@@ -29,7 +29,7 @@ const (
 	KilledByWumpus2 = red + "☠ The lurking Wumpus caught you off-guard! Your adventure ends here ☠" + reset
 	KilledByWumpus3 = red + "☠ In a fateful encounter, the Wumpus proved to be your doom! ☠" + reset
 	KilledByWumpus4 = red + "☠ The Wumpus, swift and silent, ended your journey abruptly! ☠" + reset
-	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d\n!" + reset
+	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d!\n" + reset
 	FellIntoPit0    = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + reset
 	FellIntoPit1    = red + "☠ Misstepping, you plummet into the abyss of a bottomless pit! ☠" + reset
 	FellIntoPit2    = red + "☠ The ground betrays you, sending you falling into a dark void! ☠" + reset

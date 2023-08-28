@@ -18,10 +18,12 @@ type Room struct {
 	Neighbors []int
 }
 
-// Labyrinth is the collection of Rooms making up the dodecahedron.
+// Labyrinth is the collection of rooms making up the dodecahedron.
 type Labyrinth struct {
-	Rooms       []Room
+	rooms       []Room
 	visited     map[int]struct{}
+	randomized  []int
+	ordered     []int
 	arrowTravel int
 
 	// locations
@@ -39,7 +41,7 @@ func NewLabyrinth() Labyrinth {
 		pits:    make([]int, 0, 2),
 		visited: make(map[int]struct{}, 20),
 		// there is probably a way to do this mathematically but is it worth it ?
-		Rooms: []Room{
+		rooms: []Room{
 			{ID: 0, Neighbors: []int{1, 5, 4}},
 			{ID: 1, Neighbors: []int{0, 7, 2}},
 			{ID: 2, Neighbors: []int{1, 9, 3}},
@@ -70,6 +72,7 @@ func NewLabyrinth() Labyrinth {
 // Init randomly places the player, wumpus, pits and bats.
 func (l *Labyrinth) Init() {
 	l.visited = make(map[int]struct{}, 20)
+	l.ordered = make([]int, NbRooms)
 	randRooms := make([]int, NbRooms)
 	for i := range randRooms {
 		randRooms[i] = i
@@ -78,6 +81,12 @@ func (l *Labyrinth) Init() {
 	rand.Shuffle(len(randRooms), func(i, j int) {
 		randRooms[i], randRooms[j] = randRooms[j], randRooms[i]
 	})
+
+	// use the randomization to give arbitrary numbers to rooms so that each play through is unique.
+	l.randomized = randRooms // k: true value, v : rand
+	for i, room := range randRooms {
+		l.ordered[room] = i
+	} // k: rand, v : true value
 
 	// place pits & bats in distinct locations
 	l.pits = randRooms[0:2]
@@ -97,6 +106,11 @@ func (l *Labyrinth) Player() int {
 	return l.player
 }
 
+// PlayerPOV return the randomized room value.
+func (l *Labyrinth) PlayerPOV() int {
+	return l.randomized[l.player] + 1
+}
+
 func (l *Labyrinth) HasPlayer(n int) bool {
 	return n == l.player
 }
@@ -106,7 +120,7 @@ func (l *Labyrinth) HasBat(n int) bool {
 }
 
 func (l *Labyrinth) BatsNearby() bool {
-	for _, i := range l.Rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].Neighbors {
 		if l.HasBat(i) {
 			return true
 		}
@@ -119,7 +133,7 @@ func (l *Labyrinth) HasPit(n int) bool {
 }
 
 func (l *Labyrinth) PitNearby() bool {
-	for _, i := range l.Rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].Neighbors {
 		if l.HasPit(i) {
 			return true
 		}
@@ -127,8 +141,9 @@ func (l *Labyrinth) PitNearby() bool {
 	return false
 }
 
+// Wumpus returns the randomized location of the wumpus.
 func (l *Labyrinth) Wumpus() int {
-	return l.wumpus + 1
+	return l.randomized[l.wumpus] + 1
 }
 
 func (l *Labyrinth) HasWumpus(n int) bool {
@@ -136,7 +151,7 @@ func (l *Labyrinth) HasWumpus(n int) bool {
 }
 
 func (l *Labyrinth) WumpusNearby() bool {
-	for _, i := range l.Rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].Neighbors {
 		if i == l.wumpus {
 			return true
 		}
@@ -204,13 +219,14 @@ func (l *Labyrinth) PowerRemaining() int {
 
 // MoveArrow handle the location and travel of the arrow, reducing its capacity by one.
 func (l *Labyrinth) MoveArrow(target int) {
-	if target == l.Rooms[l.arrow].Neighbors[0] ||
-		target == l.Rooms[l.arrow].Neighbors[1] ||
-		target == l.Rooms[l.arrow].Neighbors[2] {
+	target = l.ordered[target]
+	if target == l.rooms[l.arrow].Neighbors[0] ||
+		target == l.rooms[l.arrow].Neighbors[1] ||
+		target == l.rooms[l.arrow].Neighbors[2] {
 		l.arrow = target
 	} else {
-		// invalid destination, we move the arrow at random.
-		l.arrow = l.Rooms[l.arrow].Neighbors[rand.Intn(3)]
+		// invalid destination, we move the arrow at random between the neighbors.
+		l.arrow = l.rooms[l.arrow].Neighbors[rand.Intn(3)]
 	}
 
 	l.arrowTravel--
@@ -218,9 +234,10 @@ func (l *Labyrinth) MoveArrow(target int) {
 
 // TryMovePlayer moves the player if the position is valid.
 func (l *Labyrinth) TryMovePlayer(target int) bool {
-	if target == l.Rooms[l.player].Neighbors[0] ||
-		target == l.Rooms[l.player].Neighbors[1] ||
-		target == l.Rooms[l.player].Neighbors[2] {
+	target = l.ordered[target]
+	if target == l.rooms[l.player].Neighbors[0] ||
+		target == l.rooms[l.player].Neighbors[1] ||
+		target == l.rooms[l.player].Neighbors[2] {
 		l.player = target
 		l.visited[target] = struct{}{}
 		return true
@@ -235,8 +252,8 @@ func (l *Labyrinth) Visited() int {
 
 func (l *Labyrinth) GetFmtNeighbors(n int) string {
 	return fmt.Sprintf("%d, %d, %d",
-		l.Rooms[n].Neighbors[0]+1,
-		l.Rooms[n].Neighbors[1]+1,
-		l.Rooms[n].Neighbors[2]+1,
+		l.randomized[l.rooms[n].Neighbors[0]]+1,
+		l.randomized[l.rooms[n].Neighbors[1]]+1,
+		l.randomized[l.rooms[n].Neighbors[2]]+1,
 	)
 }
