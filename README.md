@@ -15,9 +15,9 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
    - **Shoot**: You can shoot an arrow into one of the adjacent caves in hopes of killing the Wumpus. The arrow can travel up to 5 rooms. Shooting the Wumpus successfully means you win. Missing the Wumpus might cause it to wake up and move to a random adjacent cave. Be careful of not hitting yourself with the arrow !
    
 4. **Hints**: The game provides hints based on which cave the player is in:
-   - **"You smell a Wumpus!"**: This means the Wumpus is in one of the adjacent caves.
-   - **"You feel a strong draft!"**: This indicates that one of the connected caves has a pit.
-   - **"You hear bats nearby!"**: This suggests that giant bats are in an adjacent cave.
+   - **"An unmistakable scent hints at a Wumpus lurking nearby!"**: This means the Wumpus is in one of the adjacent caves.
+   - **"A chilling draft suggests the presence of a pit nearby!"**: This indicates that one of the connected caves has a pit.
+   - **"The distant fluttering of bats reaches your ears!"**: This suggests that giant bats are in an adjacent cave.
 
 5. **Winning and Losing**:
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
@@ -25,7 +25,9 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
 
 **A note on arrows**: It's unclear if the original version had the limit of 5 arrows. I implemented it but it can be disabled. Please note that there is no way to win the game once you're out of arrows.
 
-Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png))
+Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png)).
+
+While the layout remains fixed, the numbers of the caverns is random.
 
 ### Running the game
 ```

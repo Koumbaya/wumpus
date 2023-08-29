@@ -14,9 +14,9 @@ const (
 	Start           = "Your eyes adjust to the dim light, revealing a vast cavern..."
 	Room            = "You are in cavern %d.\n"
 	Tunnels         = "Tunnels lead to %s.\n"
-	BatsNearby      = "The distant fluttering of bats reaches your ears!"
-	PitsNearby      = "A chilling draft suggests the presence of a pit nearby!"
-	WumpusNearby    = "An unmistakable scent hints at a Wumpus lurking nearby!"
+	BatsNearby      = yellow + "The distant fluttering of bats reaches your ears!" + reset
+	PitsNearby      = yellow + "A chilling draft suggests the presence of a pit nearby!" + reset
+	WumpusNearby    = yellow + "An unmistakable scent hints at a Wumpus lurking nearby!" + reset
 	ChoiceShootMove = bold + "Move or Shoot ? ( M / S ): " + reset
 	WhereTo         = bold + "Where to ? ( %s ): " + reset
 	WhereToArrow    = bold + "➵ Aim your arrow: ( %s ): " + reset
