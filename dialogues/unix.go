@@ -7,6 +7,7 @@ const (
 	dim    = "\033[2m"
 	red    = "\033[31m"
 	yellow = "\033[33m"
+	cyan   = "\033[36m"
 	bold   = "\033[1m"
 )
 
@@ -14,9 +15,9 @@ const (
 	Start           = "Your eyes adjust to the dim light, revealing a vast cavern..."
 	Room            = "You are in cavern %d.\n"
 	Tunnels         = "Tunnels lead to %s.\n"
-	BatsNearby      = yellow + "The distant fluttering of bats reaches your ears!" + reset
-	PitsNearby      = yellow + "A chilling draft suggests the presence of a pit nearby!" + reset
-	WumpusNearby    = yellow + "An unmistakable scent hints at a Wumpus lurking nearby!" + reset
+	BatsNearby      = cyan + "The distant fluttering of bats reaches your ears!" + reset
+	PitsNearby      = cyan + "A chilling draft suggests the presence of a pit nearby!" + reset
+	WumpusNearby    = cyan + "An unmistakable scent hints at a Wumpus lurking nearby!" + reset
 	ChoiceShootMove = bold + "Move or Shoot ? ( M / S ): " + reset
 	WhereTo         = bold + "Where to ? ( %s ): " + reset
 	WhereToArrow    = bold + "➵ Aim your arrow: ( %s ): " + reset
