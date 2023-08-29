@@ -8,22 +8,26 @@ import (
 )
 
 const (
-	NbRooms  = 20
-	RandRoom = NbRooms - 1
+	nbRooms  = 20
+	randRoom = nbRooms - 1
 )
 
-// Room is a vertex of the dodecahedron.
-type Room struct {
-	ID        int
-	Neighbors []int
+// room is a vertex of the dodecahedron.
+type room struct {
+	neighbors []int
 }
 
 // Labyrinth is the collection of rooms making up the dodecahedron.
 type Labyrinth struct {
-	rooms       []Room
-	visited     map[int]struct{}
-	randomized  []int
-	ordered     []int
+	rooms []room
+	// visited keep track of the # of explored rooms.
+	visited map[int]struct{}
+	// shuffled is a nbRooms length slice with values 0-randRoom randomized.
+	// those values are what are shown to the player (so that on each play through, the cavern numbers on the map are different).
+	shuffled []int
+	// ordered is the reverse of shuffled. It is used when taking player input to find the "real" room.
+	ordered []int
+	// arrowTravel keep track of how many rooms the arrow can travel.
 	arrowTravel int
 
 	// locations
@@ -34,34 +38,31 @@ type Labyrinth struct {
 	pits   []int
 }
 
-// NewLabyrinth returns an initialized dodecahedron Labyrinth.
+// NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
 func NewLabyrinth() Labyrinth {
 	l := Labyrinth{
-		bats:    make([]int, 0, 2),
-		pits:    make([]int, 0, 2),
-		visited: make(map[int]struct{}, 20),
 		// there is probably a way to do this mathematically but is it worth it ?
-		rooms: []Room{
-			{ID: 0, Neighbors: []int{1, 5, 4}},
-			{ID: 1, Neighbors: []int{0, 7, 2}},
-			{ID: 2, Neighbors: []int{1, 9, 3}},
-			{ID: 3, Neighbors: []int{2, 11, 4}},
-			{ID: 4, Neighbors: []int{3, 13, 0}},
-			{ID: 5, Neighbors: []int{0, 14, 6}},
-			{ID: 6, Neighbors: []int{5, 16, 7}},
-			{ID: 7, Neighbors: []int{1, 6, 8}},
-			{ID: 8, Neighbors: []int{7, 9, 17}},
-			{ID: 9, Neighbors: []int{2, 8, 10}},
-			{ID: 10, Neighbors: []int{9, 11, 18}},
-			{ID: 11, Neighbors: []int{10, 3, 12}},
-			{ID: 12, Neighbors: []int{19, 11, 13}},
-			{ID: 13, Neighbors: []int{14, 12, 4}},
-			{ID: 14, Neighbors: []int{13, 5, 15}},
-			{ID: 15, Neighbors: []int{14, 19, 16}},
-			{ID: 16, Neighbors: []int{6, 15, 17}},
-			{ID: 17, Neighbors: []int{16, 8, 18}},
-			{ID: 18, Neighbors: []int{10, 17, 19}},
-			{ID: 19, Neighbors: []int{12, 15, 18}},
+		rooms: []room{
+			{neighbors: []int{1, 5, 4}},
+			{neighbors: []int{0, 7, 2}},
+			{neighbors: []int{1, 9, 3}},
+			{neighbors: []int{2, 11, 4}},
+			{neighbors: []int{3, 13, 0}},
+			{neighbors: []int{0, 14, 6}},
+			{neighbors: []int{5, 16, 7}},
+			{neighbors: []int{1, 6, 8}},
+			{neighbors: []int{7, 9, 17}},
+			{neighbors: []int{2, 8, 10}},
+			{neighbors: []int{9, 11, 18}},
+			{neighbors: []int{10, 3, 12}},
+			{neighbors: []int{19, 11, 13}},
+			{neighbors: []int{14, 12, 4}},
+			{neighbors: []int{13, 5, 15}},
+			{neighbors: []int{14, 19, 16}},
+			{neighbors: []int{6, 15, 17}},
+			{neighbors: []int{16, 8, 18}},
+			{neighbors: []int{10, 17, 19}},
+			{neighbors: []int{12, 15, 18}},
 		},
 	}
 
@@ -72,8 +73,8 @@ func NewLabyrinth() Labyrinth {
 // Init randomly places the player, wumpus, pits and bats.
 func (l *Labyrinth) Init() {
 	l.visited = make(map[int]struct{}, 20)
-	l.ordered = make([]int, NbRooms)
-	randRooms := make([]int, NbRooms)
+	l.ordered = make([]int, nbRooms)
+	randRooms := make([]int, nbRooms)
 	for i := range randRooms {
 		randRooms[i] = i
 	}
@@ -83,7 +84,7 @@ func (l *Labyrinth) Init() {
 	})
 
 	// use the randomization to give arbitrary numbers to rooms so that each play through is unique.
-	l.randomized = randRooms // k: true value, v : rand
+	l.shuffled = randRooms // k: true value, v : rand
 	for i, room := range randRooms {
 		l.ordered[room] = i
 	} // k: rand, v : true value
@@ -93,26 +94,23 @@ func (l *Labyrinth) Init() {
 	l.bats = randRooms[2:4]
 
 	// place the Wumpus anywhere
-	l.wumpus = rand.Intn(RandRoom)
+	l.wumpus = rand.Intn(randRoom)
 
 	// place the player in a location distinct from hazards
-	for l.player = randRooms[rand.Intn((RandRoom)-4)+4]; l.player == l.wumpus; {
+	for l.player = randRooms[rand.Intn((randRoom)-4)+4]; l.player == l.wumpus; {
 	}
 
 	l.visited[l.player] = struct{}{}
 }
 
+// Player return the player location.
 func (l *Labyrinth) Player() int {
 	return l.player
 }
 
-// PlayerPOV return the randomized room value.
+// PlayerPOV return the shuffled player location.
 func (l *Labyrinth) PlayerPOV() int {
-	return l.randomized[l.player] + 1
-}
-
-func (l *Labyrinth) HasPlayer(n int) bool {
-	return n == l.player
+	return l.shuffled[l.player] + 1
 }
 
 func (l *Labyrinth) HasBat(n int) bool {
@@ -120,7 +118,7 @@ func (l *Labyrinth) HasBat(n int) bool {
 }
 
 func (l *Labyrinth) BatsNearby() bool {
-	for _, i := range l.rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].neighbors {
 		if l.HasBat(i) {
 			return true
 		}
@@ -133,7 +131,7 @@ func (l *Labyrinth) HasPit(n int) bool {
 }
 
 func (l *Labyrinth) PitNearby() bool {
-	for _, i := range l.rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].neighbors {
 		if l.HasPit(i) {
 			return true
 		}
@@ -141,9 +139,9 @@ func (l *Labyrinth) PitNearby() bool {
 	return false
 }
 
-// Wumpus returns the randomized location of the wumpus.
+// Wumpus returns the shuffled location of the wumpus.
 func (l *Labyrinth) Wumpus() int {
-	return l.randomized[l.wumpus] + 1
+	return l.shuffled[l.wumpus] + 1
 }
 
 func (l *Labyrinth) HasWumpus(n int) bool {
@@ -151,7 +149,7 @@ func (l *Labyrinth) HasWumpus(n int) bool {
 }
 
 func (l *Labyrinth) WumpusNearby() bool {
-	for _, i := range l.rooms[l.player].Neighbors {
+	for _, i := range l.rooms[l.player].neighbors {
 		if i == l.wumpus {
 			return true
 		}
@@ -162,7 +160,7 @@ func (l *Labyrinth) WumpusNearby() bool {
 // ActivateBat teleports the player to a different room.
 func (l *Labyrinth) ActivateBat() int {
 	var move int
-	for move = rand.Intn(RandRoom); move == l.player; {
+	for move = rand.Intn(randRoom); move == l.player; {
 	}
 
 	l.player = move
@@ -174,7 +172,7 @@ func (l *Labyrinth) ActivateBat() int {
 func (l *Labyrinth) FoundWumpus() (killed bool) {
 	// move the wumpus to another room
 	var move int
-	for move = rand.Intn(RandRoom); move == l.wumpus; {
+	for move = rand.Intn(randRoom); move == l.wumpus; {
 	}
 
 	l.wumpus = move
@@ -186,7 +184,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 func (l *Labyrinth) StartleWumpus() bool {
 	if rand.Intn(2) == 1 {
 		var move int
-		for move = rand.Intn(RandRoom); move == l.wumpus; {
+		for move = rand.Intn(randRoom); move == l.wumpus; {
 		}
 
 		l.wumpus = move
@@ -220,13 +218,13 @@ func (l *Labyrinth) PowerRemaining() int {
 // MoveArrow handle the location and travel of the arrow, reducing its capacity by one.
 func (l *Labyrinth) MoveArrow(target int) {
 	target = l.ordered[target]
-	if target == l.rooms[l.arrow].Neighbors[0] ||
-		target == l.rooms[l.arrow].Neighbors[1] ||
-		target == l.rooms[l.arrow].Neighbors[2] {
+	if target == l.rooms[l.arrow].neighbors[0] ||
+		target == l.rooms[l.arrow].neighbors[1] ||
+		target == l.rooms[l.arrow].neighbors[2] {
 		l.arrow = target
 	} else {
 		// invalid destination, we move the arrow at random between the neighbors.
-		l.arrow = l.rooms[l.arrow].Neighbors[rand.Intn(3)]
+		l.arrow = l.rooms[l.arrow].neighbors[rand.Intn(3)]
 	}
 
 	l.arrowTravel--
@@ -235,9 +233,9 @@ func (l *Labyrinth) MoveArrow(target int) {
 // TryMovePlayer moves the player if the position is valid.
 func (l *Labyrinth) TryMovePlayer(target int) bool {
 	target = l.ordered[target]
-	if target == l.rooms[l.player].Neighbors[0] ||
-		target == l.rooms[l.player].Neighbors[1] ||
-		target == l.rooms[l.player].Neighbors[2] {
+	if target == l.rooms[l.player].neighbors[0] ||
+		target == l.rooms[l.player].neighbors[1] ||
+		target == l.rooms[l.player].neighbors[2] {
 		l.player = target
 		l.visited[target] = struct{}{}
 		return true
@@ -252,8 +250,8 @@ func (l *Labyrinth) Visited() int {
 
 func (l *Labyrinth) GetFmtNeighbors(n int) string {
 	return fmt.Sprintf("%d, %d, %d",
-		l.randomized[l.rooms[n].Neighbors[0]]+1,
-		l.randomized[l.rooms[n].Neighbors[1]]+1,
-		l.randomized[l.rooms[n].Neighbors[2]]+1,
+		l.shuffled[l.rooms[n].neighbors[0]]+1,
+		l.shuffled[l.rooms[n].neighbors[1]]+1,
+		l.shuffled[l.rooms[n].neighbors[2]]+1,
 	)
 }

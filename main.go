@@ -9,6 +9,8 @@ import (
 	"github.com/koumbaya/wumpus/labyrinth"
 )
 
+const textDelay = 15 * time.Millisecond
+
 var (
 	nodelay bool
 	arrows  bool
@@ -21,7 +23,7 @@ func init() {
 
 func main() {
 	flag.Parse()
-	delay := 15 * time.Millisecond
+	delay := textDelay
 	if nodelay {
 		delay = 0
 	}
