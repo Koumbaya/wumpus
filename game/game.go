@@ -58,7 +58,7 @@ func (g *Game) Loop() {
 		input = clean(input)
 
 		if strings.EqualFold(input, "exit") {
-			g.p.Println(dia.Exit)
+			g.p.Println(dia.Exit())
 			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 			return
 		}
@@ -122,7 +122,7 @@ func (g *Game) playerState(input string) bool {
 			g.start()
 			g.state = waitShootMove
 		} else {
-			g.p.Println(dia.Exit)
+			g.p.Println(dia.Exit())
 			return true
 		}
 	}
@@ -252,7 +252,7 @@ func (g *Game) hazards() bool {
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
 	if g.l.HasBat(g.l.Player()) {
-		g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
+		g.p.Printf(dia.BatTeleport(), g.l.ActivateBat())
 		return g.hazards()
 	}
 

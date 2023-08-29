@@ -30,7 +30,10 @@ const (
 	KilledByWumpus2 = red + "☠ The lurking Wumpus caught you off-guard! Your adventure ends here ☠" + reset
 	KilledByWumpus3 = red + "☠ In a fateful encounter, the Wumpus proved to be your doom! ☠" + reset
 	KilledByWumpus4 = red + "☠ The Wumpus, swift and silent, ended your journey abruptly! ☠" + reset
-	BatTeleport     = yellow + "A giant bat took you away and dropped you into cavern %d!\n" + reset
+	BatTeleport0    = yellow + "A giant bat took you away and dropped you into cavern %d!\n" + reset
+	BatTeleport1    = yellow + "With a flurry of wings, a giant bat snatches you up, depositing you in a new cavern %d!\n" + reset
+	BatTeleport2    = yellow + "Suddenly, talons grip you! A bat swiftly carries you aloft, dropping you in unfamiliar cavern %d.\n" + reset
+	BatTeleport3    = yellow + "The shadows move, and before you realize, a bat has whisked you away, setting you down in cavern %d. Stay alert!\n" + reset
 	FellIntoPit0    = red + "☠ You lost your footing and plummeted into a bottomless pit!! ☠" + reset
 	FellIntoPit1    = red + "☠ Misstepping, you plummet into the abyss of a bottomless pit! ☠" + reset
 	FellIntoPit2    = red + "☠ The ground betrays you, sending you falling into a dark void! ☠" + reset
@@ -62,7 +65,10 @@ const (
 	ArrowPlayer     = red + "➴ A miscalculation! Your own arrow returns to strike you down! ☠" + reset
 	WumpusTrample   = red + "In its panic, the Wumpus rampages through, trampling you in the process! ☠" + reset
 	Turns           = dim + "You won in %d turns, firing %d arrows and visiting %d caverns.\n" + reset
-	Exit            = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + reset
+	Exit0           = dim + "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer." + reset
+	Exit1           = dim + "Your hunt for the Wumpus concludes, for now. Till we meet in the caverns again." + reset
+	Exit2           = dim + "The Wumpus remains elusive as you depart. Until another quest calls you back." + reset
+	Exit3           = dim + "You choose to leave the caverns, but the Wumpus awaits your return. Farewell for now." + reset
 	ExitWumpus      = dim + "The Wumpus was hidden in cavern %d\n" + reset
 	NoMoreArrows    = yellow + "➴ You don't have any arrows left !" + reset
 	RemainingArrows = "➵ You have %d remaining arrows.\n"

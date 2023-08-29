@@ -100,5 +100,28 @@ func MovedTo() string {
 		MovedTo9,
 		MovedTo10,
 	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func BatTeleport() string {
+	r := []string{
+		BatTeleport0,
+		BatTeleport1,
+		BatTeleport2,
+		BatTeleport3,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func Exit() string {
+	r := []string{
+		Exit0,
+		Exit1,
+		Exit2,
+		Exit3,
+	}
+
 	return r[rand.Intn(len(r))]
 }
