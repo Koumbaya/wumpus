@@ -29,6 +29,8 @@ type Labyrinth struct {
 	ordered []int
 	// arrowTravel keep track of how many rooms the arrow can travel.
 	arrowTravel int
+	advanced    bool // experimental
+	debug       bool
 
 	// locations
 	player int
@@ -36,10 +38,12 @@ type Labyrinth struct {
 	wumpus int
 	bats   []int
 	pits   []int
+	key    int // advanced
+	door   int // advanced
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
-func NewLabyrinth() Labyrinth {
+func NewLabyrinth(advanced, debug bool) Labyrinth {
 	l := Labyrinth{
 		// there is probably a way to do this mathematically but is it worth it ?
 		rooms: []room{
@@ -64,6 +68,8 @@ func NewLabyrinth() Labyrinth {
 			{neighbors: []int{10, 17, 19}},
 			{neighbors: []int{12, 15, 18}},
 		},
+		advanced: advanced,
+		debug:    debug,
 	}
 
 	l.Init()
@@ -96,10 +102,21 @@ func (l *Labyrinth) Init() {
 	// place the Wumpus anywhere
 	l.wumpus = rand.Intn(randRoom)
 
+	offset := 4
+	if l.advanced {
+		l.key = randRooms[5]
+		l.door = randRooms[6]
+		offset += 2
+	}
+
 	// place the player in a location distinct from hazards
-	l.player = randRooms[randNotEqual(4, randRoom, l.wumpus)]
+	l.player = randRooms[randNotEqual(offset, randRoom, l.wumpus)]
 
 	l.visited[l.player] = struct{}{}
+
+	if l.debug {
+		l.printDebug()
+	}
 }
 
 // Player return the player location.
@@ -186,6 +203,11 @@ func (l *Labyrinth) Arrow() int {
 	return l.arrow
 }
 
+// ArrowPOV return the shuffled arrow location.
+func (l *Labyrinth) ArrowPOV() int {
+	return l.shuffled[l.arrow] + 1
+}
+
 // FireArrow sets the arrow position to that of the player and reset its travel capacity.
 func (l *Labyrinth) FireArrow(input string) {
 	p, err := strconv.Atoi(input)
@@ -221,7 +243,8 @@ func (l *Labyrinth) TryMovePlayer(target int) bool {
 	target = l.ordered[target]
 	if target == l.rooms[l.player].neighbors[0] ||
 		target == l.rooms[l.player].neighbors[1] ||
-		target == l.rooms[l.player].neighbors[2] {
+		target == l.rooms[l.player].neighbors[2] ||
+		l.debug /*allow teleport in debug mode*/ {
 		l.player = target
 		l.visited[target] = struct{}{}
 		return true
@@ -234,12 +257,37 @@ func (l *Labyrinth) Visited() int {
 	return len(l.visited)
 }
 
+func (l *Labyrinth) Key() int {
+	return l.key
+}
+
+func (l *Labyrinth) HasKey(n int) bool {
+	return n == l.key
+}
+
+func (l *Labyrinth) Door() int {
+	return l.door
+}
+
+func (l *Labyrinth) HasDoor(n int) bool {
+	return n == l.door
+}
+
 func (l *Labyrinth) GetFmtNeighbors(n int) string {
 	return fmt.Sprintf("%d, %d, %d",
 		l.shuffled[l.rooms[n].neighbors[0]]+1,
 		l.shuffled[l.rooms[n].neighbors[1]]+1,
 		l.shuffled[l.rooms[n].neighbors[2]]+1,
 	)
+}
+
+func (l *Labyrinth) printDebug() {
+	fmt.Printf("wumpus %d\n", l.shuffled[l.wumpus]+1)
+	fmt.Printf("wumpus neighboring caves %s\n", l.GetFmtNeighbors(l.wumpus))
+	fmt.Printf("key %d\n", l.shuffled[l.key]+1)
+	fmt.Printf("door %d\n", l.shuffled[l.door]+1)
+	fmt.Printf("pits %d %d\n", l.shuffled[l.pits[0]]+1, l.shuffled[l.pits[1]]+1)
+	fmt.Printf("bats %d %d\n", l.shuffled[l.bats[0]]+1, l.shuffled[l.bats[1]]+1)
 }
 
 func randNotEqual(min, max, different int) (x int) {
