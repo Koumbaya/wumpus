@@ -125,3 +125,100 @@ func Exit() string {
 
 	return r[rand.Intn(len(r))]
 }
+
+func DoorKeyDoor() string {
+	r := []string{
+		DoorKeyDoor0,
+		DoorKeyDoor1,
+		DoorKeyDoor2,
+		DoorKeyDoor3,
+		DoorKeyDoor4,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func BackAgainDoorNoKey() string {
+	r := []string{
+		BackAgainDoorNoKey0,
+		BackAgainDoorNoKey1,
+		BackAgainDoorNoKey2,
+		BackAgainDoorNoKey3,
+		BackAgainDoorNoKey4,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func WumpusStillAlive() string {
+	r := []string{
+		WumpusStillAlive0,
+		WumpusStillAlive1,
+		WumpusStillAlive2,
+		WumpusStillAlive3,
+		WumpusStillAlive4,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func DoorThenKey() string {
+	r := []string{
+		DoorThenKey0,
+		DoorThenKey1,
+		DoorThenKey2,
+		DoorThenKey3,
+		DoorThenKey4,
+		DoorThenKey5,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func FirstKeyDiscoveryNoDoor() string {
+	r := []string{
+		FirstKeyDiscoveryNoDoor0,
+		FirstKeyDiscoveryNoDoor1,
+		FirstKeyDiscoveryNoDoor2,
+		FirstKeyDiscoveryNoDoor3,
+		FirstKeyDiscoveryNoDoor4,
+		FirstKeyDiscoveryNoDoor5,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func FirstDoorDiscoveryNoKey() string {
+	r := []string{
+		FirstDoorDiscoveryNoKey0,
+		FirstDoorDiscoveryNoKey1,
+		FirstDoorDiscoveryNoKey2,
+		FirstDoorDiscoveryNoKey3,
+		FirstDoorDiscoveryNoKey4,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func KeyThenDoor() string {
+	r := []string{
+		KeyThenDoor0,
+		KeyThenDoor1,
+		KeyThenDoor2,
+		KeyThenDoor3,
+		KeyThenDoor4,
+	}
+
+	return r[rand.Intn(len(r))]
+}
+
+func ExitDoor() string {
+	r := []string{
+		ExitDoor0,
+		ExitDoor1,
+		ExitDoor2,
+		ExitDoor3,
+	}
+
+	return r[rand.Intn(len(r))]
+}

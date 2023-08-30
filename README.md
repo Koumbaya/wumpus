@@ -23,6 +23,9 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
    - **Losing**: The player loses by getting struck by an arrow, falling into a pit, or being eaten by the Wumpus.
 
+6. **Advanced**:
+   - In advanced mode, you must kill the wumpus then find your way out of the labyrinth by finding a key and its door!
+
 **A note on arrows**: It's unclear if the original version had the limit of 5 arrows. I implemented it but it can be disabled. Please note that there is no way to win the game once you're out of arrows.
 
 Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png)).
@@ -35,14 +38,15 @@ go run .
 ```
 Type `exit` any time to close the game.
 
-You can also run the game without the fake terminal delay with :
-```
-go run . -nodelay
-```
-To play with infinite arrows:
-```
-go run . -arrows
-```
+There a various flags available :
+
+`-advanced`: play in advanced mode ! On top of killing the wumpus, you'll need to escape the labyrinth !
+
+`-nodelay`: run the game without the fake terminal delay.
+
+`-arrows`: gives infinite arrows.
+
+`-debug`: cheat/debug mode.
 
 ![cover](cover.png)
 
@@ -51,4 +55,5 @@ go run . -arrows
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
+* Refactor the way dialogues are handled, (json?)
 * Tests
