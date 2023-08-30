@@ -85,8 +85,8 @@ func (l *Labyrinth) Init() {
 
 	// use the randomization to give arbitrary numbers to rooms so that each play through is unique.
 	l.shuffled = randRooms // k: true value, v : rand
-	for i, room := range randRooms {
-		l.ordered[room] = i
+	for i, r := range randRooms {
+		l.ordered[r] = i
 	} // k: rand, v : true value
 
 	// place pits & bats in distinct locations
@@ -97,8 +97,7 @@ func (l *Labyrinth) Init() {
 	l.wumpus = rand.Intn(randRoom)
 
 	// place the player in a location distinct from hazards
-	for l.player = randRooms[rand.Intn((randRoom)-4)+4]; l.player == l.wumpus; {
-	}
+	l.player = randRooms[randNotEqual(4, randRoom, l.wumpus)]
 
 	l.visited[l.player] = struct{}{}
 }
@@ -159,11 +158,7 @@ func (l *Labyrinth) WumpusNearby() bool {
 
 // ActivateBat teleports the player to a different room.
 func (l *Labyrinth) ActivateBat() int {
-	var move int
-	for move = rand.Intn(randRoom); move == l.player; {
-	}
-
-	l.player = move
+	l.player = randNotEqual(0, randRoom, l.player)
 	return l.player
 }
 
@@ -171,11 +166,7 @@ func (l *Labyrinth) ActivateBat() int {
 // In any case the Wumpus will relocate.
 func (l *Labyrinth) FoundWumpus() (killed bool) {
 	// move the wumpus to another room
-	var move int
-	for move = rand.Intn(randRoom); move == l.wumpus; {
-	}
-
-	l.wumpus = move
+	l.wumpus = randNotEqual(0, randRoom, l.wumpus)
 
 	return rand.Intn(2) == 1
 }
@@ -183,12 +174,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 // StartleWumpus has a 1/2 chance of making the Wumpus move.
 func (l *Labyrinth) StartleWumpus() bool {
 	if rand.Intn(2) == 1 {
-		var move int
-		for move = rand.Intn(randRoom); move == l.wumpus; {
-		}
-
-		l.wumpus = move
-
+		l.wumpus = randNotEqual(0, randRoom, l.wumpus)
 		return true
 	}
 
@@ -254,4 +240,13 @@ func (l *Labyrinth) GetFmtNeighbors(n int) string {
 		l.shuffled[l.rooms[n].neighbors[1]]+1,
 		l.shuffled[l.rooms[n].neighbors[2]]+1,
 	)
+}
+
+func randNotEqual(min, max, different int) (x int) {
+	for {
+		x = rand.Intn((max)-min) + min
+		if x != different {
+			return x
+		}
+	}
 }
