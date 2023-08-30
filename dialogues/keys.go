@@ -9,24 +9,6 @@ const (
 	bold   = "\033[1m"
 )
 
-func mapColors(s string) string {
-	switch s {
-	case "reset":
-		return reset
-	case "dim":
-		return dim
-	case "red":
-		return red
-	case "yellow":
-		return yellow
-	case "cyan":
-		return cyan
-	case "bold":
-		return bold
-	}
-	return ""
-}
-
 const (
 	Start           = "Start"
 	Room            = "Room"

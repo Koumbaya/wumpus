@@ -57,5 +57,4 @@ There a various flags available :
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
-* Refactor the way dialogues are handled, (json?)
 * Tests
