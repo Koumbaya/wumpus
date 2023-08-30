@@ -65,3 +65,19 @@ const (
 	NoMoreArrows    = "-> You don't have any arrows left !"
 	RemainingArrows = "-> You have %d remaining arrows.\n"
 )
+
+// advanced features.
+const (
+	FirstDoorDiscoveryNoKey = "In a dimly lit alcove, you stumble upon a door unlike any other, its very presence an enigma. Its locked nature piques your curiosity, urging you to search for a way to access its other side."
+	BackAgainDoorNoKey      = "Wandering through the labyrinth, you find yourself back at the mysterious door that had captivated your curiosity earlier. Its silent presence taunts you, and the absence of a key keeps its secrets just out of reach."
+	FirstKeyDiscoveryNoDoor = "Tucked away in a crevice, a mysterious key gleams faintly. Intrigued, you reach out, securing the key and pondering its potential use."
+	DoorThenKey             = "You're instantly reminded of the door's enigmatic aura when you discover a key bearing similar motifs. Convinced it's more than mere coincidence, you take the key, eager to see if it unlocks the previous mystery."
+	KeyThenDoor             = "The ornate key you found earlier feels heavy in your pocket as you face a magnificent door, its designs eerily similar. An air of destiny surrounds you, hinting that the key might unveil the door's concealed world."
+	WumpusStillAlive        = "However, a sense of duty holds you back. The echoing growls of the Wumpus are a reminder that your quest is not yet complete."
+	DoorKeyDoor             = "Returning to the cavern that houses the mysterious door, you feel the weight of the key you've since discovered. Anticipation grows as you approach, ready to unlock the door's long-held secrets."
+	ExitDoor                = "With a deep breath, you turn the key and the door gradually gives way, leading you to the world outside the maze."
+	NowExit                 = "Trapped within these winding walls, you must seek an exit."
+	MaybeDoor               = "Could the enigmatic door you stumbled upon be your passage out?"
+	MaybeKey                = "The ornate key you discovered might hold answers to this labyrinth's riddles."
+	CertainKeyDoor          = "The door for which you have the key calls to you. It's time to retrace your steps and make your way to the surface through that passage!"
+)
