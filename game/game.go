@@ -64,7 +64,7 @@ func (g *Game) Loop() {
 		input = clean(input)
 
 		if strings.EqualFold(input, "exit") {
-			g.p.Println(dia.Exit())
+			g.p.Println(dia.Exit)
 			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 			return
 		}
@@ -133,7 +133,7 @@ func (g *Game) playerState(input string) bool {
 			g.start()
 			g.state = waitShootMove
 		} else {
-			g.p.Println(dia.Exit())
+			g.p.Println(dia.Exit)
 			return true
 		}
 	}
@@ -168,7 +168,7 @@ func (g *Game) start() {
 func (g *Game) handleArrow() state {
 	g.p.Printf(dia.ArrowTravel, g.l.ArrowPOV())
 	if g.l.HasWumpus(g.l.Arrow()) && !g.killedWumpus {
-		g.p.Println(dia.KilledWumpus())
+		g.p.Println(dia.KilledWumpus)
 		g.killedWumpus = true
 		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
 			g.p.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
@@ -253,7 +253,7 @@ func (g *Game) whereToArrow() {
 }
 
 func (g *Game) explore() bool {
-	g.p.Printf(dia.MovedTo(), g.l.PlayerPOV())
+	g.p.Printf(dia.MovedTo, g.l.PlayerPOV())
 	return g.hazards()
 }
 
@@ -265,7 +265,7 @@ func (g *Game) hazards() bool {
 	if g.l.HasWumpus(g.l.Player()) && !g.killedWumpus {
 		g.p.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
-			g.p.Println(dia.KilledByWumpus())
+			g.p.Println(dia.KilledByWumpus)
 			return true
 		}
 		g.p.Println(dia.StartledWumpus)
@@ -273,12 +273,12 @@ func (g *Game) hazards() bool {
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
 	if g.l.HasBat(g.l.Player()) {
-		g.p.Printf(dia.BatTeleport(), g.l.ActivateBat())
+		g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
 		return g.hazards()
 	}
 
 	if g.l.HasPit(g.l.Player()) {
-		g.p.Println(dia.FellIntoPit())
+		g.p.Println(dia.FellIntoPit)
 		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 		return true
 	}
@@ -304,34 +304,34 @@ func (g *Game) keyDoor() bool {
 	switch {
 	case door && g.foundKey && g.foundDoor:
 		// found the door, then the key, and are back to the room with the door
-		g.p.Println(dia.DoorKeyDoor())
+		g.p.Println(dia.DoorKeyDoor)
 		canUnlock = true
 	case door && g.foundKey:
 		// found the key first then the door (first time seeing it)
-		g.p.Println(dia.KeyThenDoor())
+		g.p.Println(dia.KeyThenDoor)
 		g.foundDoor = true
 		canUnlock = true
 	case door && !g.foundDoor:
 		// first time seeing the door, no key
-		g.p.Println(dia.FirstDoorDiscoveryNoKey())
+		g.p.Println(dia.FirstDoorDiscoveryNoKey)
 		g.foundDoor = true
 	case door:
 		// back in the cavern with the door again
-		g.p.Println(dia.BackAgainDoorNoKey())
+		g.p.Println(dia.BackAgainDoorNoKey)
 	case key && g.foundDoor && !g.foundKey:
 		// found the door first, then this key
-		g.p.Println(dia.DoorThenKey())
+		g.p.Println(dia.DoorThenKey)
 		g.foundKey = true
 	case key && !g.foundDoor && !g.foundKey:
 		// found the key first
-		g.p.Println(dia.FirstKeyDiscoveryNoDoor())
+		g.p.Println(dia.FirstKeyDiscoveryNoDoor)
 		g.foundKey = true
 	}
 
 	if canUnlock && !g.killedWumpus {
-		g.p.Println(dia.WumpusStillAlive())
+		g.p.Println(dia.WumpusStillAlive)
 	} else if canUnlock {
-		g.p.Println(dia.ExitDoor())
+		g.p.Println(dia.ExitDoor)
 		g.p.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
 		return true
 	}

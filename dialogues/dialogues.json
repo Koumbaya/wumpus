@@ -1,0 +1,335 @@
+{
+  "data": [
+    {
+      "key": "Start",
+      "values": [
+        "Your eyes adjust to the dim light, revealing a vast cavern..."
+      ],
+      "color": ""
+    },
+    {
+      "key": "Room",
+      "values": [
+        "You are in cavern %d.\n"
+      ],
+      "color": ""
+    },
+    {
+      "key": "Tunnels",
+      "values": [
+        "Tunnels lead to %s.\n"
+      ],
+      "color": ""
+    },
+    {
+      "key": "BatsNearby",
+      "values": [
+        "The distant fluttering of bats reaches your ears!"
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "PitsNearby",
+      "values": [
+        "A chilling draft suggests the presence of a pit nearby!"
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "WumpusNearby",
+      "values": [
+        "An unmistakable scent hints at a Wumpus lurking nearby!"
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "ChoiceShootMove",
+      "values": [
+        "Move or Shoot ? ( M / S ): "
+      ],
+      "color": "bold"
+    },
+    {
+      "key": "WhereTo",
+      "values": [
+        "Where to ? ( %s ): "
+      ],
+      "color": "bold"
+    },
+    {
+      "key": "WhereToArrow",
+      "values": [
+        "➵ Aim your arrow: ( %s ): "
+      ],
+      "color": "bold"
+    },
+    {
+      "key": "NotNumber",
+      "values": [
+        "This is not a number."
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "NotValidDest",
+      "values": [
+        "That path is blocked. Choose another direction!"
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "StumbledWumpus",
+      "values": [
+        "You accidentally stumbled upon the Wumpus!"
+      ],
+      "color": ""
+    },
+    {
+      "key": "StartledWumpus",
+      "values": [
+        "Your presence spooked the Wumpus, causing it to flee!"
+      ],
+      "color": ""
+    },
+    {
+      "key": "KilledByWumpus",
+      "values": [
+        "☠It ate you!☠",
+        "☠ The Wumpus, emerging from the shadows, made you its prey! ☠",
+        "☠ The lurking Wumpus caught you off-guard! Your adventure ends here ☠",
+        "☠ In a fateful encounter, the Wumpus proved to be your doom! ☠",
+        "☠ The Wumpus, swift and silent, ended your journey abruptly! ☠"
+      ],
+      "color": "red"
+    },
+    {
+      "key": "BatTeleport",
+      "values": [
+        "A giant bat took you away and dropped you into cavern %d!\n",
+        "With a flurry of wings, a giant bat snatches you up, depositing you in a new cavern %d!\n",
+        "Suddenly, talons grip you! A bat swiftly carries you aloft, dropping you in unfamiliar cavern %d.\n",
+        "The shadows move, and before you realize, a bat has whisked you away, setting you down in cavern %d. Stay alert!\n"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "FellIntoPit",
+      "values": [
+        "☠ You lost your footing and plummeted into a bottomless pit!! ☠",
+        "☠ Misstepping, you plummet into the abyss of a bottomless pit! ☠",
+        "☠ The ground betrays you, sending you falling into a dark void! ☠",
+        "☠ You lost your balance and met your end in the depths below! ☠"
+      ],
+      "color": ""
+    },
+    {
+      "key": "MovedTo",
+      "values": [
+        "Venturing forth, you emerge in cavern %d\n",
+        "Navigating the dimly lit tunnels, you find yourself in cavern %d.\n",
+        "With cautious steps, you transition into the embrace of cavern %d.\n",
+        "The winding paths lead you onward to the heart of cavern %d.\n",
+        "A gentle echo announces your arrival in cavern %d.\n",
+        "The path unfolds before you, revealing the secrets of cavern %d.\n",
+        "Pushing forth, the mysteries of cavern %d lay before you.\n",
+        "The tunnel's end opens up to the expanse of cavern %d.\n",
+        "With each step, the ambiance changes, signaling your entry into cavern %d.\n",
+        "Leaving the familiar behind, you're greeted by the sights and sounds of cavern %d.\n",
+        "As the previous chamber fades, the allure of cavern %d beckons.\n"
+      ],
+      "color": ""
+    },
+    {
+      "key": "PlayAGain",
+      "values": [
+        "Would you like to venture again into the unknown? (Y/N):"
+      ],
+      "color": "bold"
+    },
+    {
+      "key": "DontUnderstand",
+      "values": [
+        "I'm sorry I couldn't quite catch that..."
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "FireArrow",
+      "values": [
+        "You fired a curved arrow ➶"
+      ],
+      "color": ""
+    },
+    {
+      "key": "SelectPower",
+      "values": [
+        "How far into the caverns will you let the arrow fly? (1-5):"
+      ],
+      "color": "bold"
+    },
+    {
+      "key": "ArrowTravel",
+      "values": [
+        "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n"
+      ],
+      "color": ""
+    },
+    {
+      "key": "KilledWumpus",
+      "values": [
+        "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!",
+        "➵ With a resounding impact, your arrow finds its mark! The Wumpus falls defeated! Victory is yours! ☠",
+        "➵ As the echo of the arrow's flight fades, the Wumpus lets out a final cry! You've vanquished the beast! ☠",
+        "➵ Your aim is true, and the Wumpus is no more! Triumph awaits you! ☠",
+        "➵ Against all odds, you've bested the Wumpus with a single shot! Celebrate your prowess! ☠",
+        "➵ The caverns fall silent as the Wumpus meets its end by your arrow! Well done, adventurer! ☠"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "ArrowStartle",
+      "values": [
+        "➴ The curved arrow struck the ground, startling the Wumpus !"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "ArrowFell",
+      "values": [
+        "➴ The arrow loses its momentum, falling harmlessly to the cavern floor."
+      ],
+      "color": ""
+    },
+    {
+      "key": "ArrowPlayer",
+      "values": [
+        "➴ A miscalculation! Your own arrow returns to strike you down! ☠"
+      ],
+      "color": "red"
+    },
+    {
+      "key": "WumpusTrample",
+      "values": [
+        "In its panic, the Wumpus rampages through, trampling you in the process! ☠"
+      ],
+      "color": "red"
+    },
+    {
+      "key": "Turns",
+      "values": [
+        "You won in %d turns, firing %d arrows and visiting %d caverns.\n"
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "Exit",
+      "values": [
+        "As you retreat from the echoing depths of the caverns, a serene silence envelops you. Thank you for venturing into the unknown with us. Until our paths cross again in the shadows... Farewell, brave adventurer.",
+        "Your hunt for the Wumpus concludes, for now. Till we meet in the caverns again.",
+        "The Wumpus remains elusive as you depart. Until another quest calls you back.",
+        "You choose to leave the caverns, but the Wumpus awaits your return. Farewell for now."
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "ExitWumpus",
+      "values": [
+        "The Wumpus was hidden in cavern %d\n"
+      ],
+      "color": "dim"
+    },
+    {
+      "key": "NoMoreArrows",
+      "values": [
+        "➴ You don't have any arrows left !"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "RemainingArrows",
+      "values": [
+        "➵ You have %d remaining arrows.\n"
+      ],
+      "color": ""
+    },
+    {
+      "key": "FirstDoorDiscoveryNoKey",
+      "values": ["In a dimly lit alcove, you stumble upon a door unlike any other, its very presence an enigma. Its locked nature piques your curiosity, urging you to search for a way to access its other side.","As you navigate the winding paths of the cavern, an imposing door with intricate engravings stands before you, sealing away its secrets. Without a key, you wonder how to unlock its mysteries.","Amidst the shadows, the silhouette of a grand door looms. Adorned with symbols from an age long past, it poses a silent challenge: Find the key, unveil its secrets.","The rhythmic echo of your footsteps halts abruptly as you face an ornate door, an obvious relic from ancient times. You're met with a locked barrier, urging you to find its corresponding key.","As you traverse deeper into the labyrinth, a mysterious door stands sentinel, its purpose unknown. You ponder the whereabouts of the key that might unlock its story."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "BackAgainDoorNoKey",
+      "values": ["Wandering through the labyrinth, you find yourself back at the mysterious door that had captivated your curiosity earlier. Its silent presence taunts you, and the absence of a key keeps its secrets just out of reach.","The familiar patterns of the grand door greet you as you navigate the winding paths. A pang of frustration hits; despite your exploration, the key remains a missing piece in this puzzle.","Once again, the cavern leads you to the ornate door you'd encountered before. It stands stoically, waiting for its key, a testament to the mysteries yet undiscovered in this maze.","The twists and turns of the cavern converge back to the imposing door you'd stumbled upon earlier. The weight of its locked state is palpable, and the elusive key continues to be a beacon of challenge.","You circle back to the enigmatic door that once held your gaze. Its secrets remain locked behind its grand facade, and without the key, it stands as a monument to the adventure yet to be unraveled."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "FirstKeyDiscoveryNoDoor",
+      "values": ["Tucked away in a crevice, a mysterious key gleams faintly. Intrigued, you reach out, securing the key and pondering its potential use.","Hidden among the stones, an intricate key captures your gaze. Curiosity piqued, you carefully pick it up, wondering about its origins.","As you traverse the cavern, you stumble upon an enigmatic key with elaborate engravings. Without hesitation, you take it, sensing its significance.","In a dimly lit nook, a peculiar key with a lustrous sheen awaits. Compelled by its mystique, you decide to claim it for your journey ahead.","Amongst the relics of the cavern, an ornate key stands out, beckoning to be taken. You grasp it, feeling its cool weight and unspoken promise.","You come across an arcane key, its craftsmanship suggesting age and purpose. Drawn to its mystery, you take it, hoping it'll unlock secrets later on."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "DoorThenKey",
+      "values": ["You're instantly reminded of the door's enigmatic aura when you discover a key bearing similar motifs. Convinced it's more than mere coincidence, you take the key, eager to see if it unlocks the previous mystery.","Tucked away in a corner, a key of intricate design beckons. The mysterious door from earlier springs to mind. Could this be its counterpart? With a mix of hope and curiosity, you decide to claim the key.","As you explore, a peculiar key catches your eye, and your mind drifts to the locked door you had come across. Perhaps this key could be the gateway? With anticipation, you take it with you.","The memory of that sealed door flashes back as you stumble upon a key with ancient symbols. Intrigued and optimistic, you secure the key, wondering if it might be the answer to the door's riddle.","Earlier, the sight of that imposing, locked door had puzzled you. Now, as you hold a mysterious, ornate key that you've just found, hope flickers. Could this be its match? You take the key, eager to find out.","Recalling the enigmatic door you encountered earlier, a sense of purpose fills you as you discover a beautifully crafted key hidden in the shadows. Without a second thought, you pocket it, hoping it might reveal the door's secrets."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "KeyThenDoor",
+      "values": ["The ornate key you found earlier feels heavy in your pocket as you face a magnificent door, its designs eerily similar. An air of destiny surrounds you, hinting that the key might unveil the door's concealed world.","Your fingers instinctively clutch the mysterious key you discovered earlier as you come upon an imposing door. The designs mirror each other, suggesting they're intrinsically linked. It's time to see if the key fits.","As a grand door with ancient motifs presents itself, memories of the key you picked up flood back. The connection seems unmistakable. With anticipation, you approach, ready to test your earlier find.","Before you stands a door, cloaked in mystery and echoing tales of old. The key you'd stumbled upon earlier now feels purposeful, as if it's the missing piece of this puzzle.","The sight of the enigmatic door reminds you of the key you found. With symbols and engravings that seem to tell of a shared history, you can't help but wonder if the key might unlock the door's secrets."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "WumpusStillAlive",
+      "values": ["However, a sense of duty holds you back. The echoing growls of the Wumpus are a reminder that your quest is not yet complete.","Yet, as you stand at the threshold, you realize your mission remains unfinished. The Wumpus still lurks, and you cannot leave it unchecked.","But a lingering unease prevents your exit. The Wumpus, that menacing beast, still roams the labyrinth. Your job isn't done.","Although freedom beckons, a nagging thought anchors you. The Wumpus is still at large, and you're not one to leave a task half-done.","But you resist the call of the outside world. Somewhere in the shadows, the Wumpus waits, and you're determined to confront it."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "DoorKeyDoor",
+      "values": ["Returning to the cavern that houses the mysterious door, you feel the weight of the key you've since discovered. Anticipation grows as you approach, ready to unlock the door's long-held secrets.","The winding paths of the labyrinth lead you back to the grand door. With the newly acquired key in hand, the moment feels ripe to finally reveal what lies beyond its imposing facade.","With the ornate key you found, you trace your steps back to the enigmatic door that once stood as an inscrutable barrier. A sense of destiny fills the air as you inch closer to unveiling its mysteries.","The familiar designs of the door beckon as you navigate the cavern once more. The key, now in your possession, promises to shed light on the door's hidden tales.","Back in the chamber where the intricate door first captured your wonder, the key you've discovered feels like the final piece of this puzzle. The anticipation is palpable as you prepare to turn it, bridging the gap between mystery and revelation."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "ExitDoor",
+      "values": ["With a deep breath, you turn the key and the door gradually gives way, leading you to the world outside the maze.","Holding the key, a moment of clarity strikes. With a swift motion, you unlock the door, and it swings open to display the vast expanse outside the maze.","The intricate design of the key glints under the dim light. Turning it, the door eases open, showing the boundless horizon beyond the labyrinth.","With the key's cold metal pressed against your fingers, anticipation mounts. Unlocking the door, it opens up to the freedom of the world outside."
+
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "NowExit",
+      "values": ["Trapped within these winding walls, you must seek an exit."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "MaybeDoor",
+      "values": ["Could the enigmatic door you stumbled upon be your passage out?"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "MaybeKey",
+      "values": ["The ornate key you discovered might hold answers to this labyrinth's riddles."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "CertainKeyDoor",
+      "values": ["The door for which you have the key calls to you. It's time to retrace your steps and make your way to the surface through that passage!"
+      ],
+      "color": "yellow"
+    }
+  ]
+}
