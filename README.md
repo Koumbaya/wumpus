@@ -50,7 +50,9 @@ There a various flags available :
 
 ![cover](cover.png)
 
-![screenshot](screenshot.png)
+![screenshot1](screenshot1.png)
+
+![screenshot2](screenshot2.png)
 
 ### TODO:
 * Add a way to move directly instead of move + number
