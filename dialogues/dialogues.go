@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -89,13 +91,31 @@ func loadDialogues() map[string]dialogueVariations {
 	res := make(map[string]dialogueVariations, len(dialogues.Data))
 
 	for i := 0; i < len(dialogues.Data); i++ {
-		res[dialogues.Data[i].Key] = dialogueVariations{
-			values: dialogues.Data[i].Values,
-			color:  dialogues.Data[i].Color,
+		if runtime.GOOS == "windows" {
+			res[dialogues.Data[i].Key] = dialogueVariations{
+				values: removeSpecialChars(dialogues.Data[i].Values),
+				color:  "",
+			}
+		} else {
+			res[dialogues.Data[i].Key] = dialogueVariations{
+				values: dialogues.Data[i].Values,
+				color:  dialogues.Data[i].Color,
+			}
 		}
 	}
 
 	return res
+}
+
+func removeSpecialChars(s []string) []string {
+	for i, s2 := range s {
+		s2 = strings.ReplaceAll(s2, "☠", "")
+		s2 = strings.ReplaceAll(s2, "➴", "->")
+		s2 = strings.ReplaceAll(s2, "➵", "->")
+		s2 = strings.ReplaceAll(s2, "➶", "->")
+		s[i] = s2
+	}
+	return s
 }
 
 func (p *Printer) getRandomValColored(key string) string {
