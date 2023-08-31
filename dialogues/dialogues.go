@@ -11,65 +11,72 @@ import (
 	"time"
 )
 
+const textDelay = 25 * time.Millisecond
+
 //go:embed dialogues.json
 var dialogueJSON embed.FS
 
+// dialogueVariations holds the different possibles values for a particular piece of dialogue, as well as the color.
 type dialogueVariations struct {
 	values []string
 	color  string
 }
 
 type Printer struct {
-	delay     time.Duration
+	noDelay   bool
 	dialogues map[string]dialogueVariations
 }
 
-func NewPrinter(t time.Duration) *Printer {
+func NewPrinter(noDelay bool) *Printer {
 	return &Printer{
-		delay:     t,
+		noDelay:   noDelay,
 		dialogues: loadDialogues(),
 	}
 }
 
 func (p *Printer) Printf(key string, a ...any) {
 	value := p.getRandomValColored(key)
-	if p.delay == 0 {
+	if p.noDelay {
 		fmt.Printf(value, a...)
 		return
 	}
 
 	r := fmt.Sprintf(value, a...)
 	for _, c := range r {
-		time.Sleep(p.delay)
+		time.Sleep(textDelay)
 		fmt.Print(string(c))
 	}
 }
 
 func (p *Printer) Print(key string) {
 	value := p.getRandomValColored(key)
-	if p.delay == 0 {
+	if p.noDelay {
 		fmt.Print(value)
 		return
 	}
+
 	for _, c := range value {
-		time.Sleep(p.delay)
+		time.Sleep(textDelay)
 		fmt.Print(string(c))
 	}
 }
 
 func (p *Printer) Println(key string) {
 	value := p.getRandomValColored(key)
-	if p.delay == 0 {
+	if p.noDelay {
 		fmt.Println(value)
 		return
 	}
+
 	for _, c := range value {
-		time.Sleep(p.delay)
+		time.Sleep(textDelay)
 		fmt.Print(string(c))
 	}
+
 	fmt.Println()
 }
 
+// loadDialogues parse the json values and put them in a map for instant access.
 func loadDialogues() map[string]dialogueVariations {
 	content, err := dialogueJSON.ReadFile("dialogues.json")
 	if err != nil {
@@ -88,10 +95,11 @@ func loadDialogues() map[string]dialogueVariations {
 	if err := decoder.Decode(&dialogues); err != nil {
 		panic(err)
 	}
-	res := make(map[string]dialogueVariations, len(dialogues.Data))
 
+	res := make(map[string]dialogueVariations, len(dialogues.Data))
 	for i := 0; i < len(dialogues.Data); i++ {
 		if runtime.GOOS == "windows" {
+			// disable all formatting on windows. allow cross-compile without build flags or duplicated files.
 			res[dialogues.Data[i].Key] = dialogueVariations{
 				values: removeSpecialChars(dialogues.Data[i].Values),
 				color:  "",
@@ -115,9 +123,12 @@ func removeSpecialChars(s []string) []string {
 		s2 = strings.ReplaceAll(s2, "➶", "->")
 		s[i] = s2
 	}
+
 	return s
 }
 
+// getRandomValColored returns one of the dialogue at random for a given key.
+// Adds color if present.
 func (p *Printer) getRandomValColored(key string) string {
 	return color(p.dialogues[key].values[rand.Intn(len(p.dialogues[key].values))], p.dialogues[key].color)
 }

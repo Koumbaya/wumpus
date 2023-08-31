@@ -183,6 +183,7 @@ func (g *Game) handleArrow() state {
 
 	if g.l.Player() == g.l.Arrow() {
 		g.p.Println(dia.ArrowPlayer)
+		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 		g.p.Print(dia.PlayAGain)
 		return waitPlayAgain
 	}

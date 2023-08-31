@@ -2,14 +2,11 @@ package main
 
 import (
 	"flag"
-	"time"
 
 	"github.com/koumbaya/wumpus/dialogues"
 	"github.com/koumbaya/wumpus/game"
 	"github.com/koumbaya/wumpus/labyrinth"
 )
-
-const textDelay = 15 * time.Millisecond
 
 var (
 	nodelay  bool
@@ -27,12 +24,8 @@ func init() {
 
 func main() {
 	flag.Parse()
-	delay := textDelay
-	if nodelay {
-		delay = 0
-	}
 
 	l := labyrinth.NewLabyrinth(advanced, debug)
-	g := game.NewGame(l, dialogues.NewPrinter(delay), arrows, advanced)
+	g := game.NewGame(l, dialogues.NewPrinter(nodelay), arrows, advanced)
 	g.Loop()
 }
