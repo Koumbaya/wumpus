@@ -190,7 +190,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 
 // StartleWumpus usually makes the Wumpus relocate.
 func (l *Labyrinth) StartleWumpus() bool {
-	if rand.Intn(5) != 0 { // 4 times out of 5 the wumpus will relocate
+	if rand.Intn(4) != 0 { // 3 times out of 4 the wumpus will relocate
 		l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
 		return true
 	}

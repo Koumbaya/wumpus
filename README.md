@@ -26,6 +26,10 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
 6. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the labyrinth by finding a key and its door!
 
+**Notes**: Small difference with the original game :
+It would only move 1 cave, which was kind of easier (to relocate) but less forgetfull (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
+Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.
+
 Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png)).  
 While the layout remains fixed, the numbers of the caverns is random.
 
@@ -52,4 +56,9 @@ There a various flags available :
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
+* Implement Wumpus 2 (6 different levels!)
+* More features in advances (partial maps, clues, traps...)
 * Tests
+
+Original source code on [archive.org](https://archive.org/details/CreativeComputingv01n05SeptemberOctober1975/page/n51/mode/2up) !
+![original.png](original.png)
