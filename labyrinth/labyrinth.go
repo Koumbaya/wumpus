@@ -100,7 +100,8 @@ func (l *Labyrinth) Init() {
 	l.bats = randRooms[2:4]
 
 	// place the Wumpus anywhere
-	l.wumpus = rand.Intn(randRoom)
+	rWumpus := rand.Intn(randRoom)
+	l.wumpus = randRooms[rWumpus]
 
 	offset := 4
 	if l.advanced {
@@ -110,7 +111,7 @@ func (l *Labyrinth) Init() {
 	}
 
 	// place the player in a location distinct from hazards
-	l.player = randRooms[randNotEqual(offset, randRoom, l.wumpus)]
+	l.player = randRooms[randNotEqual(offset, randRoom, rWumpus)]
 
 	l.visited[l.player] = struct{}{}
 
