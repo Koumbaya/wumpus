@@ -194,8 +194,7 @@ func (g *Game) handleArrow() state {
 	}
 
 	if g.l.PowerRemaining() == 0 {
-		if !g.killedWumpus {
-			g.l.StartleWumpus()
+		if g.l.StartleWumpus() && !g.killedWumpus {
 			g.p.Println(dia.ArrowStartle)
 			// check 1/20 odds that the wumpus moved to player's cavern
 			if g.l.HasWumpus(g.l.Player()) {

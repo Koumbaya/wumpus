@@ -188,9 +188,14 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 	return rand.Intn(2) == 1
 }
 
-// StartleWumpus makes the Wumpus relocate.
-func (l *Labyrinth) StartleWumpus() {
-	l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
+// StartleWumpus usually makes the Wumpus relocate.
+func (l *Labyrinth) StartleWumpus() bool {
+	if rand.Intn(5) != 0 { // 4 times out of 5 the wumpus will relocate
+		l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
+		return true
+	}
+
+	return false
 }
 
 // Arrow current location of the arrow.

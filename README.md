@@ -12,7 +12,7 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
 
 3. **Player Actions**: On each turn, you can choose to:
    - **Move**: To one of the three connected caves.
-   - **Shoot**: You can shoot an arrow into one of the adjacent caves in hopes of killing the Wumpus. The arrow can travel up to 5 rooms. Shooting the Wumpus successfully means you win. Missing the Wumpus cause it to wake up and move to a random adjacent cave. Be careful of not hitting yourself with the arrow !
+   - **Shoot**: You can shoot an arrow into one of the adjacent caves in hopes of killing the Wumpus. The arrow can travel up to 5 rooms. Shooting the Wumpus successfully means you win. Missing the Wumpus usually cause it to wake up and move to a random cave. Be careful of not hitting yourself with the arrow !
    
 4. **Hints**: The game provides hints based on which cave the player is in:
    - **"An unmistakable scent hints at a Wumpus lurking nearby!"**: This means the Wumpus is in one of the adjacent caves.
