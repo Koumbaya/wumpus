@@ -98,16 +98,16 @@ func (l *Labyrinth) Init() {
 	l.pits = randRooms[0:2]
 	l.bats = randRooms[2:4]
 
-	// place the Wumpus anywhere
-	rWumpus := rand.Intn(nbRooms)
-	l.wumpus = randRooms[rWumpus]
-
-	offset := 4
+	offset := 5
 	if l.advanced {
 		l.key = randRooms[5]
 		l.door = randRooms[6]
 		offset += 2
 	}
+
+	// place the Wumpus anywhere
+	rWumpus := rand.Intn(nbRooms)
+	l.wumpus = randRooms[rWumpus]
 
 	// place the player in a location distinct from hazards
 	l.player = randRooms[randNotEqual(offset, nbRooms, rWumpus)]
@@ -282,12 +282,13 @@ func (l *Labyrinth) GetFmtNeighbors(n int) string {
 }
 
 func (l *Labyrinth) printDebug() {
+	fmt.Printf("player %d\n", l.shuffled[l.player]+1)
+	fmt.Printf("pits %d %d\n", l.shuffled[l.pits[0]]+1, l.shuffled[l.pits[1]]+1)
+	fmt.Printf("bats %d %d\n", l.shuffled[l.bats[0]]+1, l.shuffled[l.bats[1]]+1)
 	fmt.Printf("wumpus %d\n", l.shuffled[l.wumpus]+1)
 	fmt.Printf("wumpus neighboring caves %s\n", l.GetFmtNeighbors(l.wumpus))
 	fmt.Printf("key %d\n", l.shuffled[l.key]+1)
 	fmt.Printf("door %d\n", l.shuffled[l.door]+1)
-	fmt.Printf("pits %d %d\n", l.shuffled[l.pits[0]]+1, l.shuffled[l.pits[1]]+1)
-	fmt.Printf("bats %d %d\n", l.shuffled[l.bats[0]]+1, l.shuffled[l.bats[1]]+1)
 }
 
 func randNotEqual(min, max, different int) (x int) {

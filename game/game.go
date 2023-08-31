@@ -63,10 +63,15 @@ func (g *Game) Loop() {
 		}
 		input = clean(input)
 
-		if strings.EqualFold(input, "exit") {
+		switch input {
+		case "exit":
 			g.p.Println(dia.Exit)
 			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 			return
+		case "reset":
+			g.l.Init()
+			g.start()
+			continue
 		}
 
 		if g.playerState(input) {
@@ -358,6 +363,7 @@ func clean(input string) string {
 	input = strings.TrimRight(input, "\n")
 	input = strings.TrimRight(input, "\r\n")
 	input = strings.ReplaceAll(input, " ", "")
+	input = strings.ToLower(input)
 	var stack []rune
 	for _, r := range input {
 		if r == '\b' || r == '\ufffd' {
