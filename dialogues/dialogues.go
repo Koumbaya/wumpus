@@ -19,7 +19,6 @@ var dialogueJSON embed.FS
 // dialogueVariations holds the different possibles values for a particular piece of dialogue, as well as the color.
 type dialogueVariations struct {
 	values []string
-	color  string
 }
 
 type Printer struct {
@@ -35,7 +34,7 @@ func NewPrinter(noDelay bool) *Printer {
 }
 
 func (p *Printer) Printf(key string, a ...any) {
-	value := p.getRandomValColored(key)
+	value := p.getRandomVal(key)
 	if p.noDelay {
 		fmt.Printf(value, a...)
 		return
@@ -49,7 +48,7 @@ func (p *Printer) Printf(key string, a ...any) {
 }
 
 func (p *Printer) Print(key string) {
-	value := p.getRandomValColored(key)
+	value := p.getRandomVal(key)
 	if p.noDelay {
 		fmt.Print(value)
 		return
@@ -62,7 +61,7 @@ func (p *Printer) Print(key string) {
 }
 
 func (p *Printer) Println(key string) {
-	value := p.getRandomValColored(key)
+	value := p.getRandomVal(key)
 	if p.noDelay {
 		fmt.Println(value)
 		return
@@ -102,12 +101,10 @@ func loadDialogues() map[string]dialogueVariations {
 			// disable all formatting on windows. allow cross-compile without build flags or duplicated files.
 			res[dialogues.Data[i].Key] = dialogueVariations{
 				values: removeSpecialChars(dialogues.Data[i].Values),
-				color:  "",
 			}
 		} else {
 			res[dialogues.Data[i].Key] = dialogueVariations{
-				values: dialogues.Data[i].Values,
-				color:  dialogues.Data[i].Color,
+				values: color(dialogues.Data[i].Values, dialogues.Data[i].Color),
 			}
 		}
 	}
@@ -127,14 +124,21 @@ func removeSpecialChars(s []string) []string {
 	return s
 }
 
-// getRandomValColored returns one of the dialogue at random for a given key.
-// Adds color if present.
-func (p *Printer) getRandomValColored(key string) string {
-	return color(p.dialogues[key].values[rand.Intn(len(p.dialogues[key].values))], p.dialogues[key].color)
+// getRandomVal returns one of the dialogue at random for a given key.
+func (p *Printer) getRandomVal(key string) string {
+	return p.dialogues[key].values[rand.Intn(len(p.dialogues[key].values))]
 }
 
-func color(s, color string) string {
-	return mapColors(color) + s + reset
+func color(s []string, color string) []string {
+	if color == "" {
+		return s
+	}
+
+	for i := range s {
+		s[i] = mapColors(color) + s[i] + reset
+	}
+
+	return s
 }
 
 func mapColors(s string) string {

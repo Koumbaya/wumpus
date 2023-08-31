@@ -236,7 +236,7 @@ func (g *Game) describe() {
 	if g.l.PitNearby() {
 		g.p.Println(dia.PitsNearby)
 	}
-	if g.l.WumpusNearby() {
+	if g.l.WumpusNearby() && !g.killedWumpus {
 		g.p.Println(dia.WumpusNearby)
 	}
 }
