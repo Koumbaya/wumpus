@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	nbRooms  = 20
-	randRoom = nbRooms - 1
+	nbRooms = 20
 )
 
 // room is a vertex of the dodecahedron.
@@ -100,7 +99,7 @@ func (l *Labyrinth) Init() {
 	l.bats = randRooms[2:4]
 
 	// place the Wumpus anywhere
-	rWumpus := rand.Intn(randRoom)
+	rWumpus := rand.Intn(nbRooms)
 	l.wumpus = randRooms[rWumpus]
 
 	offset := 4
@@ -111,7 +110,7 @@ func (l *Labyrinth) Init() {
 	}
 
 	// place the player in a location distinct from hazards
-	l.player = randRooms[randNotEqual(offset, randRoom, rWumpus)]
+	l.player = randRooms[randNotEqual(offset, nbRooms, rWumpus)]
 
 	l.visited[l.player] = struct{}{}
 
@@ -176,7 +175,7 @@ func (l *Labyrinth) WumpusNearby() bool {
 
 // ActivateBat teleports the player to a different room.
 func (l *Labyrinth) ActivateBat() int {
-	l.player = randNotEqual(0, randRoom, l.player)
+	l.player = randNotEqual(0, nbRooms, l.player)
 	return l.player
 }
 
@@ -184,7 +183,7 @@ func (l *Labyrinth) ActivateBat() int {
 // In any case the Wumpus will relocate.
 func (l *Labyrinth) FoundWumpus() (killed bool) {
 	// move the wumpus to another room
-	l.wumpus = randNotEqual(0, randRoom, l.wumpus)
+	l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
 
 	return rand.Intn(2) == 1
 }
@@ -192,7 +191,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 // StartleWumpus has a 1/2 chance of making the Wumpus move.
 func (l *Labyrinth) StartleWumpus() bool {
 	if rand.Intn(2) == 1 {
-		l.wumpus = randNotEqual(0, randRoom, l.wumpus)
+		l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
 		return true
 	}
 
