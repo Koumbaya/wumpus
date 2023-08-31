@@ -13,6 +13,7 @@ var (
 	arrows   bool
 	advanced bool
 	debug    bool
+	clean    bool
 )
 
 func init() {
@@ -20,12 +21,13 @@ func init() {
 	flag.BoolVar(&arrows, "arrows", false, "Gives infinite arrows")
 	flag.BoolVar(&advanced, "advanced", false, "Experimental, expanded game")
 	flag.BoolVar(&debug, "debug", false, "Print location of things for debug purpose")
+	flag.BoolVar(&clean, "clean", false, "Remove symbols and colors from terminal output")
 }
 
 func main() {
 	flag.Parse()
 
 	l := labyrinth.NewLabyrinth(advanced, debug)
-	g := game.NewGame(l, dialogues.NewPrinter(nodelay), arrows, advanced)
+	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean), arrows, advanced)
 	g.Loop()
 }

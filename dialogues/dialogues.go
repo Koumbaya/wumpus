@@ -26,10 +26,10 @@ type Printer struct {
 	dialogues map[string]dialogueVariations
 }
 
-func NewPrinter(noDelay bool) *Printer {
+func NewPrinter(noDelay, clean bool) *Printer {
 	return &Printer{
 		noDelay:   noDelay,
-		dialogues: loadDialogues(),
+		dialogues: loadDialogues(clean),
 	}
 }
 
@@ -76,7 +76,7 @@ func (p *Printer) Println(key string) {
 }
 
 // loadDialogues parse the json values and put them in a map for instant access.
-func loadDialogues() map[string]dialogueVariations {
+func loadDialogues(clean bool) map[string]dialogueVariations {
 	content, err := dialogueJSON.ReadFile("dialogues.json")
 	if err != nil {
 		panic(err)
@@ -97,7 +97,7 @@ func loadDialogues() map[string]dialogueVariations {
 
 	res := make(map[string]dialogueVariations, len(dialogues.Data))
 	for i := 0; i < len(dialogues.Data); i++ {
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == "windows" || clean {
 			// disable all formatting on windows. allow cross-compile without build flags or duplicated files.
 			res[dialogues.Data[i].Key] = dialogueVariations{
 				values: removeSpecialChars(dialogues.Data[i].Values),
