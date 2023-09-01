@@ -7,6 +7,8 @@ import (
 	"strconv"
 )
 
+const nbClues = 3
+
 // room is a vertex of the graph.
 type room struct {
 	edges []int
@@ -42,8 +44,12 @@ type Labyrinth struct {
 	wumpus int
 	bats   []int
 	pits   []int
-	key    int // advanced
-	door   int // advanced
+	key    int
+	door   int
+	// clues location and found status.
+	clues map[int]bool
+	// to keep track of already given clues per level.
+	cluesGiven map[string]struct{}
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
@@ -63,11 +69,13 @@ func NewLabyrinth(advanced, debug bool, level int) Labyrinth {
 	return l
 }
 
-// Init randomly places the player, wumpus, pits and bats.
+// Init randomly places the player, wumpus, clues, pits and bats.
 func (l *Labyrinth) Init(targetLvl int) {
 	l.curLevel = targetLvl
 	l.rooms = l.levels[targetLvl].rooms
 	l.visited = make(map[int]struct{}, len(l.rooms))
+	l.clues = make(map[int]bool, nbClues)
+	l.cluesGiven = make(map[string]struct{}, nbClues)
 	l.ordered = make([]int, len(l.rooms))
 	randRooms := make([]int, len(l.rooms))
 	for i := range randRooms {
@@ -78,7 +86,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 		randRooms[i], randRooms[j] = randRooms[j], randRooms[i]
 	})
 
-	// use the randomization to give arbitrary numbers to cLevel so that each play through is unique.
+	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
 	l.shuffled = randRooms // k: true value, v : rand
 	for i, r := range randRooms {
 		l.ordered[r] = i
@@ -88,11 +96,16 @@ func (l *Labyrinth) Init(targetLvl int) {
 	l.pits = randRooms[0:2]
 	l.bats = randRooms[2:4]
 
-	offset := 5
+	offset := 4
 	if l.advanced {
-		l.key = randRooms[5]
-		l.door = randRooms[6]
+		l.key = randRooms[4]
+		l.door = randRooms[5]
 		offset += 2
+		for i := 0; i < nbClues; i++ {
+			l.clues[randRooms[i+offset]] = false
+		}
+
+		offset += nbClues
 	}
 
 	// place the Wumpus anywhere
@@ -134,6 +147,54 @@ func (l *Labyrinth) BatsNearby() bool {
 
 func (l *Labyrinth) HasPit(n int) bool {
 	return n == l.pits[0] || n == l.pits[1]
+}
+
+// HasClue checks if a clue for a given location had been found.
+// If not mark it as found.
+func (l *Labyrinth) HasClue(n int) bool {
+	for loc, found := range l.clues {
+		if n == loc {
+			if !found {
+				l.clues[n] = true // mark as found
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+// GetClue returns a fresh clue about a random subject.
+// Can give new clue if the wumpus moved.
+func (l *Labyrinth) GetClue() (loc int, subject string) {
+	for {
+		n := rand.Intn(5)
+		switch n {
+		case 0: // pits
+			loc = l.shuffled[l.pits[rand.Intn(len(l.pits))]] + 1
+			sub := []string{"a pit", "a hole in the ground", "the abyss"}
+			subject = sub[rand.Intn(len(sub))]
+		case 1:
+			loc = l.shuffled[l.bats[rand.Intn(len(l.pits))]] + 1
+			sub := []string{"bats", "winged creatures", "gargoyles"}
+			subject = sub[rand.Intn(len(sub))]
+		case 2:
+			loc = l.shuffled[l.wumpus] + 1
+			subject = "the Wumpus"
+		case 3:
+			loc = l.shuffled[l.key] + 1
+			subject = "a key"
+		case 4:
+			loc = l.shuffled[l.door] + 1
+			subject = "a door"
+		}
+		key := subject + strconv.Itoa(loc)
+		if _, found := l.cluesGiven[key]; found {
+			continue // this specific clue was already given
+		}
+		l.cluesGiven[key] = struct{}{} // store this specific clue as given
+		return loc, subject
+	}
 }
 
 func (l *Labyrinth) PitNearby() bool {
@@ -284,6 +345,15 @@ func (l *Labyrinth) GetFmtNeighbors(room int) string {
 	return output
 }
 
+func (l *Labyrinth) GetCluesLocFmt() string {
+	var output string
+	for i := range l.clues {
+		loc := l.shuffled[i]
+		output += strconv.Itoa(loc+1) + " "
+	}
+	return output
+}
+
 func (l *Labyrinth) CurrentLevel() int {
 	// todo : name ?
 	return l.curLevel
@@ -302,6 +372,7 @@ func (l *Labyrinth) printDebug() {
 	fmt.Printf("wumpus neighboring caves %s\n", l.GetFmtNeighbors(l.wumpus))
 	fmt.Printf("key %d\n", l.shuffled[l.key]+1)
 	fmt.Printf("door %d\n", l.shuffled[l.door]+1)
+	fmt.Printf("clues %s\n", l.GetCluesLocFmt())
 }
 
 func randNotEqual(min, max, different int) (x int) {

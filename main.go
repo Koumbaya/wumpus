@@ -20,7 +20,7 @@ var (
 func init() {
 	flag.BoolVar(&nodelay, "nodelay", false, "Disable the fake delay when printing text")
 	flag.BoolVar(&arrows, "arrows", false, "Gives infinite arrows")
-	flag.BoolVar(&advanced, "advanced", false, "Experimental, expanded game")
+	flag.BoolVar(&advanced, "advanced", true, "Experimental, expanded game")
 	flag.BoolVar(&debug, "debug", false, "Print location of things for debug purpose")
 	flag.BoolVar(&clean, "clean", false, "Remove symbols and colors from terminal output")
 	flag.IntVar(&level, "level", 1, "Start at a specific level")

@@ -59,4 +59,5 @@ const (
 	MaybeDoor               = "MaybeDoor"
 	MaybeKey                = "MaybeKey"
 	CertainKeyDoor          = "CertainKeyDoor"
+	FoundClue               = "FoundClue"
 )

@@ -18,7 +18,6 @@ const (
 	waitPlayAgain
 	waitArrowWhereTo
 	waitArrowPower
-	nextLevel
 )
 
 const maxArrows = 4
@@ -123,6 +122,7 @@ func (g *Game) playerState(input string) bool {
 			}
 			break
 		}
+		g.clues()
 		g.p.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
 	case waitArrowPower:
@@ -268,6 +268,13 @@ func (g *Game) whereToArrow() {
 func (g *Game) explore() bool {
 	g.p.Printf(dia.MovedTo, g.l.PlayerPOV())
 	return g.hazards()
+}
+
+func (g *Game) clues() {
+	if g.l.HasClue(g.l.Player()) {
+		loc, subject := g.l.GetClue()
+		g.p.Printf(dia.FoundClue, subject, loc)
+	}
 }
 
 // hazards checks for wumpus/bats/pits when entering a new room.

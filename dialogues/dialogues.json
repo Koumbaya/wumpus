@@ -450,6 +450,23 @@
         "The door you encountered earlier seems all the more significant with the key you hold. Return to it and hopefully embrace the daylight once more!"
       ],
       "color": "yellow"
+    },
+    {
+      "key": "FoundClue",
+      "values": [
+        "An ancient cave painting in this chamber depicts %s. Strikingly, the number %d appears repeatedly, suggesting it holds some significance.\n",
+        "You uncover a tattered parchment. The words have faded, but you discern mentions of %s and the unmistakable hint of cavern %d.\n",
+        "Enigmatic engravings on a nearby wall recount legends of %s. A pattern emerges, pointing you towards cavern %d.\n",
+        "A stone tablet, etched with cryptic symbols, rests here. Its imagery seems to associate %s with cavern %d. Could this be a lead?\n",
+        "Hidden beneath dust, an intricate mosaic emerges. It seems to convey a story of %s, with arrows guiding toward cavern %d.\n",
+        "You find an old scroll, its edges frayed. Skimming through, mentions of %s grab your attention, alongside consistent references to cavern %d.\n",
+        "Frescoes on the chamber walls hint at %s's lore. As you decipher them, you become convinced that they're directing you to cavern %d.\n",
+        "In a concealed alcove, a cryptic diary lies open. Entries speak of %s, emphasizing the importance of cavern %d in your quest.\n",
+        "Amidst the rocky floor, a half-buried book reveals itself. Its tales of %s are intertwined with veiled references to cavern %d.\n",
+        "Splattered ink drawings on parchment depict scenes with %s. At the margins, a recurrent theme nudges you towards cavern %d.\n",
+        "Whispers of past explorers come to mind as you uncover carved notes on the wall, with %s at its core, hinting at the significance of cavern %d.\n"
+      ],
+      "color": "yellow"
     }
   ]
 }

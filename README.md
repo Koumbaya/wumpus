@@ -36,6 +36,7 @@ It includes all the levels from **Wumpus II** and an advanced mode.
 
 7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
+   - You might also find clues about your environment...
 
 **Notes**: Small difference with the original game :
 It would only move 1 cave, which was kind of easier (to relocate) but less forgetfull (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
@@ -52,7 +53,7 @@ Type `exit` any time to close the game.
 Type `reset` any time to restart from the first level.
 
 There a various flags available :  
-`-advanced`: play in advanced mode ! On top of killing the wumpus, you'll need to find the exit !  
+`-advanced=false`: disable advanced mode (play exactly as the original game).
 `-nodelay`: run the game without the fake terminal delay.  
 `-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)
 `-level`: start at a specific level (1-6).
@@ -70,6 +71,8 @@ There a various flags available :
 * Probably a few refactors of the state machine.
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
 * More features in advanced mode (partial maps, clues, traps...)
+* Make hazards/event size parametric (clues, pits, bats...)
+* Let clues appear on the same cavern as key && door ?
 * bubble-up the few possibles IO errors
 * Tests
 
