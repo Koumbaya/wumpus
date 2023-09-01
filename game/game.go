@@ -69,7 +69,7 @@ func (g *Game) Loop() {
 			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 			return
 		case "reset":
-			g.l.Init()
+			g.l.Init(1)
 			g.start()
 			continue
 		}
@@ -134,7 +134,7 @@ func (g *Game) playerState(input string) bool {
 		g.state = g.handleArrow()
 	case waitPlayAgain:
 		if strings.EqualFold(input, "Y") {
-			g.l.Init()
+			g.l.Init(1)
 			g.start()
 			g.state = waitShootMove
 		} else {

@@ -7,18 +7,22 @@ import (
 	"strconv"
 )
 
-const (
-	nbRooms = 20
-)
-
-// room is a vertex of the dodecahedron.
+// room is a vertex of the graph.
 type room struct {
-	neighbors []int
+	edges []int
 }
 
-// Labyrinth is the collection of rooms making up the dodecahedron.
+type level struct {
+	rooms  []room
+	number int
+	name   string
+}
+
+// Labyrinth is the collection of cLevel making up the dodecahedron.
 type Labyrinth struct {
-	rooms []room
+	// levels store all the jsons levels
+	levels map[int]level
+	rooms  []room // current level topology
 	// visited keep track of the # of explored rooms.
 	visited map[int]struct{}
 	// shuffled is a nbRooms length slice with values 0-randRoom randomized.
@@ -26,7 +30,7 @@ type Labyrinth struct {
 	shuffled []int
 	// ordered is the reverse of shuffled. It is used when taking player input to find the "real" room.
 	ordered []int
-	// arrowTravel keep track of how many rooms the arrow can travel.
+	// arrowTravel keep track of how many cLevel the arrow can travel.
 	arrowTravel int
 	advanced    bool // experimental
 	debug       bool
@@ -45,41 +49,21 @@ type Labyrinth struct {
 func NewLabyrinth(advanced, debug bool) Labyrinth {
 	l := Labyrinth{
 		// there is probably a way to do this mathematically but is it worth it ?
-		rooms: []room{
-			{neighbors: []int{1, 5, 4}},
-			{neighbors: []int{0, 7, 2}},
-			{neighbors: []int{1, 9, 3}},
-			{neighbors: []int{2, 11, 4}},
-			{neighbors: []int{3, 13, 0}},
-			{neighbors: []int{0, 14, 6}},
-			{neighbors: []int{5, 16, 7}},
-			{neighbors: []int{1, 6, 8}},
-			{neighbors: []int{7, 9, 17}},
-			{neighbors: []int{2, 8, 10}},
-			{neighbors: []int{9, 11, 18}},
-			{neighbors: []int{10, 3, 12}},
-			{neighbors: []int{19, 11, 13}},
-			{neighbors: []int{14, 12, 4}},
-			{neighbors: []int{13, 5, 15}},
-			{neighbors: []int{14, 19, 16}},
-			{neighbors: []int{6, 15, 17}},
-			{neighbors: []int{16, 8, 18}},
-			{neighbors: []int{10, 17, 19}},
-			{neighbors: []int{12, 15, 18}},
-		},
+		levels:   loadLevels(),
 		advanced: advanced,
 		debug:    debug,
 	}
 
-	l.Init()
+	l.Init(1)
 	return l
 }
 
 // Init randomly places the player, wumpus, pits and bats.
-func (l *Labyrinth) Init() {
-	l.visited = make(map[int]struct{}, 20)
-	l.ordered = make([]int, nbRooms)
-	randRooms := make([]int, nbRooms)
+func (l *Labyrinth) Init(level int) {
+	l.rooms = l.levels[level].rooms
+	l.visited = make(map[int]struct{}, len(l.rooms))
+	l.ordered = make([]int, len(l.rooms))
+	randRooms := make([]int, len(l.rooms))
 	for i := range randRooms {
 		randRooms[i] = i
 	}
@@ -88,7 +72,7 @@ func (l *Labyrinth) Init() {
 		randRooms[i], randRooms[j] = randRooms[j], randRooms[i]
 	})
 
-	// use the randomization to give arbitrary numbers to rooms so that each play through is unique.
+	// use the randomization to give arbitrary numbers to cLevel so that each play through is unique.
 	l.shuffled = randRooms // k: true value, v : rand
 	for i, r := range randRooms {
 		l.ordered[r] = i
@@ -106,11 +90,11 @@ func (l *Labyrinth) Init() {
 	}
 
 	// place the Wumpus anywhere
-	rWumpus := rand.Intn(nbRooms)
+	rWumpus := rand.Intn(len(l.rooms))
 	l.wumpus = randRooms[rWumpus]
 
 	// place the player in a location distinct from hazards
-	l.player = randRooms[randNotEqual(offset, nbRooms, rWumpus)]
+	l.player = randRooms[randNotEqual(offset, len(l.rooms), rWumpus)]
 
 	l.visited[l.player] = struct{}{}
 
@@ -134,7 +118,7 @@ func (l *Labyrinth) HasBat(n int) bool {
 }
 
 func (l *Labyrinth) BatsNearby() bool {
-	for _, i := range l.rooms[l.player].neighbors {
+	for _, i := range l.rooms[l.player].edges {
 		if l.HasBat(i) {
 			return true
 		}
@@ -147,7 +131,7 @@ func (l *Labyrinth) HasPit(n int) bool {
 }
 
 func (l *Labyrinth) PitNearby() bool {
-	for _, i := range l.rooms[l.player].neighbors {
+	for _, i := range l.rooms[l.player].edges {
 		if l.HasPit(i) {
 			return true
 		}
@@ -165,7 +149,7 @@ func (l *Labyrinth) HasWumpus(n int) bool {
 }
 
 func (l *Labyrinth) WumpusNearby() bool {
-	for _, i := range l.rooms[l.player].neighbors {
+	for _, i := range l.rooms[l.player].edges {
 		if i == l.wumpus {
 			return true
 		}
@@ -175,7 +159,7 @@ func (l *Labyrinth) WumpusNearby() bool {
 
 // ActivateBat teleports the player to a different room.
 func (l *Labyrinth) ActivateBat() int {
-	l.player = randNotEqual(0, nbRooms, l.player)
+	l.player = randNotEqual(0, len(l.rooms), l.player)
 	return l.player
 }
 
@@ -183,7 +167,7 @@ func (l *Labyrinth) ActivateBat() int {
 // In any case the Wumpus will relocate.
 func (l *Labyrinth) FoundWumpus() (killed bool) {
 	// move the wumpus to another room
-	l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
+	l.wumpus = randNotEqual(0, len(l.rooms), l.wumpus)
 
 	return rand.Intn(2) == 1
 }
@@ -191,7 +175,7 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 // StartleWumpus usually makes the Wumpus relocate.
 func (l *Labyrinth) StartleWumpus() bool {
 	if rand.Intn(4) != 0 { // 3 times out of 4 the wumpus will relocate
-		l.wumpus = randNotEqual(0, nbRooms, l.wumpus)
+		l.wumpus = randNotEqual(0, len(l.rooms), l.wumpus)
 		return true
 	}
 
@@ -226,25 +210,34 @@ func (l *Labyrinth) PowerRemaining() int {
 // MoveArrow handle the location and travel of the arrow, reducing its capacity by one.
 func (l *Labyrinth) MoveArrow(target int) {
 	target = l.ordered[target]
-	if target == l.rooms[l.arrow].neighbors[0] ||
-		target == l.rooms[l.arrow].neighbors[1] ||
-		target == l.rooms[l.arrow].neighbors[2] {
+	if l.validDestination(l.arrow, target) {
 		l.arrow = target
 	} else {
-		// invalid destination, we move the arrow at random between the neighbors.
-		l.arrow = l.rooms[l.arrow].neighbors[rand.Intn(3)]
+		// invalid destination, we move the arrow at random between the edges.
+		l.arrow = l.randomDest(l.arrow)
 	}
 
 	l.arrowTravel--
 }
 
+func (l *Labyrinth) validDestination(location, target int) bool {
+	for _, edge := range l.rooms[location].edges {
+		if edge == target {
+			return true
+		}
+	}
+	return false
+}
+
+// randomDest chooses an edge at random for a given location
+func (l *Labyrinth) randomDest(location int) int {
+	return l.rooms[location].edges[rand.Intn(len(l.rooms[location].edges))]
+}
+
 // TryMovePlayer moves the player if the position is valid.
 func (l *Labyrinth) TryMovePlayer(target int) bool {
 	target = l.ordered[target]
-	if target == l.rooms[l.player].neighbors[0] ||
-		target == l.rooms[l.player].neighbors[1] ||
-		target == l.rooms[l.player].neighbors[2] ||
-		l.debug /*allow teleport in debug mode*/ {
+	if l.validDestination(l.player, target) || l.debug /*allow teleport in debug mode*/ {
 		l.player = target
 		l.visited[target] = struct{}{}
 		return true
@@ -273,12 +266,16 @@ func (l *Labyrinth) HasDoor(n int) bool {
 	return n == l.door
 }
 
-func (l *Labyrinth) GetFmtNeighbors(n int) string {
-	return fmt.Sprintf("%d, %d, %d",
-		l.shuffled[l.rooms[n].neighbors[0]]+1,
-		l.shuffled[l.rooms[n].neighbors[1]]+1,
-		l.shuffled[l.rooms[n].neighbors[2]]+1,
-	)
+// GetFmtNeighbors returns the shuffled (player POV) and formatted list of outgoing edges (tunnels) for a given room.
+func (l *Labyrinth) GetFmtNeighbors(room int) string {
+	var output string
+	for idxEdge := 0; idxEdge < len(l.rooms[room].edges); idxEdge++ {
+		output += strconv.Itoa(l.shuffled[l.rooms[room].edges[idxEdge]] + 1)
+		if !(idxEdge == len(l.rooms[room].edges)-1) {
+			output += ", "
+		}
+	}
+	return output
 }
 
 func (l *Labyrinth) printDebug() {

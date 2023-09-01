@@ -58,6 +58,7 @@ There a various flags available :
 * Probably a few refactors of the state machine.
 * Implement Wumpus 2 (6 different levels!)
 * More features in advances (partial maps, clues, traps...)
+* bubble-up the few possibles IO errors
 * Tests
 
 Original source code on [archive.org](https://archive.org/details/CreativeComputingv01n05SeptemberOctober1975/page/n51/mode/2up) !
