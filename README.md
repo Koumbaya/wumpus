@@ -3,7 +3,7 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
 
 ### Gameplay:
 
-1. **The Cave System**: The game is played in a series of interconnected caves arranged in a dodecahedron. Each of the 20 caves is connected to three other caves.
+1. **The Cave System**: The game is played in a series of interconnected caves arranged in different predefined. Each of the 20 caves is connected to three other caves.
 
 2. **Hazards**:
    - **The Wumpus**: This is the main antagonist of the game. If you enter the Wumpus's cave, you may get eaten and lose the game. Or the Wumpus may get disturbed and move to another cave.
@@ -23,15 +23,24 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
    - **Losing**: The player loses by getting struck by an arrow, falling into a pit, or being eaten by the Wumpus.
 
-6. **Advanced**:
+6. **Levels Topology**:  
+   Levels are often 3D shapes flattened to 2d and thus, can be hard to visualize. See the `levels` folder for 2D renders (but forget the numbers you see on the graph, they are randomized!)
+   - **1**: Is a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png) with 20 caverns.
+   - **2**: Is a moebius strip with 20 caverns.
+   - **3**: Is a string of beads that loops around. ·:··:··:··:··:·
+   - **4**: Is a serie of 5 hexagons connected in a torus shape.
+   - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends.
+   - **6**: Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
+
+7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the labyrinth by finding a key and its door!
 
 **Notes**: Small difference with the original game :
 It would only move 1 cave, which was kind of easier (to relocate) but less forgetfull (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
 Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.
 
-Pen & paper are recommended to take notes or draw the map ! (or you can print a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png)).  
-While the layout remains fixed, the numbers of the caverns is random.
+Pen & paper are recommended to take notes or draw the map !
+While the layout remains fixed, the numbers by which the caverns are named do not follow a particular logic (i.e cavern 1 may not be connected to cavern 2).
 
 ### Running the game
 ```
@@ -56,7 +65,8 @@ There a various flags available :
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
-* Implement Wumpus 2 (6 different levels!)
+* Implement Wumpus 2 (6 different levels!) - in progress
+* Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
 * More features in advances (partial maps, clues, traps...)
 * bubble-up the few possibles IO errors
 * Tests

@@ -21,8 +21,9 @@ type level struct {
 // Labyrinth is the collection of cLevel making up the dodecahedron.
 type Labyrinth struct {
 	// levels store all the jsons levels
-	levels map[int]level
-	rooms  []room // current level topology
+	levels   map[int]level
+	curLevel int
+	rooms    []room // current level topology
 	// visited keep track of the # of explored rooms.
 	visited map[int]struct{}
 	// shuffled is a nbRooms length slice with values 0-randRoom randomized.
@@ -59,8 +60,9 @@ func NewLabyrinth(advanced, debug bool) Labyrinth {
 }
 
 // Init randomly places the player, wumpus, pits and bats.
-func (l *Labyrinth) Init(level int) {
-	l.rooms = l.levels[level].rooms
+func (l *Labyrinth) Init(targetLvl int) {
+	l.curLevel = targetLvl
+	l.rooms = l.levels[targetLvl].rooms
 	l.visited = make(map[int]struct{}, len(l.rooms))
 	l.ordered = make([]int, len(l.rooms))
 	randRooms := make([]int, len(l.rooms))
@@ -276,6 +278,16 @@ func (l *Labyrinth) GetFmtNeighbors(room int) string {
 		}
 	}
 	return output
+}
+
+func (l *Labyrinth) CurrentLevel() int {
+	// todo : name ?
+	return l.curLevel
+}
+
+func (l *Labyrinth) HasNextLevel() bool {
+	_, exist := l.levels[l.curLevel+1]
+	return exist
 }
 
 func (l *Labyrinth) printDebug() {

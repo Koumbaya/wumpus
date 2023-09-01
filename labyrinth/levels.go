@@ -6,21 +6,16 @@ import (
 	"encoding/json"
 )
 
-//go:embed *.json
+const folder = "levels"
+
+//go:embed levels/*.json
 var levelsDir embed.FS
 
 func loadLevels() map[int]level {
 	// this could be avoided by directly putting json tags on the room and level struct,
 	// but that way it's separated cleanly, allowing future changes.
-	var lvl struct {
-		Name   string `json:"name"`
-		Number int    `json:"level"`
-		Rooms  []struct {
-			Edges []int `json:"edges"`
-		} `json:"rooms"`
-	}
 
-	entries, err := levelsDir.ReadDir(".")
+	entries, err := levelsDir.ReadDir(folder)
 	if err != nil {
 		panic(err) //todo: return errors
 	}
@@ -28,8 +23,16 @@ func loadLevels() map[int]level {
 	levels := make(map[int]level, len(entries))
 
 	for _, entry := range entries {
+		var lvl struct {
+			Name   string `json:"name"`
+			Number int    `json:"level"`
+			Rooms  []struct {
+				Id    int   `json:"id"`
+				Edges []int `json:"edges"`
+			} `json:"rooms"`
+		}
 		// Read the embedded JSON data
-		content, err := levelsDir.ReadFile(entry.Name())
+		content, err := levelsDir.ReadFile(folder + "/" + entry.Name())
 		if err != nil {
 			panic(err) //todo: return errors
 		}
@@ -46,7 +49,7 @@ func loadLevels() map[int]level {
 		}
 
 		for i := 0; i < len(lvl.Rooms); i++ {
-			l.rooms[i] = room{edges: lvl.Rooms[i].Edges}
+			l.rooms[lvl.Rooms[i].Id] = room{edges: lvl.Rooms[i].Edges}
 		}
 
 		levels[l.number] = l
