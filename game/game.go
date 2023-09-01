@@ -18,6 +18,7 @@ const (
 	waitPlayAgain
 	waitArrowWhereTo
 	waitArrowPower
+	nextLevel
 )
 
 const maxArrows = 4
@@ -111,9 +112,15 @@ func (g *Game) playerState(input string) bool {
 			break
 		}
 		g.describe()
-		if g.keyDoor() { // won
-			g.p.Print(dia.PlayAGain)
-			g.state = waitPlayAgain
+		if g.keyDoor() { // won this level
+			if !g.l.HasNextLevel() {
+				g.p.Print(dia.PlayAGain)
+				g.state = waitPlayAgain
+			} else {
+				g.l.Init(g.l.CurrentLevel() + 1)
+				g.start()
+				g.state = waitShootMove
+			}
 			break
 		}
 		g.p.Print(dia.ChoiceShootMove)
@@ -134,7 +141,7 @@ func (g *Game) playerState(input string) bool {
 		g.state = g.handleArrow()
 	case waitPlayAgain:
 		if strings.EqualFold(input, "Y") {
-			g.l.Init(1)
+			g.l.Init(g.l.CurrentLevel())
 			g.start()
 			g.state = waitShootMove
 		} else {
@@ -176,7 +183,7 @@ func (g *Game) handleArrow() state {
 		g.p.Println(dia.KilledWumpus)
 		g.killedWumpus = true
 		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
-			g.p.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
+			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, g.arrowsFired, g.l.Visited())
 			g.p.Print(dia.PlayAGain)
 			return waitPlayAgain
 		}
@@ -337,8 +344,12 @@ func (g *Game) keyDoor() bool {
 	if canUnlock && !g.killedWumpus {
 		g.p.Println(dia.WumpusStillAlive)
 	} else if canUnlock {
-		g.p.Println(dia.ExitDoor)
-		g.p.Printf(dia.Turns, g.turns, g.arrowsFired, g.l.Visited())
+		if !g.l.HasNextLevel() {
+			g.p.Println(dia.ExitDoor)
+		} else {
+			g.p.Println(dia.GoNextLevel)
+		}
+		g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, g.arrowsFired, g.l.Visited())
 		return true
 	}
 

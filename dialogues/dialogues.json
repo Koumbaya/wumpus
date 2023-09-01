@@ -264,7 +264,7 @@
     {
       "key": "Turns",
       "values": [
-        "You won in %d turns, firing %d arrows and visiting %d caverns.\n"
+        "You completed level %d in %d turns, firing %d arrows and visiting %d caverns.\n"
       ],
       "color": "dim"
     },
@@ -385,6 +385,21 @@
         "Holding the key, a moment of clarity strikes. With a swift motion, you unlock the door, and it swings open to display the vast expanse outside the maze.",
         "The intricate design of the key glints under the dim light. Turning it, the door eases open, showing the boundless horizon beyond the labyrinth.",
         "With the key's cold metal pressed against your fingers, anticipation mounts. Unlocking the door, it opens up to the freedom of the world outside."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "GoNextLevel",
+      "values": [
+        "With a deep breath, you turn the key and the door slowly opens, revealing an even deeper level of the maze.",
+        "Holding the key, a moment of clarity strikes. With a swift motion, you unlock the door, and it swings open to show the intricate depths of the next level.",
+        "The intricate design of the key catches a glimmer of dim light. Turning it, the door eases open, unveiling the shadowy passages of another maze layer below.",
+        "With the key's cold metal pressed against your fingers, anticipation mounts. Unlocking the door, it beckons you to the challenges of the deeper maze level ahead.",
+        "The key's intricate grooves fit perfectly into the lock. As you turn it, the door creaks open, beckoning you into the enigmatic depths of a deeper maze layer.",
+        "As the key slides smoothly into the lock, a chilling draft emanates from beyond the door. It opens, drawing you into the hidden complexities of another maze level.",
+        "With a determined twist of the key, the once-impenetrable door yields, revealing a descending path into the next layer of the labyrinth.",
+        "The weight of the key reassures you of its purpose. As you unlock and push open the door, the allure of deeper challenges within the maze pull you forward.",
+        "Guided by intuition, you insert the key, hearing the tumblers fall into place. The door swings inward, presenting the winding twists and turns of a further maze level."
       ],
       "color": "yellow"
     },

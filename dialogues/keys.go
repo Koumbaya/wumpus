@@ -42,6 +42,7 @@ const (
 	ExitWumpus      = "ExitWumpus"
 	NoMoreArrows    = "NoMoreArrows"
 	RemainingArrows = "RemainingArrows"
+	GoNextLevel     = "GoNextLevel"
 )
 
 // advanced features.

@@ -47,7 +47,7 @@ type Labyrinth struct {
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
-func NewLabyrinth(advanced, debug bool) Labyrinth {
+func NewLabyrinth(advanced, debug bool, level int) Labyrinth {
 	l := Labyrinth{
 		// there is probably a way to do this mathematically but is it worth it ?
 		levels:   loadLevels(),
@@ -55,7 +55,11 @@ func NewLabyrinth(advanced, debug bool) Labyrinth {
 		debug:    debug,
 	}
 
-	l.Init(1)
+	if _, exist := l.levels[level]; !exist {
+		level = 1
+	}
+
+	l.Init(level)
 	return l
 }
 

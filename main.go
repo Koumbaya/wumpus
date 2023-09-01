@@ -14,6 +14,7 @@ var (
 	advanced bool
 	debug    bool
 	clean    bool
+	level    int
 )
 
 func init() {
@@ -22,12 +23,13 @@ func init() {
 	flag.BoolVar(&advanced, "advanced", false, "Experimental, expanded game")
 	flag.BoolVar(&debug, "debug", false, "Print location of things for debug purpose")
 	flag.BoolVar(&clean, "clean", false, "Remove symbols and colors from terminal output")
+	flag.IntVar(&level, "level", 1, "Start at a specific level")
 }
 
 func main() {
 	flag.Parse()
 
-	l := labyrinth.NewLabyrinth(advanced, debug)
+	l := labyrinth.NewLabyrinth(advanced, debug, level)
 	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean), arrows, advanced)
 	g.Loop()
 }

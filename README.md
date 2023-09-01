@@ -1,5 +1,6 @@
 # Wumpus
-This is a vanilla go implementation of the 1973 classic text-based computer game first developed by Gregory Yob [Hunt The Wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus).
+This is a vanilla go implementation of the 1973 classic text-based computer game first developed by Gregory Yob [Hunt The Wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus).  
+It includes all the levels from **Wumpus II** and an advanced mode.
 
 ### Gameplay:
 
@@ -21,19 +22,20 @@ This is a vanilla go implementation of the 1973 classic text-based computer game
 
 5. **Winning and Losing**:
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
-   - **Losing**: The player loses by getting struck by an arrow, falling into a pit, or being eaten by the Wumpus.
+   - **Losing**: The player loses by getting struck by an arrow, falling into a pit, or being eaten by the Wumpus.  
+   When losing, you restart at the same level you were on.
 
 6. **Levels Topology**:  
-   Levels are often 3D shapes flattened to 2d and thus, can be hard to visualize. See the `levels` folder for 2D renders (but forget the numbers you see on the graph, they are randomized!)
+   Levels are often 3D shapes flattened to 2d and thus, can be hard to visualize. See the `levels` folder for 2D renders (but forget the numbers you see on the graph, they are randomized!) or better yet, try to map them !
    - **1**: Is a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png) with 20 caverns.
-   - **2**: Is a moebius strip with 20 caverns.
+   - **2**: Is a [moebius strip](https://en.wikipedia.org/wiki/M%C3%B6bius_strip) with 20 caverns.
    - **3**: Is a string of beads that loops around. ·:··:··:··:··:·
-   - **4**: Is a serie of 5 hexagons connected in a torus shape.
+   - **4**: Is a serie of 5 hexagons connected in a wrapped torus shape.
    - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends.
    - **6**: Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
 
 7. **Advanced**:
-   - In advanced mode, you must kill the wumpus then find your way out of the labyrinth by finding a key and its door!
+   - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
 
 **Notes**: Small difference with the original game :
 It would only move 1 cave, which was kind of easier (to relocate) but less forgetfull (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
@@ -47,14 +49,15 @@ While the layout remains fixed, the numbers by which the caverns are named do no
 go run .
 ```
 Type `exit` any time to close the game.  
-Type `reset` any time to restart from the start.
+Type `reset` any time to restart from the first level.
 
 There a various flags available :  
-`-advanced`: play in advanced mode ! On top of killing the wumpus, you'll need to escape the labyrinth !  
+`-advanced`: play in advanced mode ! On top of killing the wumpus, you'll need to find the exit !  
 `-nodelay`: run the game without the fake terminal delay.  
-`-arrows`: gives infinite arrows.  
-`-debug`: cheat/debug mode.  
 `-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)
+`-level`: start at a specific level (1-6).
+`-arrows`: gives infinite arrows.
+`-debug`: cheat/debug mode.  
 
 ![cover](cover.png)
 
@@ -65,9 +68,8 @@ There a various flags available :
 ### TODO:
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
-* Implement Wumpus 2 (6 different levels!) - in progress
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
-* More features in advances (partial maps, clues, traps...)
+* More features in advanced mode (partial maps, clues, traps...)
 * bubble-up the few possibles IO errors
 * Tests
 
