@@ -43,7 +43,8 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
 
 **Notes**: Small difference with the original game :
 A startled Wumpus would only move 1 cave, which was kind of easier (to relocate) but less forgetful (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
-Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.
+Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.  
+I lowered the chances of hazards moving (and probably will lower it further).
 
 Pen & paper are recommended to take notes or draw the map !
 While the layout remains fixed, the numbers by which the caverns are named do not follow a particular logic (i.e cavern 1 may not be connected to cavern 2).
