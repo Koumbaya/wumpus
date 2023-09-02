@@ -4,7 +4,7 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
 
 ### Gameplay:
 
-1. **The Cave System**: The game is played in a series of interconnected caves arranged in different predefined. Each of the 20 caves is connected to three other caves.
+1. **The Cave System**: The game is played in a series of interconnected caves arranged in different predefined shapes. Each of the 20 caves is connected to three other caves.
 
 2. **Hazards**:
    - **The Wumpus**: This is the main antagonist of the game. If you enter the Wumpus's cave, you may get eaten and lose the game. Or the Wumpus may get disturbed and move to another cave.
