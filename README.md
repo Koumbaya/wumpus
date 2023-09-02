@@ -71,10 +71,9 @@ There a various flags available :
 ![screenshot2](screenshot2.png)
 
 ### TODO:
-* Wumpus 3 features
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
-* Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
+* Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?). Might be not needed with Wumpus' 3 features.
 * bubble-up the few possibles IO errors
 * Tests
 
