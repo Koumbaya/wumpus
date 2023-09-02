@@ -32,7 +32,7 @@ func (l *Labyrinth) GetClue() (loc int, subject string) {
 			sub := []string{"a pit", "a hole in the ground", "the abyss"}
 			subject = sub[rand.Intn(len(sub))]
 		case 1:
-			loc = l.shuffled[l.bats[rand.Intn(len(l.pits))]] + 1
+			loc = l.shuffled[l.bats[rand.Intn(len(l.bats))]] + 1
 			sub := []string{"bats", "winged creatures", "gargoyles"}
 			subject = sub[rand.Intn(len(sub))]
 		case 2:

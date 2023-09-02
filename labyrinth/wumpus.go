@@ -45,6 +45,6 @@ func (l *Labyrinth) StartleWumpus() bool {
 func (l *Labyrinth) SleepwalkWumpus() {
 	l.wumpus = randNotEqual(0, len(l.rooms), l.wumpus, l.player)
 	if l.debug {
-		fmt.Printf("wumpus %d\n", l.shuffled[l.wumpus])
+		fmt.Printf("wumpus %d\n", l.shuffled[l.wumpus]+1)
 	}
 }

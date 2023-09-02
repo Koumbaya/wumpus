@@ -81,6 +81,8 @@ func NewLabyrinth(advanced, debug bool, level int) Labyrinth {
 func (l *Labyrinth) Init(targetLvl int) {
 	l.curLevel = targetLvl
 	l.rooms = l.levels[targetLvl].rooms
+	l.pits = make([]int, nbPits)
+	l.bats = make([]int, nbBats)
 	l.visited = make(map[int]struct{}, len(l.rooms))
 	l.clues = make(map[int]bool, nbClues)
 	l.cluesGiven = make(map[string]struct{}, nbClues)
@@ -102,9 +104,9 @@ func (l *Labyrinth) Init(targetLvl int) {
 
 	// place pits & bats in distinct locations
 	offset := 0
-	l.pits = randRooms[offset : offset+nbPits]
+	copy(l.pits, randRooms[offset:offset+nbPits])
 	offset += nbPits
-	l.bats = randRooms[offset : offset+nbBats]
+	copy(l.bats, randRooms[offset:offset+nbBats])
 	offset += nbBats
 	l.termites = randRooms[offset]
 	offset += nbTermites
@@ -132,7 +134,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 	l.visited[l.player] = struct{}{}
 
 	if l.debug {
-		l.printDebug()
+		l.PrintDebug()
 	}
 }
 
@@ -162,7 +164,7 @@ func (l *Labyrinth) GetFmtNeighbors(room int) string {
 	return output
 }
 
-func (l *Labyrinth) printDebug() {
+func (l *Labyrinth) PrintDebug() {
 	fmt.Printf("player %d\n", l.shuffled[l.player]+1)
 	fmt.Printf("pits %d %d\n", l.shuffled[l.pits[0]]+1, l.shuffled[l.pits[1]]+1)
 	fmt.Printf("bats %d %d\n", l.shuffled[l.bats[0]]+1, l.shuffled[l.bats[1]]+1)

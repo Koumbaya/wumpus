@@ -25,7 +25,7 @@ const (
 const (
 	maxArrows  = 4
 	randMaps   = 10 // todo : adjust
-	randEvent  = 12 // original probability
+	randEvent  = 20 // original probability 1/12
 	randWumpus = 20
 )
 
@@ -81,6 +81,9 @@ func (g *Game) Loop() {
 		case "reset":
 			g.l.Init(1)
 			g.start()
+			continue
+		case "debug":
+			g.l.PrintDebug()
 			continue
 		}
 

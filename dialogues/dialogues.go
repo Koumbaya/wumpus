@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const textDelay = 25 * time.Millisecond
+const textDelay = 20 * time.Millisecond
 
 //go:embed dialogues.json
 var dialogueJSON embed.FS
