@@ -61,7 +61,7 @@ There a various flags available :
 `-wump3=false`: disable Wumpus III features (Anaerobic Termite, earthquakes & bat migration)  
 `-nodelay`: run the game without the fake terminal delay.  
 `-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)  
-`-level`: start at a specific level (1-6).  
+`-level=x`: start at a specific level (1-6).  
 `-arrows`: gives infinite arrows.  
 `-debug`: cheat/debug mode.  
 
