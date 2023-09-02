@@ -23,8 +23,10 @@ const (
 )
 
 const (
-	maxArrows = 4
-	randMaps  = 10 // todo : adjust
+	maxArrows  = 4
+	randMaps   = 10 // todo : adjust
+	randEvent  = 12 // original probability
+	randWumpus = 20
 )
 
 type Printer interface {
@@ -41,6 +43,7 @@ type Game struct {
 	arrowsFired    int
 	timer          time.Time
 	infiniteArrows bool
+	wump3          bool
 	// advanced features
 	advanced     bool
 	foundKey     bool
@@ -48,13 +51,14 @@ type Game struct {
 	killedWumpus bool
 }
 
-func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced bool) Game {
+func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, wump3 bool) Game {
 	return Game{
 		l:              labyrinth,
 		p:              printer,
 		state:          waitShootMove,
 		infiniteArrows: arrows,
 		advanced:       advanced,
+		wump3:          wump3,
 	}
 }
 
@@ -111,6 +115,7 @@ func (g *Game) playerState(input string) bool {
 			break // error parsing
 		}
 		g.turns++
+		g.events()
 		if g.explore() { //dead
 			g.p.Print(dia.PlayAGain)
 			g.state = waitPlayAgain
@@ -259,6 +264,10 @@ func (g *Game) describe() {
 	if g.l.WumpusNearby() && !g.killedWumpus {
 		g.p.Println(dia.WumpusNearby)
 	}
+
+	if g.wump3 && g.l.TermitesNearby() {
+		g.p.Println(dia.TermitesNearby)
+	}
 }
 
 func (g *Game) whereTo() {
@@ -271,6 +280,32 @@ func (g *Game) whereToArrow() {
 	g.p.Printf(dia.WhereToArrow,
 		g.l.GetFmtNeighbors(g.l.Arrow()),
 	)
+}
+
+func (g *Game) events() {
+	if !g.wump3 {
+		return
+	}
+
+	if rand.Intn(randEvent) == 0 {
+		g.l.Earthquake()
+		g.p.Println(dia.Earthquake)
+	}
+
+	if rand.Intn(randEvent) == 0 {
+		g.l.BatMigration()
+		g.p.Println(dia.BatMigration)
+	}
+
+	if rand.Intn(randEvent) == 0 {
+		g.l.TermitesMigration()
+		g.p.Println(dia.TermiteMigration)
+	}
+
+	if rand.Intn(randWumpus) == 0 { // lower probability
+		g.l.SleepwalkWumpus()
+		g.p.Println(dia.SleepWalkWumpus)
+	}
 }
 
 func (g *Game) explore() bool {
@@ -287,7 +322,7 @@ func (g *Game) clues() {
 
 // maps randomly gives partial maps tips.
 func (g *Game) maps() {
-	if n := rand.Intn(randMaps); n == 0 {
+	if rand.Intn(randMaps) == 0 {
 		g.p.Printf(dia.PartialMap, g.l.GetFmtMap())
 	}
 }
@@ -316,6 +351,12 @@ func (g *Game) hazards() bool {
 		g.p.Println(dia.FellIntoPit)
 		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 		return true
+	}
+
+	if g.wump3 && g.arrowsFired < maxArrows && g.l.HasTermites(g.l.Player()) {
+		g.p.Println(dia.TermiteEatArrow)
+		g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
+		g.arrowsFired++
 	}
 
 	return false

@@ -57,3 +57,13 @@ func loadLevels() map[int]level {
 
 	return levels
 }
+
+func (l *Labyrinth) CurrentLevel() int {
+	// todo : name ?
+	return l.curLevel
+}
+
+func (l *Labyrinth) HasNextLevel() bool {
+	_, exist := l.levels[l.curLevel+1]
+	return exist
+}

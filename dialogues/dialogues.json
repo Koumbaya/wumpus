@@ -485,6 +485,102 @@
         "You chance upon a fragile scroll, its designs nearly consumed by time. With care, you trace the interconnected symbols and numerals:%s"
       ],
       "color": "yellow"
+    },
+    {
+      "key": "SleepWalkWumpus",
+      "values": [
+        "A heavy, rhythmic thudding echoes through the tunnels. The Wumpus is on the move...",
+        "The ground subtly vibrates beneath your feet, hinting at the Wumpus's restless wanderings.",
+        "A distant, muffled sound of shifting rocks and gravel suggests the Wumpus is sleepwalking.",
+        "The stillness of the cave is punctuated by the unmistakable shuffle of the Wumpus's movement.",
+        "You catch the soft echoes of a large creature stirring in a distant part of the labyrinth.",
+        "An eerie silence momentarily fills the air before being replaced by the slow, deliberate sounds of the Wumpus's footsteps.",
+        "A faint, dragging noise reverberates through the caverns, suggesting the Wumpus is moving in the abysses...",
+        "The cavern walls carry the distant, resonant sounds of the Wumpus's sleepy wanderings.",
+        "A peculiar series of bumps and thuds echo in the dark, signaling the Wumpus's nocturnal roamings.",
+        "The muted, rhythmic sound of heavy breathing suggests the Wumpus, in a somnolent state, is on the move."
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "Earthquake",
+      "values": [
+        "The ground quakes beneath your feet, a telltale sign of the labyrinth reshaping itself, perhaps sealing off or forming new pits.",
+        "A sudden tremor ripples through the caverns, hinting at unseen crevices opening or closing in the distance.",
+        "With a jolting shake, the very foundation of the caves seems to shift, possibly changing the dangerous terrain below.",
+        "You brace yourself as an unexpected tremble courses through the tunnels. Somewhere, the cavern is either swallowing or releasing its deep pits.",
+        "The cavern walls quiver, a chilling indication that the treacherous pits within are ever-changing.",
+        "With a deep rumble, the ground momentarily heaves, a reminder of the cavern’s living nature and its evolving pitfalls.",
+        "A seismic jolt echoes through the maze, signaling the birth or death of another treacherous crevice.",
+        "The echoes of a distant quake reverberate around you, suggesting the cavern's ever-shifting layout of pits and pathways.",
+        "You feel an unsettling shift underfoot, an alarming precursor to the caverns either forming or sealing off its hidden pits.",
+        "An ominous vibration courses through the labyrinth, a stark reminder of the volatile nature of the underground and its capricious crevices."
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "BatMigration",
+      "values": [
+        "A gust of wind, accompanied by a faint flapping, fills the cavern. The bats are surely on the move.",
+        "The subtle rustle of air and the soft beat of wings reach your ears, hinting at the restless bats shifting through the tunnels.",
+        "A gentle zephyr stirs the stillness, carrying with it the telltale sound of bats in flight.",
+        "Echoes of fluttering wings brush past you, a clear sign of bats dancing through the dark corridors.",
+        "The hushed whispers of the breeze meld with the flittering of bat wings, signaling their nocturnal migration within the labyrinth.",
+        "A fleeting wind rushes by, entwined with the delicate sound of bats on the wing, hinting at their movements in the shadows.",
+        "The cavern's stillness is punctuated by a gentle airflow and the distant murmur of bats in motion.",
+        "With the light flutter of wings and a fleeting draft, you're alerted to the bats' silent ballet in the dark.",
+        "The soft patter of bat wings on the move melds with a cool breeze, reminding you of the ever-changing dynamics of the cavern.",
+        "A transient gust whispers tales of restless bats, weaving their way through the underground maze."
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "TermitesNearby",
+      "values": [
+        "The subtle rustling of your magic arrows breaks the silence, hinting at the nearby presence of termites.",
+        "A faint quivering emanates from your quiver. Termites must be close.",
+        "The arrows within your quiver shiver gently, a telltale sign of termites in the vicinity.",
+        "Your magic arrows seem restless, their subtle vibrations signaling the nearby presence of wood-hungry termites.",
+        "A distinct murmur arises from your quiver. The termites must be lurking nearby.",
+        "The arrows, sensitive to their surroundings, shudder softly. They sense the termites before you do.",
+        "The gentle rustling of fletching in your quiver warns you: termites are near.",
+        "Your quiver trembles ever so slightly, a sure indication of termites in the shadows.",
+        "A soft buzzing resonates from your magic arrows, alerting you to the close proximity of termites.",
+        "The hairs on the back of your neck stand as your quiver reacts subtly. The termites are undoubtedly close."
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "TermiteMigration",
+      "values": [
+        "A distinct bristling in the air tells you that somewhere in the caverns, a colony of termites is on the move.",
+        "The ambient energy shifts subtly, indicating that the termites are migrating deep within the caverns.",
+        "An underlying hum reverberates through the cavern walls, signifying the great migration of termites.",
+        "The atmosphere grows tense; a clear sign of termite colonies journeying through the labyrinthine depths.",
+        "A gentle, yet persistent, vibration underfoot hints at the vast migration of termites within the caverns.",
+        "The caverns echo with a soft rustling, a chorus of termites making their migratory journey.",
+        "A palpable shift in the cavern's mood suggests the termites are on a great trek, relocating en masse.",
+        "The very walls seem to hum with anticipation as the colony of termites begins its migration through the vastness of the caverns.",
+        "An unmistakable thrumming envelops you, heralding the vast migration of termites in the depths beyond.",
+        "A subtle, yet pervasive, resonance fills the air – the termites are on the move, journeying through the cavernous expanse."
+      ],
+      "color": "cyan"
+    },
+    {
+      "key": "TermiteEatArrow",
+      "values":[
+            "As you step into the cavern, a swarm of menacing flying termites descends upon your quiver, consuming one of your arrows in their frenzy!",
+    "Entering the room, you're ambushed by aggressive termites that take to the air, targeting your quiver and devouring an arrow before you can react.",
+    "The moment you set foot in the cavern, ravenous flying termites surround you, hungrily making a meal of one of your precious arrows.",
+    "No sooner do you enter the room than a cloud of malevolent termites swoops down, snatching away and consuming one of your arrows.",
+    "The cavern's shadowy depths release a horde of flying termites which, to your horror, rush your quiver and feast on an arrow.",
+    "The moment you penetrate the room's threshold, airborne termites dart toward your quiver, greedily nibbling away one of your arrows.",
+    "As the cavern's darkness engulfs you, you feel a sudden surge of movement – flying termites have ambushed your quiver, and you find yourself an arrow short.",
+    "The cavern seems to come alive as you enter, with menacing termites taking flight and swarming your quiver, stripping away one of your arrows.",
+    "A chilling breeze accompanies your entry into the room, followed by the swift onslaught of flying termites that eagerly consume one of your arrows.",
+    "The ominous feeling in the cavern deepens as a swarm of aggressive flying termites make a beeline for your quiver, making short work of one of your arrows."
+      ],
+      "color": "yellow"
     }
   ]
 }

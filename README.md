@@ -1,6 +1,6 @@
 # Wumpus
 This is a vanilla go implementation of the 1973 classic text-based computer game first developed by Gregory Yob [Hunt The Wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus).  
-It includes all the levels from **Wumpus II** and an advanced mode.
+It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** and an advanced mode.
 
 ### Gameplay:
 
@@ -10,6 +10,7 @@ It includes all the levels from **Wumpus II** and an advanced mode.
    - **The Wumpus**: This is the main antagonist of the game. If you enter the Wumpus's cave, you may get eaten and lose the game. Or the Wumpus may get disturbed and move to another cave.
    - **Pits**: There are two pits in the cave system. Falling into a pit results in instant death.
    - **Giant Bats**: There are two caves with giant bats. If you enter a cave with a giant bat, you will be carried off to a random cave, which might be dangerous.
+   - **Anaerobic Termite**: A colony of flying termites that loves to eat wooden arrows. If you enter the cavern the colony is occupying, it will eat one of your arrows. (You can shoot through it tho, it flies too fast to be eaten in flight)
 
 3. **Player Actions**: On each turn, you can choose to:
    - **Move**: To one of the three connected caves.
@@ -19,6 +20,8 @@ It includes all the levels from **Wumpus II** and an advanced mode.
    - **"An unmistakable scent hints at a Wumpus lurking nearby!"**: This means the Wumpus is in one of the adjacent caves.
    - **"A chilling draft suggests the presence of a pit nearby!"**: This indicates that one of the connected caves has a pit.
    - **"The distant fluttering of bats reaches your ears!"**: This suggests that giant bats are in an adjacent cave.
+   - **"A faint quivering emanates from your quiver. Termites must be close."**: This means that a termite colony is in a nearby cave.
+   - Various hints will also tell you when enemies or dangers are changing position.
 
 5. **Winning and Losing**:
    - **Winning**: The player wins by shooting the Wumpus without falling into a pit or being eaten.
@@ -29,10 +32,10 @@ It includes all the levels from **Wumpus II** and an advanced mode.
    Levels are often 3D shapes flattened to 2d and thus, can be hard to visualize. See the `levels` folder for 2D renders (but forget the numbers you see on the graph, they are randomized!) or better yet, try to map them !
    - **1**: Is a [flattened dodecahedron](https://people.math.sc.edu/Burkardt/data/grf/dodecahedron.png) with 20 caverns.
    - **2**: Is a [moebius strip](https://en.wikipedia.org/wiki/M%C3%B6bius_strip) with 20 caverns.
-   - **3**: Is a string of beads that loops around. ·:··:··:··:··:·
-   - **4**: Is a serie of 5 hexagons connected in a wrapped torus shape.
-   - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends.
-   - **6**: Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
+   - **3**: String of beads: five beads in a circle, each bead is a diamond with a vertical cross-bar. The right & left corners lead to neighboring beads. (this one is difficult to play).
+   - **4**: Hex Network : imagine an hexagonal tile floor. Take a rectangle with 20 points (intersections) inside (4x4). Join right & left side to make a cylinder, then join top & bottom to form a torus.
+   - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends. Susceptible to severance by pits, you might need to shoot in the unknown to make the Wumpus move! 
+   - **6**: One-way lattice : Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
 
 7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
@@ -53,11 +56,12 @@ Type `exit` any time to close the game.
 Type `reset` any time to restart from the first level.
 
 There a various flags available :  
-`-advanced=false`: disable advanced mode (play exactly as the original game).
+`-advanced=false`: disable advanced mode (play exactly as the original game).  
+`-wump3=false`: disable Wumpus III features (Anaerobic Termite, earthquakes & bat migration)  
 `-nodelay`: run the game without the fake terminal delay.  
-`-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)
-`-level`: start at a specific level (1-6).
-`-arrows`: gives infinite arrows.
+`-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)  
+`-level`: start at a specific level (1-6).  
+`-arrows`: gives infinite arrows.  
 `-debug`: cheat/debug mode.  
 
 ![cover](cover.png)
@@ -67,10 +71,10 @@ There a various flags available :
 ![screenshot2](screenshot2.png)
 
 ### TODO:
+* Wumpus 3 features
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
-* Make hazards/event size parametric (clues, pits, bats...)
 * bubble-up the few possibles IO errors
 * Tests
 
