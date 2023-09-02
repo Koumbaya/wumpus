@@ -7,7 +7,13 @@ import (
 	"strconv"
 )
 
-const nbClues = 3
+const (
+	nbClues = 3
+	nbPits  = 2
+	nbBats  = 2
+	nbKey   = 1
+	nbDoor  = 1
+)
 
 // room is a vertex of the graph.
 type room struct {
@@ -93,14 +99,18 @@ func (l *Labyrinth) Init(targetLvl int) {
 	} // k: rand, v : true value
 
 	// place pits & bats in distinct locations
-	l.pits = randRooms[0:2]
-	l.bats = randRooms[2:4]
+	offset := 0
+	l.pits = randRooms[offset : offset+nbPits]
+	offset += nbPits
+	l.bats = randRooms[offset : offset+nbBats]
+	offset += nbBats
 
-	offset := 4
 	if l.advanced {
-		l.key = randRooms[4]
-		l.door = randRooms[5]
-		offset += 2
+		// place key/door/clues in distinct locations
+		l.key = randRooms[offset]
+		offset += nbKey
+		l.door = randRooms[offset]
+		offset += nbDoor
 		for i := 0; i < nbClues; i++ {
 			l.clues[randRooms[i+offset]] = false
 		}
@@ -109,11 +119,11 @@ func (l *Labyrinth) Init(targetLvl int) {
 	}
 
 	// place the Wumpus anywhere
-	rWumpus := rand.Intn(len(l.rooms))
-	l.wumpus = randRooms[rWumpus]
+	idxWumpus := rand.Intn(len(l.rooms))
+	l.wumpus = randRooms[idxWumpus]
 
-	// place the player in a location distinct from hazards
-	l.player = randRooms[randNotEqual(offset, len(l.rooms), rWumpus)]
+	// place the player in a location distinct from hazards/clues
+	l.player = randRooms[randNotEqual(offset, len(l.rooms), idxWumpus)]
 
 	l.visited[l.player] = struct{}{}
 
@@ -149,7 +159,7 @@ func (l *Labyrinth) HasPit(n int) bool {
 	return n == l.pits[0] || n == l.pits[1]
 }
 
-// HasClue checks if a clue for a given location had been found.
+// HasClue checks if a clue for a given location exists and has been found.
 // If not mark it as found.
 func (l *Labyrinth) HasClue(n int) bool {
 	for loc, found := range l.clues {
@@ -195,6 +205,22 @@ func (l *Labyrinth) GetClue() (loc int, subject string) {
 		l.cluesGiven[key] = struct{}{} // store this specific clue as given
 		return loc, subject
 	}
+}
+
+// GetFmtMap returns a random (formated) partial map.
+// "maps" don't have locations and are not unique.
+func (l *Labyrinth) GetFmtMap() (output string) {
+	n := rand.Intn(3) //how many connections to display
+	n++               // at least 1
+	output += "\n"
+	for i := 0; i < n; i++ {
+		r := rand.Intn(len(l.rooms))
+		output += fmt.Sprintf("%d --> %d\n",
+			l.shuffled[r]+1,
+			l.shuffled[l.rooms[r].edges[rand.Intn(len(l.rooms[r].edges))]]+1,
+		)
+	}
+	return output
 }
 
 func (l *Labyrinth) PitNearby() bool {
@@ -375,11 +401,23 @@ func (l *Labyrinth) printDebug() {
 	fmt.Printf("clues %s\n", l.GetCluesLocFmt())
 }
 
-func randNotEqual(min, max, different int) (x int) {
+func randNotEqual(min, max int, exclude ...int) (x int) {
+	if (max - min + 1) <= len(exclude) {
+		return 0 // shouldn't happen
+	}
 	for {
 		x = rand.Intn((max)-min) + min
-		if x != different {
+		if !contains(x, exclude) {
 			return x
 		}
 	}
+}
+
+func contains(val int, slice []int) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }

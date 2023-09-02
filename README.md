@@ -39,7 +39,7 @@ It includes all the levels from **Wumpus II** and an advanced mode.
    - You might also find clues about your environment...
 
 **Notes**: Small difference with the original game :
-It would only move 1 cave, which was kind of easier (to relocate) but less forgetfull (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
+A startled Wumpus would only move 1 cave, which was kind of easier (to relocate) but less forgetful (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
 Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.
 
 Pen & paper are recommended to take notes or draw the map !
@@ -70,9 +70,7 @@ There a various flags available :
 * Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?).
-* More features in advanced mode (partial maps, clues, traps...)
 * Make hazards/event size parametric (clues, pits, bats...)
-* Let clues appear on the same cavern as key && door ?
 * bubble-up the few possibles IO errors
 * Tests
 

@@ -60,4 +60,5 @@ const (
 	MaybeKey                = "MaybeKey"
 	CertainKeyDoor          = "CertainKeyDoor"
 	FoundClue               = "FoundClue"
+	PartialMap              = "PartialMap"
 )

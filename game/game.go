@@ -2,9 +2,11 @@ package game
 
 import (
 	"bufio"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	dia "github.com/koumbaya/wumpus/dialogues"
 	"github.com/koumbaya/wumpus/labyrinth"
@@ -20,7 +22,10 @@ const (
 	waitArrowPower
 )
 
-const maxArrows = 4
+const (
+	maxArrows = 4
+	randMaps  = 10 // todo : adjust
+)
 
 type Printer interface {
 	Printf(f string, a ...any)
@@ -34,6 +39,7 @@ type Game struct {
 	state
 	turns          int
 	arrowsFired    int
+	timer          time.Time
 	infiniteArrows bool
 	// advanced features
 	advanced     bool
@@ -123,6 +129,7 @@ func (g *Game) playerState(input string) bool {
 			break
 		}
 		g.clues()
+		g.maps()
 		g.p.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
 	case waitArrowPower:
@@ -171,6 +178,7 @@ func (g *Game) start() {
 	g.foundKey = false
 	g.foundDoor = false
 	g.killedWumpus = false
+	g.timer = time.Now()
 	g.p.Println(dia.Start)
 	g.cavern()
 	g.describe()
@@ -183,7 +191,7 @@ func (g *Game) handleArrow() state {
 		g.p.Println(dia.KilledWumpus)
 		g.killedWumpus = true
 		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
-			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, g.arrowsFired, g.l.Visited())
+			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, time.Since(g.timer).String(), g.arrowsFired, g.l.Visited())
 			g.p.Print(dia.PlayAGain)
 			return waitPlayAgain
 		}
@@ -277,6 +285,13 @@ func (g *Game) clues() {
 	}
 }
 
+// maps randomly gives partial maps tips.
+func (g *Game) maps() {
+	if n := rand.Intn(randMaps); n == 0 {
+		g.p.Printf(dia.PartialMap, g.l.GetFmtMap())
+	}
+}
+
 // hazards checks for wumpus/bats/pits when entering a new room.
 // Return true if a hazard killed the player.
 // If a bat moves the player, call recursively.
@@ -356,7 +371,7 @@ func (g *Game) keyDoor() bool {
 		} else {
 			g.p.Println(dia.GoNextLevel)
 		}
-		g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, g.arrowsFired, g.l.Visited())
+		g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, time.Since(g.timer).String(), g.arrowsFired, g.l.Visited())
 		return true
 	}
 

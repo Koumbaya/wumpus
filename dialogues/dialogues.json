@@ -264,7 +264,7 @@
     {
       "key": "Turns",
       "values": [
-        "You completed level %d in %d turns, firing %d arrows and visiting %d caverns.\n"
+        "You completed level %d in %d turns, %s, firing %d arrows and visiting %d caverns.\n"
       ],
       "color": "dim"
     },
@@ -465,6 +465,24 @@
         "Amidst the rocky floor, a half-buried book reveals itself. Its tales of %s are intertwined with veiled references to cavern %d.\n",
         "Splattered ink drawings on parchment depict scenes with %s. At the margins, a recurrent theme nudges you towards cavern %d.\n",
         "Whispers of past explorers come to mind as you uncover carved notes on the wall, with %s at its core, hinting at the significance of cavern %d.\n"
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "PartialMap",
+      "values": [
+        "You stumble upon an aged piece of parchment, its edges fraying. Despite the wear, some distinct symbols and lines remain visible:%s",
+        "Among the rubble, you uncover a brittle sheet of paper. Faintly etched diagrams and numbers intrigue your gaze:%s",
+        "Hidden in a nook, a velum sheet catches your eye. Weathered by time, cryptic symbols still beckon to be understood:%s",
+        "An ancient scroll rolls out at your feet. The drawings and figures on it, though faded, pique your curiosity:%s",
+        "Tucked behind a stone, a piece of parchment reveals itself. Amidst its scars, a series of numbers connected by lines can be discerned:%s",
+        "A piece of paper, tinged yellow with age, emerges from the shadows. Though the ink has faded, mysterious symbols remain intact:%s",
+        "Under a pile of debris, you find a velum. Its surface is adorned with almost ghostly figures and connecting paths:%s",
+        "You discover an old scroll, sealed for ages. Unfurling it, you're greeted by an array of diagrams and interconnected points:%s",
+        "Dust covers an abandoned piece of parchment. Beneath the layer, the remnants of symbols and networked lines become apparent:%s",
+        "Amidst the scattered artifacts, a paper stands out. Intricate patterns and linked numbers remain, hinting at some hidden logic:%s",
+        "Nestled in a crevice, a velum awaits your discovery. Its surface is etched with enigmatic symbols and linking pathways:%s",
+        "You chance upon a fragile scroll, its designs nearly consumed by time. With care, you trace the interconnected symbols and numerals:%s"
       ],
       "color": "yellow"
     }
