@@ -2,19 +2,21 @@ package labyrinth
 
 // Player return the player location.
 func (l *Labyrinth) Player() int {
-	return l.player
+	return l.playerLoc
 }
 
 // PlayerPOV return the shuffled player location.
 func (l *Labyrinth) PlayerPOV() int {
-	return l.shuffled[l.player] + 1
+	return l.rooms[l.playerLoc].fakeID
 }
 
 // TryMovePlayer moves the player if the position is valid.
-func (l *Labyrinth) TryMovePlayer(target int) bool {
-	target = l.ordered[target]
-	if l.validDestination(l.player, target) || l.debug /*allow teleport in debug mode*/ {
-		l.player = target
+func (l *Labyrinth) TryMovePlayer(fakeTarget int) bool {
+	target := l.fakeIDs[fakeTarget]
+	if l.validDestination(l.playerLoc, target) || l.debug /*allow teleport in debug mode*/ {
+		l.rooms[l.playerLoc].player = false
+		l.rooms[target].player = true
+		l.playerLoc = target
 		l.visited[target] = struct{}{}
 		return true
 	}

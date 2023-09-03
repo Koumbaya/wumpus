@@ -6,25 +6,11 @@ import (
 	"strconv"
 )
 
-// HasClue checks if a clue for a given location exists and has been found.
-// If not mark it as found.
-func (l *Labyrinth) HasClue(n int) bool {
-	for loc, found := range l.clues {
-		if n == loc {
-			if !found {
-				l.clues[n] = true // mark as found
-				return true
-			}
-		}
-	}
-
-	return false
-}
-
 // GetClue returns a fresh clue about a random subject.
-// Can give new clue if the wumpus moved.
+// Can give new clue if the wumpus/pits/bats moved.
 // TODO : move dialogues subjects outside.
-func (l *Labyrinth) GetClue() (loc int, subject string) {
+func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
+	l.rooms[clueLoc].clue = false //remove the clue from the room
 	nbEntities := 5
 	if l.wump3 {
 		nbEntities++
@@ -33,24 +19,24 @@ func (l *Labyrinth) GetClue() (loc int, subject string) {
 		n := rand.Intn(nbEntities)
 		switch n {
 		case 0: // pits
-			loc = l.shuffled[l.pits[rand.Intn(len(l.pits))]] + 1
+			loc = l.getOneFakeLocation(Pit)
 			sub := []string{"a pit", "a hole in the ground", "the abyss"}
 			subject = sub[rand.Intn(len(sub))]
 		case 1:
-			loc = l.shuffled[l.bats[rand.Intn(len(l.bats))]] + 1
+			loc = l.getOneFakeLocation(Bat)
 			sub := []string{"bats", "winged creatures", "gargoyles"}
 			subject = sub[rand.Intn(len(sub))]
 		case 2:
-			loc = l.shuffled[l.wumpus] + 1
+			loc = l.getOneFakeLocation(Wumpus)
 			subject = "the Wumpus"
 		case 3:
-			loc = l.shuffled[l.key] + 1
+			loc = l.getOneFakeLocation(Key)
 			subject = "a key"
 		case 4:
-			loc = l.shuffled[l.door] + 1
+			loc = l.getOneFakeLocation(Door)
 			subject = "a door"
 		case 5:
-			loc = l.shuffled[l.termites] + 1
+			loc = l.getOneFakeLocation(Termite)
 			sub := []string{"insects that eat wood", "termites", "a colony of wood eater"}
 			subject = sub[rand.Intn(len(sub))]
 		}
@@ -63,13 +49,29 @@ func (l *Labyrinth) GetClue() (loc int, subject string) {
 	}
 }
 
-func (l *Labyrinth) GetCluesLocFmt() string {
-	var output string
-	for i := range l.clues {
-		loc := l.shuffled[i]
-		output += strconv.Itoa(loc+1) + " "
+// return the location of the first entity found.
+func (l *Labyrinth) getOneFakeLocation(e Entity) int {
+	var f int
+	for i := 0; i < len(l.rooms); i++ {
+		f = l.rooms[i].fakeID
+		switch {
+		case e == Wumpus && l.rooms[i].wumpus:
+			return f
+		case e == Bat && l.rooms[i].bat:
+			return f
+		case e == Pit && l.rooms[i].pit:
+			return f
+		case e == Termite && l.rooms[i].termite:
+			return f
+		case e == Repel && l.rooms[i].repel:
+			return f
+		case e == Key && l.rooms[i].key:
+			return f
+		case e == Door && l.rooms[i].door:
+			return f
+		}
 	}
-	return output
+	return 0
 }
 
 // GetFmtMap returns a random (formatted) partial map.
@@ -81,8 +83,8 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 	for i := 0; i < n; i++ {
 		r := rand.Intn(len(l.rooms))
 		output += fmt.Sprintf("%d --> %d\n",
-			l.shuffled[r]+1,
-			l.shuffled[l.rooms[r].edges[rand.Intn(len(l.rooms[r].edges))]]+1,
+			l.rooms[r].fakeID,
+			l.rooms[l.rooms[r].edges[rand.Intn(len(l.rooms[r].edges))]].fakeID,
 		)
 	}
 	return output
@@ -90,8 +92,8 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 
 // FoundRepel check if repel is at current location and mark as found, return true only the first time.
 func (l *Labyrinth) FoundRepel() bool {
-	if l.player == l.repel && !l.repelFound {
-		l.repelFound = true
+	if l.rooms[l.playerLoc].repel {
+		l.rooms[l.playerLoc].repel = false
 		return true
 	}
 	return false

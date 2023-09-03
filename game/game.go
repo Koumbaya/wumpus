@@ -202,13 +202,13 @@ func (g *Game) tryArrow(input string) bool {
 		return false
 	}
 
-	g.l.MoveArrow(d - 1)
+	g.l.MoveArrow(d)
 	return true
 }
 
 func (g *Game) handleArrow() state {
 	g.p.Printf(dia.ArrowTravel, g.l.ArrowPOV())
-	if g.l.HasWumpus(g.l.Arrow()) && !g.killedWumpus {
+	if g.l.Has(g.l.Arrow(), labyrinth.Wumpus) && !g.killedWumpus {
 		g.p.Println(dia.KilledWumpus)
 		g.killedWumpus = true
 		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
@@ -233,7 +233,7 @@ func (g *Game) handleArrow() state {
 		if g.l.StartleWumpus() && !g.killedWumpus {
 			g.p.Println(dia.ArrowStartle)
 			// check 1/20 odds that the wumpus moved to player's cavern
-			if g.l.HasWumpus(g.l.Player()) {
+			if g.l.Has(g.l.Player(), labyrinth.Wumpus) {
 				g.p.Println(dia.WumpusTrample)
 				g.p.Print(dia.PlayAGain)
 				return waitPlayAgain
@@ -255,7 +255,7 @@ func (g *Game) tryMove(input string) bool {
 		g.whereTo()
 		return false
 	}
-	moved := g.l.TryMovePlayer(d - 1)
+	moved := g.l.TryMovePlayer(d)
 	if !moved {
 		g.p.Println(dia.NotValidDest)
 		g.whereTo()
@@ -271,17 +271,17 @@ func (g *Game) cavern() {
 
 func (g *Game) describe() {
 	g.p.Printf(dia.Tunnels, g.l.GetFmtNeighbors(g.l.Player()))
-	if g.l.BatsNearby() {
+	if g.l.Nearby(labyrinth.Bat) {
 		g.p.Println(dia.BatsNearby)
 	}
-	if g.l.PitNearby() {
+	if g.l.Nearby(labyrinth.Pit) {
 		g.p.Println(dia.PitsNearby)
 	}
-	if g.l.WumpusNearby() && !g.killedWumpus {
+	if g.l.Nearby(labyrinth.Wumpus) && !g.killedWumpus {
 		g.p.Println(dia.WumpusNearby)
 	}
 
-	if g.wump3 && g.l.TermitesNearby() {
+	if g.wump3 && g.l.Nearby(labyrinth.Termite) {
 		g.p.Println(dia.TermitesNearby)
 	}
 }
@@ -334,8 +334,8 @@ func (g *Game) clues() {
 		return
 	}
 
-	if g.l.HasClue(g.l.Player()) {
-		loc, subject := g.l.GetClue()
+	if g.l.Has(g.l.Player(), labyrinth.Clue) {
+		loc, subject := g.l.GetClue(g.l.Player())
 		g.p.Printf(dia.FoundClue, subject, loc)
 	}
 
@@ -361,7 +361,7 @@ func (g *Game) maps() {
 // If a bat moves the player, call recursively.
 func (g *Game) hazards() bool {
 	// the wumpus is immune to hazards, so we check for it first
-	if g.l.HasWumpus(g.l.Player()) && !g.killedWumpus {
+	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.killedWumpus {
 		g.p.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
 			g.p.Println(dia.KilledByWumpus)
@@ -371,7 +371,7 @@ func (g *Game) hazards() bool {
 	}
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
-	if g.l.HasBat(g.l.Player()) {
+	if g.l.Has(g.l.Player(), labyrinth.Bat) {
 		if g.foundRepel && !g.usedRepel {
 			g.usedRepel = true
 			g.p.Println(dia.UseRepel)
@@ -381,13 +381,13 @@ func (g *Game) hazards() bool {
 		}
 	}
 
-	if g.l.HasPit(g.l.Player()) {
+	if g.l.Has(g.l.Player(), labyrinth.Pit) {
 		g.p.Println(dia.FellIntoPit)
 		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
 		return true
 	}
 
-	if g.wump3 && g.arrowsFired < maxArrows && g.l.HasTermites(g.l.Player()) {
+	if g.wump3 && g.arrowsFired < maxArrows && g.l.Has(g.l.Player(), labyrinth.Termite) {
 		g.p.Println(dia.TermiteEatArrow)
 		g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
 		g.arrowsFired++
@@ -403,8 +403,8 @@ func (g *Game) keyDoor() bool {
 		return false
 	}
 
-	door := g.l.HasDoor(g.l.Player())
-	key := g.l.HasKey(g.l.Player())
+	door := g.l.Has(g.l.Player(), labyrinth.Door)
+	key := g.l.Has(g.l.Player(), labyrinth.Key)
 
 	if !door && !key {
 		return false
