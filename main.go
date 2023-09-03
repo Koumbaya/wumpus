@@ -31,7 +31,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	l := labyrinth.NewLabyrinth(advanced, debug, level)
+	l := labyrinth.NewLabyrinth(advanced, debug, wump3, level)
 	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean), arrows, advanced, wump3)
 	g.Loop()
 }

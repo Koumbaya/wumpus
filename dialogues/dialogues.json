@@ -581,6 +581,35 @@
     "The ominous feeling in the cavern deepens as a swarm of aggressive flying termites make a beeline for your quiver, making short work of one of your arrows."
       ],
       "color": "yellow"
+    },
+    {
+      "key": "FoundRepel",
+      "values": [
+            "Hidden in a crevice, you discover a small vial filled with a pungent liquid. The label suggests it keeps winged creatures at bay.",
+    "As you rummage through the cavern's treasures, you find an ancient talisman reputed to ward off creatures of the night.",
+    "Amongst the detritus, a gleaming amulet catches your eye. Legend has it that such amulets deter bats and their ilk.",
+    "In a forgotten corner of the cavern, a pouch of fragrant herbs awaits. Its scent seems to make the fluttering shadows keep their distance.",
+    "A soft glow emanates from a potion bottle left on a rock. Taking a closer look, you recall tales of such concoctions repelling winged pests.",
+    "Stumbled upon an old tome, you read about the power of a certain resin in repelling flying creatures. Next to the book, a sample of this very resin!",
+    "A whispering echo guides you to a concealed alcove. Therein lies a charm said to keep bats at arm's length.",
+    "A gleaming dust covers the floor of a nook in the cavern. Collecting some, you realize it's famed for making bats turn tail and flee.",
+    "Deep within the cave, an enchanted feather beckons. Holding it, you sense its power to repel airborne threats.",
+    "In the dim light, a shimmering cloak seems to pulse with energy. Draping it around you, you instantly feel a barrier against bats form."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key":"UseRepel",
+      "values":[
+            "A flurry of giant bats descends upon you! But they veer away sharply as the protective item you found earlier activates. After the bright flash, the item turns to ash in your hand.",
+    "Sudden rustling alerts you to bats diving straight for you. Yet, the safeguard you picked up before releases a burst of energy, repelling them. It's now spent and disintegrates.",
+    "The cavern air is cut by swift wings. As the bats approach, the protective mechanism you're carrying pulses and deters their advance. Its power diminishes after use.",
+    "A dark cloud of bats hurtles toward you from above. Thankfully, the deterrent you discovered earlier emits a force, making them scatter. It crumbles, having fulfilled its purpose.",
+    "The menacing shadows of bats close in on you swiftly. The defense you found acts, creating a barrier. They fly off, startled, as the object disintegrates.",
+    "Bats, with eyes locked onto you, make their approach. Suddenly, the ward you procured shimmers, creating a safe bubble around you. Post-event, it dissipates into thin air.",
+    "The chilling sensation of bat wings is felt from a distance. But the countermeasure you found shines bright, scattering them. Afterwards, the light dims and the item vanishes."
+      ],
+      "color": "yellow"
     }
   ]
 }

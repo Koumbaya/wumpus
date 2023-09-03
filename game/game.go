@@ -48,6 +48,8 @@ type Game struct {
 	advanced     bool
 	foundKey     bool
 	foundDoor    bool
+	foundRepel   bool // todo: refactor repel
+	usedRepel    bool
 	killedWumpus bool
 }
 
@@ -185,6 +187,8 @@ func (g *Game) start() {
 	g.arrowsFired = 0
 	g.foundKey = false
 	g.foundDoor = false
+	g.foundRepel = false
+	g.usedRepel = false
 	g.killedWumpus = false
 	g.timer = time.Now()
 	g.p.Println(dia.Start)
@@ -317,14 +321,27 @@ func (g *Game) explore() bool {
 }
 
 func (g *Game) clues() {
+	if !g.advanced {
+		return
+	}
+
 	if g.l.HasClue(g.l.Player()) {
 		loc, subject := g.l.GetClue()
 		g.p.Printf(dia.FoundClue, subject, loc)
+	}
+
+	if g.l.FoundRepel() {
+		g.foundRepel = true
+		g.p.Println(dia.FoundRepel)
 	}
 }
 
 // maps randomly gives partial maps tips.
 func (g *Game) maps() {
+	if !g.advanced {
+		return
+	}
+
 	if rand.Intn(randMaps) == 0 {
 		g.p.Printf(dia.PartialMap, g.l.GetFmtMap())
 	}
@@ -346,8 +363,13 @@ func (g *Game) hazards() bool {
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
 	if g.l.HasBat(g.l.Player()) {
-		g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
-		return g.hazards()
+		if g.foundRepel && !g.usedRepel {
+			g.usedRepel = true
+			g.p.Println(dia.UseRepel)
+		} else {
+			g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
+			return g.hazards()
+		}
 	}
 
 	if g.l.HasPit(g.l.Player()) {

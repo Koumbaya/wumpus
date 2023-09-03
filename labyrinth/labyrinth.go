@@ -14,6 +14,7 @@ const (
 	nbKey      = 1
 	nbDoor     = 1
 	nbTermites = 1
+	nbRepel    = 1
 )
 
 // room is a vertex of the graph.
@@ -43,17 +44,20 @@ type Labyrinth struct {
 	// arrowTravel keep track of how many cLevel the arrow can travel.
 	arrowTravel int
 	advanced    bool // experimental
+	wump3       bool
 	debug       bool
 
 	// locations
-	player   int
-	arrow    int
-	wumpus   int
-	bats     []int
-	pits     []int
-	key      int
-	door     int
-	termites int
+	player     int
+	arrow      int
+	wumpus     int
+	bats       []int
+	pits       []int
+	key        int
+	door       int
+	termites   int
+	repel      int
+	repelFound bool
 	// clues location and found status.
 	clues map[int]bool
 	// to keep track of already given clues per level.
@@ -61,12 +65,13 @@ type Labyrinth struct {
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
-func NewLabyrinth(advanced, debug bool, level int) Labyrinth {
+func NewLabyrinth(advanced, debug, wump3 bool, level int) Labyrinth {
 	l := Labyrinth{
 		// there is probably a way to do this mathematically but is it worth it ?
 		levels:   loadLevels(),
 		advanced: advanced,
 		debug:    debug,
+		wump3:    wump3,
 	}
 
 	if _, exist := l.levels[level]; !exist {
@@ -108,8 +113,10 @@ func (l *Labyrinth) Init(targetLvl int) {
 	offset += nbPits
 	copy(l.bats, randRooms[offset:offset+nbBats])
 	offset += nbBats
-	l.termites = randRooms[offset]
-	offset += nbTermites
+	if l.wump3 {
+		l.termites = randRooms[offset]
+		offset += nbTermites
+	}
 
 	if l.advanced {
 		// place key/door/clues in distinct locations
@@ -130,6 +137,10 @@ func (l *Labyrinth) Init(targetLvl int) {
 
 	// place the player in a location distinct from hazards/clues
 	l.player = randRooms[randNotEqual(offset, len(l.rooms), idxWumpus)]
+
+	// place repel anywhere but pits or player location
+	l.repel = randNotEqual(0, len(l.rooms), l.player, l.pits[0], l.pits[1])
+	l.repelFound = false
 
 	l.visited[l.player] = struct{}{}
 
@@ -173,6 +184,7 @@ func (l *Labyrinth) PrintDebug() {
 	fmt.Printf("key %d\n", l.shuffled[l.key]+1)
 	fmt.Printf("door %d\n", l.shuffled[l.door]+1)
 	fmt.Printf("clues %s\n", l.GetCluesLocFmt())
+	fmt.Printf("repel %d\n", l.shuffled[l.repel]+1)
 }
 
 func randNotEqual(min, max int, exclude ...int) (x int) {

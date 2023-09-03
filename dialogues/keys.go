@@ -67,4 +67,6 @@ const (
 	CertainKeyDoor          = "CertainKeyDoor"
 	FoundClue               = "FoundClue"
 	PartialMap              = "PartialMap"
+	FoundRepel              = "FoundRepel"
+	UseRepel                = "UseRepel"
 )

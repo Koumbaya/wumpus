@@ -17,8 +17,8 @@ func (l *Labyrinth) PitNearby() bool {
 
 // Earthquake changes the pits' location.
 func (l *Labyrinth) Earthquake() {
-	l.pits[0] = randNotEqual(0, len(l.rooms), l.player, l.door, l.key, l.pits[0], l.pits[1], l.bats[0], l.bats[1])
-	l.pits[1] = randNotEqual(0, len(l.rooms), l.player, l.door, l.key, l.pits[0], l.pits[1], l.bats[0], l.bats[1])
+	l.pits[0] = randNotEqual(0, len(l.rooms), l.player, l.door, l.key, l.pits[0], l.pits[1], l.bats[0], l.bats[1], l.repel)
+	l.pits[1] = randNotEqual(0, len(l.rooms), l.player, l.door, l.key, l.pits[0], l.pits[1], l.bats[0], l.bats[1], l.repel)
 	if l.debug {
 		fmt.Printf("pits %d %d\n", l.shuffled[l.pits[0]]+1, l.shuffled[l.pits[1]]+1)
 	}

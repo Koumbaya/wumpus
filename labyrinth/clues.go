@@ -23,9 +23,14 @@ func (l *Labyrinth) HasClue(n int) bool {
 
 // GetClue returns a fresh clue about a random subject.
 // Can give new clue if the wumpus moved.
+// TODO : move dialogues subjects outside.
 func (l *Labyrinth) GetClue() (loc int, subject string) {
+	nbEntities := 5
+	if l.wump3 {
+		nbEntities++
+	}
 	for {
-		n := rand.Intn(5)
+		n := rand.Intn(nbEntities)
 		switch n {
 		case 0: // pits
 			loc = l.shuffled[l.pits[rand.Intn(len(l.pits))]] + 1
@@ -44,6 +49,10 @@ func (l *Labyrinth) GetClue() (loc int, subject string) {
 		case 4:
 			loc = l.shuffled[l.door] + 1
 			subject = "a door"
+		case 5:
+			loc = l.shuffled[l.termites] + 1
+			sub := []string{"insects that eat wood", "termites", "a colony of wood eater"}
+			subject = sub[rand.Intn(len(sub))]
 		}
 		key := subject + strconv.Itoa(loc)
 		if _, found := l.cluesGiven[key]; found {
@@ -63,7 +72,7 @@ func (l *Labyrinth) GetCluesLocFmt() string {
 	return output
 }
 
-// GetFmtMap returns a random (formated) partial map.
+// GetFmtMap returns a random (formatted) partial map.
 // "maps" don't have locations and are not unique.
 func (l *Labyrinth) GetFmtMap() (output string) {
 	n := rand.Intn(3) //how many connections to display
@@ -77,4 +86,13 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 		)
 	}
 	return output
+}
+
+// FoundRepel check if repel is at current location and mark as found, return true only the first time.
+func (l *Labyrinth) FoundRepel() bool {
+	if l.player == l.repel && !l.repelFound {
+		l.repelFound = true
+		return true
+	}
+	return false
 }
