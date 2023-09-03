@@ -1,9 +1,6 @@
 package labyrinth
 
-import (
-	"fmt"
-	"math/rand"
-)
+import "fmt"
 
 // Earthquake changes the pits' location.
 func (l *Labyrinth) Earthquake() {
@@ -19,15 +16,10 @@ func (l *Labyrinth) Earthquake() {
 	}
 
 	for i := 0; i < nbPits; i++ {
-		for {
-			n := rand.Intn(len(l.rooms))
-			if !l.rooms[n].occupied() { // okay if there is a wumpus or a clue
-				l.rooms[n].pit = true
-				if l.debug {
-					fmt.Printf("pit moved to %d \n", l.rooms[n].fakeID)
-				}
-				break
-			}
+		r := l.randomRoom(withoutKeyItem(), withoutHazard())
+		l.rooms[r].pit = true
+		if l.debug {
+			fmt.Printf("pit relocated to %d\n", l.rooms[r].fakeID)
 		}
 	}
 

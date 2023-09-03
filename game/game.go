@@ -50,6 +50,8 @@ type Game struct {
 	foundDoor    bool
 	foundRepel   bool // todo: refactor repel
 	usedRepel    bool
+	foundRope    bool
+	usedRope     bool
 	killedWumpus bool
 }
 
@@ -186,6 +188,8 @@ func (g *Game) start() {
 	g.foundDoor = false
 	g.foundRepel = false
 	g.usedRepel = false
+	g.foundRope = false
+	g.usedRope = false
 	g.killedWumpus = false
 	g.timer = time.Now()
 	g.p.Println(dia.Start)
@@ -343,6 +347,11 @@ func (g *Game) clues() {
 		g.foundRepel = true
 		g.p.Println(dia.FoundRepel)
 	}
+
+	if g.l.FoundRope() {
+		g.foundRope = true
+		g.p.Println(dia.FoundRope)
+	}
 }
 
 // maps randomly gives partial maps tips.
@@ -382,9 +391,14 @@ func (g *Game) hazards() bool {
 	}
 
 	if g.l.Has(g.l.Player(), labyrinth.Pit) {
-		g.p.Println(dia.FellIntoPit)
-		g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
-		return true
+		if g.foundRope && !g.usedRope {
+			g.usedRope = true
+			g.p.Println(dia.UseRope)
+		} else {
+			g.p.Println(dia.FellIntoPit)
+			g.p.Printf(dia.ExitWumpus, g.l.Wumpus())
+			return true
+		}
 	}
 
 	if g.wump3 && g.arrowsFired < maxArrows && g.l.Has(g.l.Player(), labyrinth.Termite) {

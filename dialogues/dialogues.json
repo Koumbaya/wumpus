@@ -568,46 +568,76 @@
     },
     {
       "key": "TermiteEatArrow",
-      "values":[
-            "As you step into the cavern, a swarm of menacing flying termites descends upon your quiver, consuming one of your arrows in their frenzy!",
-    "Entering the room, you're ambushed by aggressive termites that take to the air, targeting your quiver and devouring an arrow before you can react.",
-    "The moment you set foot in the cavern, ravenous flying termites surround you, hungrily making a meal of one of your precious arrows.",
-    "No sooner do you enter the room than a cloud of malevolent termites swoops down, snatching away and consuming one of your arrows.",
-    "The cavern's shadowy depths release a horde of flying termites which, to your horror, rush your quiver and feast on an arrow.",
-    "The moment you penetrate the room's threshold, airborne termites dart toward your quiver, greedily nibbling away one of your arrows.",
-    "As the cavern's darkness engulfs you, you feel a sudden surge of movement – flying termites have ambushed your quiver, and you find yourself an arrow short.",
-    "The cavern seems to come alive as you enter, with menacing termites taking flight and swarming your quiver, stripping away one of your arrows.",
-    "A chilling breeze accompanies your entry into the room, followed by the swift onslaught of flying termites that eagerly consume one of your arrows.",
-    "The ominous feeling in the cavern deepens as a swarm of aggressive flying termites make a beeline for your quiver, making short work of one of your arrows."
+      "values": [
+        "As you step into the cavern, a swarm of menacing flying termites descends upon your quiver, consuming one of your arrows in their frenzy!",
+        "Entering the room, you're ambushed by aggressive termites that take to the air, targeting your quiver and devouring an arrow before you can react.",
+        "The moment you set foot in the cavern, ravenous flying termites surround you, hungrily making a meal of one of your precious arrows.",
+        "No sooner do you enter the room than a cloud of malevolent termites swoops down, snatching away and consuming one of your arrows.",
+        "The cavern's shadowy depths release a horde of flying termites which, to your horror, rush your quiver and feast on an arrow.",
+        "The moment you penetrate the room's threshold, airborne termites dart toward your quiver, greedily nibbling away one of your arrows.",
+        "As the cavern's darkness engulfs you, you feel a sudden surge of movement – flying termites have ambushed your quiver, and you find yourself an arrow short.",
+        "The cavern seems to come alive as you enter, with menacing termites taking flight and swarming your quiver, stripping away one of your arrows.",
+        "A chilling breeze accompanies your entry into the room, followed by the swift onslaught of flying termites that eagerly consume one of your arrows.",
+        "The ominous feeling in the cavern deepens as a swarm of aggressive flying termites make a beeline for your quiver, making short work of one of your arrows."
       ],
       "color": "yellow"
     },
     {
       "key": "FoundRepel",
       "values": [
-            "Hidden in a crevice, you discover a small vial filled with a pungent liquid. The label suggests it keeps winged creatures at bay.",
-    "As you rummage through the cavern's treasures, you find an ancient talisman reputed to ward off creatures of the night.",
-    "Amongst the detritus, a gleaming amulet catches your eye. Legend has it that such amulets deter bats and their ilk.",
-    "In a forgotten corner of the cavern, a pouch of fragrant herbs awaits. Its scent seems to make the fluttering shadows keep their distance.",
-    "A soft glow emanates from a potion bottle left on a rock. Taking a closer look, you recall tales of such concoctions repelling winged pests.",
-    "Stumbled upon an old tome, you read about the power of a certain resin in repelling flying creatures. Next to the book, a sample of this very resin!",
-    "A whispering echo guides you to a concealed alcove. Therein lies a charm said to keep bats at arm's length.",
-    "A gleaming dust covers the floor of a nook in the cavern. Collecting some, you realize it's famed for making bats turn tail and flee.",
-    "Deep within the cave, an enchanted feather beckons. Holding it, you sense its power to repel airborne threats.",
-    "In the dim light, a shimmering cloak seems to pulse with energy. Draping it around you, you instantly feel a barrier against bats form."
+        "Hidden in a crevice, you discover a small vial filled with a pungent liquid. The label suggests it keeps winged creatures at bay.",
+        "As you rummage through the cavern's treasures, you find an ancient talisman reputed to ward off creatures of the night.",
+        "Amongst the detritus, a gleaming amulet catches your eye. Legend has it that such amulets deter bats and their ilk.",
+        "In a forgotten corner of the cavern, a pouch of fragrant herbs awaits. Its scent seems to make the fluttering shadows keep their distance.",
+        "A soft glow emanates from a potion bottle left on a rock. Taking a closer look, you recall tales of such concoctions repelling winged pests.",
+        "Stumbled upon an old tome, you read about the power of a certain resin in repelling flying creatures. Next to the book, a sample of this very resin!",
+        "A whispering echo guides you to a concealed alcove. Therein lies a charm said to keep bats at arm's length.",
+        "A gleaming dust covers the floor of a nook in the cavern. Collecting some, you realize it's famed for making bats turn tail and flee.",
+        "Deep within the cave, an enchanted feather beckons. Holding it, you sense its power to repel airborne threats.",
+        "In the dim light, a shimmering cloak seems to pulse with energy. Draping it around you, you instantly feel a barrier against bats form."
       ],
       "color": "yellow"
     },
     {
-      "key":"UseRepel",
-      "values":[
-            "A flurry of giant bats descends upon you! But they veer away sharply as the protective item you found earlier activates. After the bright flash, the item turns to ash in your hand.",
-    "Sudden rustling alerts you to bats diving straight for you. Yet, the safeguard you picked up before releases a burst of energy, repelling them. It's now spent and disintegrates.",
-    "The cavern air is cut by swift wings. As the bats approach, the protective mechanism you're carrying pulses and deters their advance. Its power diminishes after use.",
-    "A dark cloud of bats hurtles toward you from above. Thankfully, the deterrent you discovered earlier emits a force, making them scatter. It crumbles, having fulfilled its purpose.",
-    "The menacing shadows of bats close in on you swiftly. The defense you found acts, creating a barrier. They fly off, startled, as the object disintegrates.",
-    "Bats, with eyes locked onto you, make their approach. Suddenly, the ward you procured shimmers, creating a safe bubble around you. Post-event, it dissipates into thin air.",
-    "The chilling sensation of bat wings is felt from a distance. But the countermeasure you found shines bright, scattering them. Afterwards, the light dims and the item vanishes."
+      "key": "UseRepel",
+      "values": [
+        "A flurry of giant bats descends upon you! But they veer away sharply as the protective item you found earlier activates. After the bright flash, the item turns to ash in your hand.",
+        "Sudden rustling alerts you to bats diving straight for you. Yet, the safeguard you picked up before releases a burst of energy, repelling them. It's now spent and disintegrates.",
+        "The cavern air is cut by swift wings. As the bats approach, the protective mechanism you're carrying pulses and deters their advance. Its power diminishes after use.",
+        "A dark cloud of bats hurtles toward you from above. Thankfully, the deterrent you discovered earlier emits a force, making them scatter. It crumbles, having fulfilled its purpose.",
+        "The menacing shadows of bats close in on you swiftly. The defense you found acts, creating a barrier. They fly off, startled, as the object disintegrates.",
+        "Bats, with eyes locked onto you, make their approach. Suddenly, the ward you procured shimmers, creating a safe bubble around you. Post-event, it dissipates into thin air.",
+        "The chilling sensation of bat wings is felt from a distance. But the countermeasure you found shines bright, scattering them. Afterwards, the light dims and the item vanishes."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "FoundRope",
+      "values": [
+        "As you explore the cavern, your fingers brush against the rough texture of a coiled rope.",
+        "Tucked away in a corner, you stumble upon a neatly wound length of hemp.",
+        "Hidden in the shadows, a sturdy rope waits to be claimed by a fortunate adventurer.",
+        "Glinting faintly in the dim light, a braided line lies coiled and ready for use.",
+        "Beneath a thin layer of dust, you discover a durable rope that might prove handy.",
+        "Tangled amidst some old debris, a long cord catches your attention.",
+        "Lying abandoned on the cavern floor, a rope ladder waits to aid in your journey.",
+        "Tied to a stalagmite, you find a rope with a grappling hook at its end.",
+        "Intricately knotted and strong, a rope beckons from a crevice.",
+        "Peering into a small alcove, you spot a rope belt that could serve a myriad of purposes."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "UseRope",
+      "values": [
+        "You misstep, plunging into a vast hole. Using your trusty rope, you manage to climb out, but the strain causes it to fray and break.",
+        "As the ground disappears beneath you, you fall into a deep pit. With quick thinking, you tie your cord to a rock, ascending to safety, but the cord doesn't survive the ordeal.",
+        "Stumbling, you find yourself descending rapidly into a crevice. Your lifeline, a sturdy line you found earlier, helps you scale the rocky walls but snaps as you reach the top.",
+        "The earth crumbles, sending you into a void. Thankfully, the lasso you carry holds long enough for a safe ascent, but it wears thin and breaks upon reaching safety.",
+        "Your foot slips, causing a tumble into a dark pit. The hawser you have wraps around a jutting stone, allowing a climb back up, but its fibers unravel by the end.",
+        "Suddenly, you're in freefall, heading towards a chasm's depth. With a desperate throw, your tether catches a protruding edge. It holds just long enough for escape but tears apart afterward.",
+        "You're caught off-guard as the ground opens up, but your rope provides a short-lived salvation, breaking apart after your narrow escape from the abyss.",
+        "A misstep lands you in a trap, but thankfully, the coil you found becomes your temporary savior, though it frays and comes undone once you're safe."
       ],
       "color": "yellow"
     }

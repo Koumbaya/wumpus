@@ -13,30 +13,30 @@ func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
 	l.rooms[clueLoc].clue = false //remove the clue from the room
 	nbEntities := 5
 	if l.wump3 {
-		nbEntities++
+		nbEntities++ // for termites
 	}
 	for {
 		n := rand.Intn(nbEntities)
 		switch n {
 		case 0: // pits
-			loc = l.getOneFakeLocation(Pit)
+			loc = l.rooms[l.getRoom(withEntity(Pit))].fakeID
 			sub := []string{"a pit", "a hole in the ground", "the abyss"}
 			subject = sub[rand.Intn(len(sub))]
 		case 1:
-			loc = l.getOneFakeLocation(Bat)
+			loc = l.rooms[l.getRoom(withEntity(Bat))].fakeID
 			sub := []string{"bats", "winged creatures", "gargoyles"}
 			subject = sub[rand.Intn(len(sub))]
 		case 2:
-			loc = l.getOneFakeLocation(Wumpus)
+			loc = l.rooms[l.getRoom(withEntity(Wumpus))].fakeID
 			subject = "the Wumpus"
 		case 3:
-			loc = l.getOneFakeLocation(Key)
+			loc = l.rooms[l.getRoom(withEntity(Key))].fakeID
 			subject = "a key"
 		case 4:
-			loc = l.getOneFakeLocation(Door)
+			loc = l.rooms[l.getRoom(withEntity(Door))].fakeID
 			subject = "a door"
 		case 5:
-			loc = l.getOneFakeLocation(Termite)
+			loc = l.rooms[l.getRoom(withEntity(Termite))].fakeID
 			sub := []string{"insects that eat wood", "termites", "a colony of wood eater"}
 			subject = sub[rand.Intn(len(sub))]
 		}
@@ -47,31 +47,6 @@ func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
 		l.cluesGiven[key] = struct{}{} // store this specific clue as given
 		return loc, subject
 	}
-}
-
-// return the location of the first entity found.
-func (l *Labyrinth) getOneFakeLocation(e Entity) int {
-	var f int
-	for i := 0; i < len(l.rooms); i++ {
-		f = l.rooms[i].fakeID
-		switch {
-		case e == Wumpus && l.rooms[i].wumpus:
-			return f
-		case e == Bat && l.rooms[i].bat:
-			return f
-		case e == Pit && l.rooms[i].pit:
-			return f
-		case e == Termite && l.rooms[i].termite:
-			return f
-		case e == Repel && l.rooms[i].repel:
-			return f
-		case e == Key && l.rooms[i].key:
-			return f
-		case e == Door && l.rooms[i].door:
-			return f
-		}
-	}
-	return 0
 }
 
 // GetFmtMap returns a random (formatted) partial map.
@@ -94,6 +69,14 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 func (l *Labyrinth) FoundRepel() bool {
 	if l.rooms[l.playerLoc].repel {
 		l.rooms[l.playerLoc].repel = false
+		return true
+	}
+	return false
+}
+
+func (l *Labyrinth) FoundRope() bool {
+	if l.rooms[l.playerLoc].rope {
+		l.rooms[l.playerLoc].rope = false
 		return true
 	}
 	return false

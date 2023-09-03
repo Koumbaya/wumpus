@@ -1,9 +1,6 @@
 package labyrinth
 
-import (
-	"fmt"
-	"math/rand"
-)
+import "fmt"
 
 func (l *Labyrinth) TermitesMigration() {
 	// save current location
@@ -18,15 +15,10 @@ func (l *Labyrinth) TermitesMigration() {
 	}
 
 	for i := 0; i < nbTermites; i++ {
-		for {
-			n := rand.Intn(len(l.rooms))
-			if !l.rooms[n].occupied() { // okay if there is a wumpus or a clue
-				l.rooms[n].termite = true
-				if l.debug {
-					fmt.Printf("termite moved to %d \n", l.rooms[n].fakeID)
-				}
-				break
-			}
+		r := l.randomRoom(withoutKeyItem(), withoutHazard())
+		l.rooms[r].termite = true
+		if l.debug {
+			fmt.Printf("termite relocated to %d\n", l.rooms[r].fakeID)
 		}
 	}
 

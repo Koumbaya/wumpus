@@ -69,4 +69,6 @@ const (
 	PartialMap              = "PartialMap"
 	FoundRepel              = "FoundRepel"
 	UseRepel                = "UseRepel"
+	FoundRope               = "FoundRope"
+	UseRope                 = "UseRope"
 )

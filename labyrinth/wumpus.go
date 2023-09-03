@@ -39,26 +39,32 @@ func (l *Labyrinth) SleepwalkWumpus() {
 }
 
 func (l *Labyrinth) relocateWumpus(avoidPlayer bool) {
-	old := 0
+	// save current location
+	existing := make([]int, 0, nbWumpus)
 	for i := 0; i < len(l.rooms); i++ {
 		if l.rooms[i].wumpus {
-			l.rooms[i].wumpus = false
-			old = i
+			existing = append(existing, i)
+		}
+		if len(existing) == nbWumpus {
+			break
+		}
+	}
+	var cond []filterFunc
+	if avoidPlayer {
+		cond = []filterFunc{withoutEntity(Wumpus), withoutEntity(Player)}
+	} else {
+		cond = []filterFunc{withoutEntity(Wumpus)}
+	}
+	for i := 0; i < nbWumpus; i++ {
+		r := l.randomRoom(cond...)
+		l.rooms[r].wumpus = true
+		if l.debug {
+			fmt.Printf("wumpus relocated to %d\n", l.rooms[r].fakeID)
 		}
 	}
 
-	for {
-		n := rand.Intn(len(l.rooms))
-		if n == old || avoidPlayer && l.rooms[n].player {
-			continue
-		}
-		l.rooms[n].wumpus = true
-		if l.debug {
-			fmt.Printf("wumpus %d\n", l.rooms[n].fakeID)
-			for i := 0; i < len(l.rooms[n].edges); i++ {
-				fmt.Printf("adjacent caves %d\n", l.rooms[l.rooms[n].edges[i]].fakeID)
-			}
-		}
-		break
+	// erase previous locations
+	for _, i := range existing {
+		l.rooms[i].wumpus = false
 	}
 }

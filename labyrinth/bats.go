@@ -28,15 +28,10 @@ func (l *Labyrinth) BatMigration() {
 	}
 
 	for i := 0; i < nbBats; i++ {
-		for {
-			n := rand.Intn(len(l.rooms))
-			if !l.rooms[n].occupied() { // okay if there is a wumpus or a clue
-				l.rooms[n].bat = true
-				if l.debug {
-					fmt.Printf("bat moved to %d \n", l.rooms[n].fakeID)
-				}
-				break
-			}
+		r := l.randomRoom(withoutKeyItem(), withoutHazard())
+		l.rooms[r].bat = true
+		if l.debug {
+			fmt.Printf("bat relocated to %d\n", l.rooms[r].fakeID)
 		}
 	}
 

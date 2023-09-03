@@ -2,89 +2,21 @@
 package labyrinth
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 )
 
 const (
-	nbClues    = 3
-	nbPits     = 2
+	nbWumpus   = 1
 	nbBats     = 2
+	nbPits     = 2
+	nbTermites = 1
+	nbClues    = 3
+	nbRepel    = 1
 	nbKey      = 1
 	nbDoor     = 1
-	nbTermites = 1
-	nbRepel    = 1
+	nbRope     = 1
 )
-
-type Entity int
-
-const (
-	Player Entity = iota
-	Wumpus
-	Bat
-	Pit
-	Termite
-	Clue
-	Repel
-	Key
-	Door
-)
-
-type entities struct {
-	pit     bool
-	bat     bool
-	termite bool
-	wumpus  bool
-	player  bool
-	clue    bool
-	repel   bool
-	key     bool
-	door    bool
-}
-
-// room is a vertex of the graph.
-type room struct {
-	edges  []int
-	fakeID int
-	entities
-}
-
-// return true if the room already has one entity that can't cohabit with others.
-// technically player can cohabit, but we don't want to add another entity to the player's location (usually).
-func (r *room) occupied() bool {
-	return r.termite || r.pit || r.player || r.clue || r.bat || r.door || r.key || r.repel
-}
-
-func (r *room) printEntities() {
-	if r.pit {
-		fmt.Printf("pit %d\n", r.fakeID)
-	}
-	if r.bat {
-		fmt.Printf("bat %d\n", r.fakeID)
-	}
-	if r.termite {
-		fmt.Printf("termite %d\n", r.fakeID)
-	}
-	if r.wumpus {
-		fmt.Printf("wumpus %d\n", r.fakeID)
-	}
-	if r.player {
-		fmt.Printf("player %d\n", r.fakeID)
-	}
-	if r.clue {
-		fmt.Printf("clue %d\n", r.fakeID)
-	}
-	if r.repel {
-		fmt.Printf("repel %d\n", r.fakeID)
-	}
-	if r.key {
-		fmt.Printf("key %d\n", r.fakeID)
-	}
-	if r.door {
-		fmt.Printf("door %d\n", r.fakeID)
-	}
-}
 
 type level struct {
 	rooms  []room
@@ -139,18 +71,11 @@ func (l *Labyrinth) Init(targetLvl int) {
 	l.fakeIDs = make(map[int]int)
 	l.visited = make(map[int]struct{}, len(l.rooms))
 	l.cluesGiven = make(map[string]struct{}, nbClues)
-	randRooms := make([]int, len(l.rooms))
-	for i := range randRooms {
-		randRooms[i] = i
-	}
-
-	rand.Shuffle(len(randRooms), func(i, j int) {
-		randRooms[i], randRooms[j] = randRooms[j], randRooms[i]
-	})
+	randRooms := rand.Perm(len(l.rooms))
 
 	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
 	for i := 0; i < len(l.rooms); i++ {
-		l.rooms[i].fakeID = randRooms[i] + 1
+		l.rooms[i].fakeID = randRooms[i] + 1 // +1 so the player never sees a room 0.
 		// reset entities on restart
 		l.rooms[i].entities = entities{}
 		// keep track of fakeIds for fast access
@@ -158,58 +83,49 @@ func (l *Labyrinth) Init(targetLvl int) {
 	}
 
 	// place pits & bats in distinct locations
-	// we use randRooms indexes so that for example both pits aren't placed on the same vertices from the graph definition each time
-	offset := 0
 	for i := 0; i < nbPits; i++ {
-		l.rooms[randRooms[offset]].pit = true
-		offset++
+		l.rooms[l.randomRoom(withoutHazard())].pit = true
 	}
 
 	for i := 0; i < nbBats; i++ {
-		l.rooms[randRooms[offset]].bat = true
-		offset++
+		l.rooms[l.randomRoom(withoutHazard())].bat = true
 	}
 
 	if l.wump3 {
 		for i := 0; i < nbTermites; i++ {
-			l.rooms[randRooms[offset]].termite = true
-			offset++
+			l.rooms[l.randomRoom(withoutHazard())].termite = true
 		}
 	}
 
 	if l.advanced {
 		for i := 0; i < nbKey; i++ {
-			l.rooms[randRooms[offset]].key = true
-			offset++
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].key = true
 		}
 		for i := 0; i < nbDoor; i++ {
-			l.rooms[randRooms[offset]].door = true
-			offset++
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].door = true
 		}
+
+		// clues/rope/repel can be in the same room
 		for i := 0; i < nbRepel; i++ {
-			l.rooms[randRooms[offset]].repel = true
-			offset++
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Repel))].repel = true
 		}
-		// clues could be on the same room as key or door technically, but not the rest
+
+		for i := 0; i < nbRope; i++ {
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Rope))].rope = true
+		}
+
 		for i := 0; i < nbClues; i++ {
-			l.rooms[randRooms[offset]].clue = true
-			offset++
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].clue = true
 		}
 	}
 
 	// place player
-	l.rooms[randRooms[offset]].player = true
-	l.playerLoc = randRooms[offset]
-	l.visited[randRooms[offset]] = struct{}{}
+	l.playerLoc = l.randomRoom(withoutHazard(), withoutKeyItem(), withoutItem())
+	l.rooms[l.playerLoc].player = true
+	l.visited[l.playerLoc] = struct{}{}
 
 	// place the Wumpus anywhere but where the player is
-	for {
-		n := rand.Intn(len(l.rooms))
-		if !l.rooms[n].player {
-			l.rooms[n].wumpus = true
-			break
-		}
-	}
+	l.rooms[l.randomRoom(withoutEntity(Player))].wumpus = true
 
 	if l.debug {
 		l.PrintDebug()
@@ -236,6 +152,8 @@ func (l *Labyrinth) Has(id int, e Entity) bool {
 		return l.rooms[id].key
 	case Door:
 		return l.rooms[id].door
+	case Rope:
+		return l.rooms[id].rope
 	}
 	return false
 }
@@ -279,13 +197,4 @@ func (l *Labyrinth) PrintDebug() {
 	for _, r := range l.rooms {
 		r.printEntities()
 	}
-}
-
-func contains(val int, slice []int) bool {
-	for _, item := range slice {
-		if item == val {
-			return true
-		}
-	}
-	return false
 }
