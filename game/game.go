@@ -65,6 +65,7 @@ func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, w
 }
 
 func (g *Game) Loop() {
+	var move bool
 	reader := bufio.NewReader(os.Stdin)
 	g.start()
 
@@ -75,6 +76,7 @@ func (g *Game) Loop() {
 		}
 		input = clean(input)
 
+		// pre-parsing for "meta" commands & shortcut to bypass waitShootMove state and move directly.
 		switch input {
 		case "exit":
 			g.p.Println(dia.Exit)
@@ -87,6 +89,13 @@ func (g *Game) Loop() {
 		case "debug":
 			g.l.PrintDebug()
 			continue
+		}
+
+		if g.state == waitShootMove { // todo : ugly way of doing things, refactor
+			move, input = isMoveCommand(input)
+			if move {
+				g.state = waitWhereTo
+			}
 		}
 
 		if g.playerState(input) {
@@ -170,18 +179,6 @@ func (g *Game) playerState(input string) bool {
 	return false
 }
 
-func (g *Game) tryArrow(input string) bool {
-	d, err := strconv.Atoi(input)
-	if err != nil {
-		g.p.Println(dia.NotNumber)
-		g.whereToArrow()
-		return false
-	}
-
-	g.l.MoveArrow(d - 1)
-	return true
-}
-
 func (g *Game) start() {
 	g.turns = 0
 	g.arrowsFired = 0
@@ -195,6 +192,18 @@ func (g *Game) start() {
 	g.cavern()
 	g.describe()
 	g.p.Print(dia.ChoiceShootMove)
+}
+
+func (g *Game) tryArrow(input string) bool {
+	d, err := strconv.Atoi(input)
+	if err != nil {
+		g.p.Println(dia.NotNumber)
+		g.whereToArrow()
+		return false
+	}
+
+	g.l.MoveArrow(d - 1)
+	return true
 }
 
 func (g *Game) handleArrow() state {
@@ -475,4 +484,14 @@ func clean(input string) string {
 	}
 
 	return string(stack)
+}
+
+func isMoveCommand(input string) (bool, string) {
+	output := strings.ReplaceAll(input, "m", "")
+	_, err := strconv.Atoi(output)
+	if err != nil {
+		return false, input
+	}
+	return true, output
+
 }

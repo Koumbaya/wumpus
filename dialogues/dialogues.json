@@ -109,7 +109,7 @@
         "Your sudden arrival sends the Wumpus scurrying into the shadows!",
         "Caught off guard, the Wumpus bolts away to find a safer hideout!"
       ],
-      "color": ""
+      "color": "yellow"
     },
     {
       "key": "KilledByWumpus",

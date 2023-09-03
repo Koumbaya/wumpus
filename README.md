@@ -41,7 +41,8 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
    - You might also find clues about your environment and various objects...
 
-**Notes**: Small difference with the original game :
+**Notes**: Small differences with the original game :  
+You can move directly by inputting a direction at the `Move or Shoot` question (input `m 8` or `8` or `m8`) .  
 A startled Wumpus would only move 1 cave, which was kind of easier (to relocate) but less forgetful (it would have a 1/3 chance of eating you unless you backtracked 1 room).  
 Possible paths for the arrow weren't displayed, maybe because of computing requirements/space.  
 I lowered the chances of hazards moving (and probably will lower it further).
@@ -72,7 +73,6 @@ There a various flags available :
 ![screenshot2](screenshot2.png)
 
 ### TODO:
-* Add a way to move directly instead of move + number
 * Probably a few refactors of the state machine.
 * Refactor object placement, availability (wump3/advanced) and found status.
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?). Might be not needed with Wumpus' 3 features.
