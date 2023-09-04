@@ -4,126 +4,76 @@ import (
 	"fmt"
 )
 
-type Entity int
+type entity string
 
 const (
-	Player Entity = iota
-	Wumpus
-	Bat
-	Pit
-	Termite
-	Clue
-	Repel
-	Key
-	Door
-	Rope
-	Shield
+	Player  entity = "player"
+	Wumpus  entity = "wumpus"
+	Bat     entity = "bat"
+	Pit     entity = "pit"
+	Termite entity = "termite"
+	Clue    entity = "clue"
+	Repel   entity = "repel"
+	Key     entity = "key"
+	Door    entity = "door"
+	Rope    entity = "rope"
+	Shield  entity = "shield"
 )
-
-// todo : refactor
-type entities struct {
-	pit     bool
-	bat     bool
-	termite bool
-	wumpus  bool
-	player  bool
-	clue    bool
-	repel   bool
-	key     bool
-	door    bool
-	rope    bool
-	shield  bool
-}
 
 // room is a vertex of the graph.
 type room struct {
-	edges  []int
-	fakeID int
-	entities
+	edges    []int
+	fakeID   int
+	entities map[entity]struct{}
 }
 
-type filterFunc func(room) bool
+func (r *room) addEntity(e entity) {
+	r.entities[e] = struct{}{}
+}
+
+func (r *room) removeEntity(e entity) {
+	delete(r.entities, e)
+}
+
+func (r *room) hasEntity(e entity) bool {
+	_, present := r.entities[e]
+	return present
+}
+
+type filterFunc func(r *room) bool
 
 // return true if the room doesn't contain items that are needed to win the game (avoid pit on a door for example).
 // used when migrating dangers
 func withoutKeyItem() filterFunc {
-	return func(r room) bool {
-		return !r.door && !r.key
+	return func(r *room) bool {
+		return !r.hasEntity(Door) && !r.hasEntity(Key)
 	}
 }
 
 // return true if the room contains no consumable item.
 func withoutItem() filterFunc {
-	return func(r room) bool {
-		return !r.rope && !r.repel && !r.shield && !r.clue
+	return func(r *room) bool {
+		return !r.hasEntity(Rope) && !r.hasEntity(Repel) && !r.hasEntity(Shield) && !r.hasEntity(Clue)
 	}
 }
 
 // return false if the room contain something dangerous (or the player).
 // used at init to allow cohabitation of clues/repel/rope.
 func withoutHazard() filterFunc {
-	return func(r room) bool {
-		return !r.pit && !r.bat && !r.player && !r.wumpus && !r.termite
+	return func(r *room) bool {
+		return !r.hasEntity(Pit) && !r.hasEntity(Bat) && !r.hasEntity(Player) && !r.hasEntity(Wumpus) && !r.hasEntity(Termite)
 	}
 }
 
-func withEntity(e Entity) filterFunc {
-	return func(r room) bool {
-		switch e {
-		case Player:
-			return r.player
-		case Wumpus:
-			return r.wumpus
-		case Bat:
-			return r.bat
-		case Pit:
-			return r.pit
-		case Termite:
-			return r.termite
-		case Clue:
-			return r.clue
-		case Repel:
-			return r.repel
-		case Key:
-			return r.key
-		case Door:
-			return r.door
-		case Rope:
-			return r.rope
-		case Shield:
-			return r.shield
-		}
-		return true
+func withEntity(e entity) filterFunc {
+	return func(r *room) bool {
+		return r.hasEntity(e)
 	}
 }
 
-func withoutEntity(e Entity) filterFunc {
-	return func(r room) bool {
-		switch e {
-		case Player:
-			return !r.player
-		case Wumpus:
-			return !r.wumpus
-		case Bat:
-			return !r.bat
-		case Pit:
-			return !r.pit
-		case Termite:
-			return !r.termite
-		case Clue:
-			return !r.clue
-		case Repel:
-			return !r.repel
-		case Key:
-			return !r.key
-		case Door:
-			return !r.door
-		case Rope:
-			return !r.rope
-		case Shield:
-			return !r.shield
-		}
-		return false
+func withoutEntity(e entity) filterFunc {
+	return func(r *room) bool {
+		return !r.hasEntity(e)
 	}
 }
 
@@ -135,7 +85,7 @@ func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
 		candidate := l.rooms[index]
 		match := true
 		for _, f := range filters {
-			if !f(candidate) {
+			if !f(&candidate) {
 				match = false
 				break
 			}
@@ -148,37 +98,7 @@ func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
 }
 
 func (r *room) printEntities() {
-	if r.pit {
-		fmt.Printf("pit %d\n", r.fakeID)
-	}
-	if r.bat {
-		fmt.Printf("bat %d\n", r.fakeID)
-	}
-	if r.termite {
-		fmt.Printf("termite %d\n", r.fakeID)
-	}
-	if r.wumpus {
-		fmt.Printf("wumpus %d\n", r.fakeID)
-	}
-	if r.player {
-		fmt.Printf("player %d\n", r.fakeID)
-	}
-	if r.clue {
-		fmt.Printf("clue %d\n", r.fakeID)
-	}
-	if r.repel {
-		fmt.Printf("repel %d\n", r.fakeID)
-	}
-	if r.key {
-		fmt.Printf("key %d\n", r.fakeID)
-	}
-	if r.door {
-		fmt.Printf("door %d\n", r.fakeID)
-	}
-	if r.rope {
-		fmt.Printf("rope %d\n", r.fakeID)
-	}
-	if r.shield {
-		fmt.Printf("shield %d\n", r.fakeID)
+	for e := range r.entities {
+		fmt.Printf("%s %d\n", e, r.fakeID)
 	}
 }

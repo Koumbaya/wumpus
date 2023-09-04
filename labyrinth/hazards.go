@@ -6,9 +6,9 @@ import (
 
 // ActivateBat teleports the player to a different room.
 func (l *Labyrinth) ActivateBat() int {
-	l.rooms[l.playerLoc].player = false
+	l.rooms[l.playerLoc].removeEntity(Player)
 	n := l.r.Intn(len(l.rooms))
-	l.rooms[n].player = true
+	l.rooms[n].addEntity(Player)
 	l.playerLoc = n
 	return l.rooms[n].fakeID
 }
@@ -18,7 +18,7 @@ func (l *Labyrinth) BatMigration() {
 	// save current location
 	existing := make([]int, 0, nbBats)
 	for i := 0; i < len(l.rooms); i++ {
-		if l.rooms[i].bat {
+		if l.rooms[i].hasEntity(Bat) {
 			existing = append(existing, i)
 		}
 		if len(existing) == nbBats {
@@ -28,7 +28,7 @@ func (l *Labyrinth) BatMigration() {
 
 	for i := 0; i < nbBats; i++ {
 		r := l.randomRoom(withoutKeyItem(), withoutHazard())
-		l.rooms[r].bat = true
+		l.rooms[r].addEntity(Bat)
 		if l.debug {
 			fmt.Printf("bat relocated to %d\n", l.rooms[r].fakeID)
 		}
@@ -36,7 +36,7 @@ func (l *Labyrinth) BatMigration() {
 
 	// erase previous locations
 	for _, i := range existing {
-		l.rooms[i].bat = false
+		l.rooms[i].removeEntity(Bat)
 	}
 }
 
@@ -45,7 +45,7 @@ func (l *Labyrinth) Earthquake() {
 	// save current location
 	existing := make([]int, 0, nbPits)
 	for i := 0; i < len(l.rooms); i++ {
-		if l.rooms[i].pit {
+		if l.rooms[i].hasEntity(Pit) {
 			existing = append(existing, i)
 		}
 		if len(existing) == nbPits {
@@ -55,7 +55,7 @@ func (l *Labyrinth) Earthquake() {
 
 	for i := 0; i < nbPits; i++ {
 		r := l.randomRoom(withoutKeyItem(), withoutHazard())
-		l.rooms[r].pit = true
+		l.rooms[r].addEntity(Pit)
 		if l.debug {
 			fmt.Printf("pit relocated to %d\n", l.rooms[r].fakeID)
 		}
@@ -63,7 +63,7 @@ func (l *Labyrinth) Earthquake() {
 
 	// erase previous locations
 	for _, i := range existing {
-		l.rooms[i].pit = false
+		l.rooms[i].removeEntity(Pit)
 	}
 }
 
@@ -71,7 +71,7 @@ func (l *Labyrinth) TermitesMigration() {
 	// save current location
 	existing := make([]int, 0, nbTermites)
 	for i := 0; i < len(l.rooms); i++ {
-		if l.rooms[i].termite {
+		if l.rooms[i].hasEntity(Termite) {
 			existing = append(existing, i)
 		}
 		if len(existing) == nbTermites {
@@ -81,7 +81,7 @@ func (l *Labyrinth) TermitesMigration() {
 
 	for i := 0; i < nbTermites; i++ {
 		r := l.randomRoom(withoutKeyItem(), withoutHazard())
-		l.rooms[r].termite = true
+		l.rooms[r].addEntity(Termite)
 		if l.debug {
 			fmt.Printf("termite relocated to %d\n", l.rooms[r].fakeID)
 		}
@@ -89,6 +89,6 @@ func (l *Labyrinth) TermitesMigration() {
 
 	// erase previous locations
 	for _, i := range existing {
-		l.rooms[i].termite = false
+		l.rooms[i].removeEntity(Termite)
 	}
 }

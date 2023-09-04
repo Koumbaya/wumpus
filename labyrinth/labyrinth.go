@@ -80,94 +80,70 @@ func (l *Labyrinth) Init(targetLvl int) {
 	for i := 0; i < len(l.rooms); i++ {
 		l.rooms[i].fakeID = randRooms[i] + 1 // +1 so the player never sees a room 0.
 		// reset entities on restart
-		l.rooms[i].entities = entities{}
+		l.rooms[i].entities = make(map[entity]struct{}, 5) // 10 different entities but few can coexist anyway.
 		// keep track of fakeIds for fast access
 		l.fakeIDs[l.rooms[i].fakeID] = i
 	}
 
 	// place pits & bats in distinct locations
 	for i := 0; i < nbPits; i++ {
-		l.rooms[l.randomRoom(withoutHazard())].pit = true
+		l.rooms[l.randomRoom(withoutHazard())].addEntity(Pit)
 	}
 
 	for i := 0; i < nbBats; i++ {
-		l.rooms[l.randomRoom(withoutHazard())].bat = true
+		l.rooms[l.randomRoom(withoutHazard())].addEntity(Bat)
 	}
 
 	if l.wump3 {
 		for i := 0; i < nbTermites; i++ {
-			l.rooms[l.randomRoom(withoutHazard())].termite = true
+			l.rooms[l.randomRoom(withoutHazard())].addEntity(Termite)
 		}
 	}
 
 	if l.advanced {
 		for i := 0; i < nbKey; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].key = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Key)
 		}
 		for i := 0; i < nbDoor; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].door = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Door)
 		}
 
 		// clues/rope/repel/shield can be in the same room as each other, but we avoid clues on door/key
 		for i := 0; i < nbClues; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].clue = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].addEntity(Clue)
 		}
 
 		for i := 0; i < nbRepel; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].repel = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].addEntity(Repel)
 		}
 
 		for i := 0; i < nbRope; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].rope = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].addEntity(Rope)
 		}
 
 		for i := 0; i < nbShield; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].shield = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
 		}
 	}
 
 	// place player
 	l.playerLoc = l.randomRoom(withoutHazard(), withoutKeyItem(), withoutItem())
-	l.rooms[l.playerLoc].player = true
+	l.rooms[l.playerLoc].addEntity(Player)
 	l.visited[l.playerLoc] = struct{}{}
 
 	// place the Wumpus anywhere but where the player is
-	l.rooms[l.randomRoom(withoutEntity(Player))].wumpus = true
+	l.rooms[l.randomRoom(withoutEntity(Player))].addEntity(Wumpus)
 
 	if l.debug {
 		l.PrintDebug()
 	}
 }
 
-func (l *Labyrinth) Has(id int, e Entity) bool {
-	switch e {
-	case Player:
-		return l.rooms[id].player
-	case Wumpus:
-		return l.rooms[id].wumpus
-	case Bat:
-		return l.rooms[id].bat
-	case Pit:
-		return l.rooms[id].pit
-	case Termite:
-		return l.rooms[id].termite
-	case Clue:
-		return l.rooms[id].clue
-	case Repel:
-		return l.rooms[id].repel
-	case Key:
-		return l.rooms[id].key
-	case Door:
-		return l.rooms[id].door
-	case Rope:
-		return l.rooms[id].rope
-	case Shield:
-		return l.rooms[id].shield
-	}
-	return false
+func (l *Labyrinth) Has(id int, e entity) bool {
+	return l.rooms[id].hasEntity(e)
 }
 
-func (l *Labyrinth) Nearby(e Entity) bool {
+func (l *Labyrinth) Nearby(e entity) bool {
 	for _, i := range l.rooms[l.playerLoc].edges {
 		if l.Has(i, e) {
 			return true

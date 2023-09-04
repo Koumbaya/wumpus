@@ -9,7 +9,7 @@ import (
 // Can give new clue if the wumpus/pits/bats moved.
 // TODO : move dialogues subjects outside.
 func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
-	l.rooms[clueLoc].clue = false //remove the clue from the room
+	l.rooms[clueLoc].removeEntity(Clue) //remove the clue from the room
 	nbEntities := 5
 	if l.wump3 {
 		nbEntities++ // for termites
@@ -66,24 +66,24 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 
 // FoundRepel check if repel is at current location and mark as found, return true only the first time.
 func (l *Labyrinth) FoundRepel() bool {
-	if l.rooms[l.playerLoc].repel {
-		l.rooms[l.playerLoc].repel = false
+	if l.rooms[l.playerLoc].hasEntity(Repel) {
+		l.rooms[l.playerLoc].removeEntity(Repel)
 		return true
 	}
 	return false
 }
 
 func (l *Labyrinth) FoundRope() bool {
-	if l.rooms[l.playerLoc].rope {
-		l.rooms[l.playerLoc].rope = false
+	if l.rooms[l.playerLoc].hasEntity(Rope) {
+		l.rooms[l.playerLoc].removeEntity(Rope)
 		return true
 	}
 	return false
 }
 
 func (l *Labyrinth) FoundShield() bool {
-	if l.rooms[l.playerLoc].shield {
-		l.rooms[l.playerLoc].shield = false
+	if l.rooms[l.playerLoc].hasEntity(Shield) {
+		l.rooms[l.playerLoc].removeEntity(Shield)
 		return true
 	}
 	return false

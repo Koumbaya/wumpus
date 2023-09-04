@@ -14,8 +14,8 @@ func (l *Labyrinth) PlayerPOV() int {
 func (l *Labyrinth) TryMovePlayer(fakeTarget int) bool {
 	target := l.fakeIDs[fakeTarget]
 	if l.validDestination(l.playerLoc, target) || l.debug /*allow teleport in debug mode*/ {
-		l.rooms[l.playerLoc].player = false
-		l.rooms[target].player = true
+		l.rooms[l.playerLoc].removeEntity(Player)
+		l.rooms[target].addEntity(Player)
 		l.playerLoc = target
 		l.visited[target] = struct{}{}
 		return true

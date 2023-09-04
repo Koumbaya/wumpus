@@ -7,7 +7,7 @@ import (
 // Wumpus returns the shuffled location of the wumpus.
 func (l *Labyrinth) Wumpus() int {
 	for _, r := range l.rooms {
-		if r.wumpus {
+		if r.hasEntity(Wumpus) {
 			return r.fakeID
 		}
 	}
@@ -41,7 +41,7 @@ func (l *Labyrinth) relocateWumpus(avoidPlayer bool) {
 	// save current location
 	existing := make([]int, 0, nbWumpus)
 	for i := 0; i < len(l.rooms); i++ {
-		if l.rooms[i].wumpus {
+		if l.rooms[i].hasEntity(Wumpus) {
 			existing = append(existing, i)
 		}
 		if len(existing) == nbWumpus {
@@ -56,7 +56,7 @@ func (l *Labyrinth) relocateWumpus(avoidPlayer bool) {
 	}
 	for i := 0; i < nbWumpus; i++ {
 		r := l.randomRoom(cond...)
-		l.rooms[r].wumpus = true
+		l.rooms[r].addEntity(Wumpus)
 		if l.debug {
 			fmt.Printf("wumpus relocated to %d\n", l.rooms[r].fakeID)
 		}
@@ -64,6 +64,6 @@ func (l *Labyrinth) relocateWumpus(avoidPlayer bool) {
 
 	// erase previous locations
 	for _, i := range existing {
-		l.rooms[i].wumpus = false
+		l.rooms[i].removeEntity(Wumpus)
 	}
 }
