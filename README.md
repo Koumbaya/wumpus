@@ -36,6 +36,8 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - **4**: Hex Network : imagine an hexagonal tile floor. Take a rectangle with 20 points (intersections) inside (4x4). Join right & left side to make a cylinder, then join top & bottom to form a torus.
    - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends. Susceptible to severance by pits, you might need to shoot in the unknown to make the Wumpus move! 
    - **6**: One-way lattice : Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
+   - **custom**: Do your own level ! Edit `levels/custom.json` which is an example, give it a level number not already taken and launch the game with the `-level=x` option. (You might need at least 5 rooms without advanced mode and 8 with it because some entities can't coexist on the same room).
+     - a level is defined by numbered rooms, and each room has a list of "edges" (tunnels in the game) that link it to other room. If you specify only X to Y, the tunnel is effectively one way.
 
 7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
