@@ -41,7 +41,8 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
 
 7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
-   - You might also find clues about your environment and various objects...
+   - Various objects will help you defend yourself against enemies and dangers !
+   - You might also find clues about your environment...
 
 **Notes**: Small differences with the original game :  
 You can move directly by inputting a direction at the `Move or Shoot` question (input `m 8` or `8` or `m8`) .  

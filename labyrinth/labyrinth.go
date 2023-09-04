@@ -10,7 +10,7 @@ const (
 	nbWumpus   = 1
 	nbBats     = 2
 	nbPits     = 2
-	nbTermites = 1
+	nbTermites = 2
 	nbClues    = 3
 	nbRepel    = 1
 	nbKey      = 1

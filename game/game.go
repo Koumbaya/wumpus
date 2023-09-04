@@ -23,8 +23,9 @@ const (
 )
 
 const (
-	maxArrows  = 4
-	randMaps   = 10 // todo : adjust
+	nbArrows   = 5
+	randMaps   = 12 // todo : adjust
+	randArrows = 16 // todo : adjust
 	randEvent  = 20 // original probability 1/12
 	randWumpus = 20
 )
@@ -46,17 +47,8 @@ type Game struct {
 	timer          time.Time
 	infiniteArrows bool
 	wump3          bool
-	// advanced features
-	advanced     bool
-	foundKey     bool
-	foundDoor    bool
-	foundRepel   bool // todo: refactor all those booleans
-	usedRepel    bool
-	foundRope    bool
-	usedRope     bool
-	foundShield  bool
-	usedShield   bool
-	killedWumpus bool
+	advanced       bool
+	inventory      inventory
 }
 
 func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, wump3 bool, seed int64) Game {
@@ -120,7 +112,7 @@ func (g *Game) playerState(input string) bool {
 	switch g.state {
 	case waitShootMove:
 		if strings.EqualFold(input, "S") {
-			if !g.infiniteArrows && g.arrowsFired >= maxArrows {
+			if !g.infiniteArrows && !g.inventory.has(arrow) {
 				g.p.Println(dia.NoMoreArrows)
 				g.p.Print(dia.ChoiceShootMove)
 				break
@@ -159,16 +151,18 @@ func (g *Game) playerState(input string) bool {
 		}
 		g.clues()
 		g.maps()
+		g.arrows()
 		g.p.Print(dia.ChoiceShootMove)
 		g.state = waitShootMove
 	case waitArrowPower:
 		g.l.FireArrow(input)
 		g.p.Println(dia.FireArrow)
 		if !g.infiniteArrows {
-			g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
+			g.inventory.use(arrow)
+			g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
 		}
-		g.whereToArrow()
 		g.arrowsFired++
+		g.whereToArrow()
 		g.state = waitArrowWhereTo
 	case waitArrowWhereTo:
 		if !g.tryArrow(input) {
@@ -192,15 +186,8 @@ func (g *Game) playerState(input string) bool {
 func (g *Game) start() {
 	g.turns = 0
 	g.arrowsFired = 0
-	g.foundKey = false
-	g.foundDoor = false
-	g.foundRepel = false
-	g.usedRepel = false
-	g.foundRope = false
-	g.usedRope = false
-	g.foundShield = false
-	g.usedShield = false
-	g.killedWumpus = false
+	g.inventory.init()
+	g.inventory.addn(arrow, nbArrows)
 	g.timer = time.Now()
 	g.p.Println(dia.Start)
 	g.cavern()
@@ -222,9 +209,9 @@ func (g *Game) tryArrow(input string) bool {
 
 func (g *Game) handleArrow() state {
 	g.p.Printf(dia.ArrowTravel, g.l.ArrowPOV())
-	if g.l.Has(g.l.Arrow(), labyrinth.Wumpus) && !g.killedWumpus {
+	if g.l.Has(g.l.Arrow(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.KilledWumpus)
-		g.killedWumpus = true
+		g.inventory.add(wumpusHide)
 		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
 			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, time.Since(g.timer).String(), g.arrowsFired, g.l.Visited())
 			g.p.Print(dia.PlayAGain)
@@ -244,7 +231,7 @@ func (g *Game) handleArrow() state {
 	}
 
 	if g.l.PowerRemaining() == 0 {
-		if g.l.StartleWumpus() && !g.killedWumpus {
+		if g.l.StartleWumpus() && !g.inventory.has(wumpusHide) {
 			g.p.Println(dia.ArrowStartle)
 			// check 1/20 odds that the wumpus moved to player's cavern
 			if g.l.Has(g.l.Player(), labyrinth.Wumpus) {
@@ -291,7 +278,7 @@ func (g *Game) describe() {
 	if g.l.Nearby(labyrinth.Pit) {
 		g.p.Println(dia.PitsNearby)
 	}
-	if g.l.Nearby(labyrinth.Wumpus) && !g.killedWumpus {
+	if g.l.Nearby(labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.WumpusNearby)
 	}
 
@@ -353,18 +340,18 @@ func (g *Game) clues() {
 		g.p.Printf(dia.FoundClue, subject, loc)
 	}
 
-	if g.l.FoundRepel() {
-		g.foundRepel = true
+	if g.l.FoundObject(labyrinth.Repel) {
+		g.inventory.add(repel)
 		g.p.Println(dia.FoundRepel)
 	}
 
-	if g.l.FoundRope() {
-		g.foundRope = true
+	if g.l.FoundObject(labyrinth.Rope) {
+		g.inventory.add(rope)
 		g.p.Println(dia.FoundRope)
 	}
 
-	if g.l.FoundShield() {
-		g.foundShield = true
+	if g.l.FoundObject(labyrinth.Shield) {
+		g.inventory.add(shield)
 		g.p.Println(dia.FoundShield)
 	}
 }
@@ -380,16 +367,27 @@ func (g *Game) maps() {
 	}
 }
 
+// arrows randomly gives arrows.
+func (g *Game) arrows() {
+	if !g.advanced {
+		return
+	}
+
+	if g.r.Intn(randArrows) == 0 {
+		g.inventory.add(arrow)
+		g.p.Println(dia.FoundArrow)
+	}
+}
+
 // hazards checks for wumpus/bats/pits when entering a new room.
 // Return true if a hazard killed the player.
 // If a bat moves the player, call recursively.
 func (g *Game) hazards() bool {
 	// the wumpus is immune to hazards, so we check for it first
-	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.killedWumpus {
+	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
-			if g.foundShield && !g.usedShield {
-				g.usedShield = true
+			if g.inventory.tryUse(shield) {
 				g.p.Println(dia.UseShield) // the wumpus is relocated in any case
 			} else {
 				g.p.Println(dia.KilledByWumpus)
@@ -402,8 +400,7 @@ func (g *Game) hazards() bool {
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
 	if g.l.Has(g.l.Player(), labyrinth.Bat) {
-		if g.foundRepel && !g.usedRepel {
-			g.usedRepel = true
+		if g.inventory.tryUse(repel) {
 			g.p.Println(dia.UseRepel)
 		} else {
 			g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
@@ -412,8 +409,7 @@ func (g *Game) hazards() bool {
 	}
 
 	if g.l.Has(g.l.Player(), labyrinth.Pit) {
-		if g.foundRope && !g.usedRope {
-			g.usedRope = true
+		if g.inventory.tryUse(rope) {
 			g.p.Println(dia.UseRope)
 		} else {
 			g.p.Println(dia.FellIntoPit)
@@ -422,10 +418,9 @@ func (g *Game) hazards() bool {
 		}
 	}
 
-	if g.wump3 && g.arrowsFired < maxArrows && g.l.Has(g.l.Player(), labyrinth.Termite) {
+	if g.wump3 && g.l.Has(g.l.Player(), labyrinth.Termite) && g.inventory.tryUse(arrow) {
 		g.p.Println(dia.TermiteEatArrow)
-		g.p.Printf(dia.RemainingArrows, maxArrows-g.arrowsFired)
-		g.arrowsFired++
+		g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
 	}
 
 	return false
@@ -438,42 +433,42 @@ func (g *Game) keyDoor() bool {
 		return false
 	}
 
-	door := g.l.Has(g.l.Player(), labyrinth.Door)
-	key := g.l.Has(g.l.Player(), labyrinth.Key)
+	doorRoom := g.l.Has(g.l.Player(), labyrinth.Door)
+	keyRoom := g.l.Has(g.l.Player(), labyrinth.Key)
 
-	if !door && !key {
+	if !doorRoom && !keyRoom {
 		return false
 	}
 
 	canUnlock := false // in the door room with the key.
 	switch {
-	case door && g.foundKey && g.foundDoor:
+	case doorRoom && g.inventory.has(key) && g.inventory.has(door):
 		// found the door, then the key, and are back to the room with the door
 		g.p.Println(dia.DoorKeyDoor)
 		canUnlock = true
-	case door && g.foundKey:
+	case doorRoom && g.inventory.has(key):
 		// found the key first then the door (first time seeing it)
 		g.p.Println(dia.KeyThenDoor)
-		g.foundDoor = true
+		g.inventory.add(door)
 		canUnlock = true
-	case door && !g.foundDoor:
+	case doorRoom && !g.inventory.has(door):
 		// first time seeing the door, no key
 		g.p.Println(dia.FirstDoorDiscoveryNoKey)
-		g.foundDoor = true
-	case door:
+		g.inventory.add(door)
+	case doorRoom:
 		// back in the cavern with the door again
 		g.p.Println(dia.BackAgainDoorNoKey)
-	case key && g.foundDoor && !g.foundKey:
+	case keyRoom && g.inventory.has(door) && !g.inventory.has(key):
 		// found the door first, then this key
 		g.p.Println(dia.DoorThenKey)
-		g.foundKey = true
-	case key && !g.foundDoor && !g.foundKey:
+		g.inventory.add(key)
+	case keyRoom && !g.inventory.has(door) && !g.inventory.has(key):
 		// found the key first
 		g.p.Println(dia.FirstKeyDiscoveryNoDoor)
-		g.foundKey = true
+		g.inventory.add(key)
 	}
 
-	if canUnlock && !g.killedWumpus {
+	if canUnlock && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.WumpusStillAlive)
 	} else if canUnlock {
 		if !g.l.HasNextLevel() {
@@ -491,11 +486,11 @@ func (g *Game) keyDoor() bool {
 // mustExit resolve the dialogues for the next step of the game in advanced mode.
 func (g *Game) mustExit() {
 	switch {
-	case g.foundKey && g.foundDoor:
+	case g.inventory.has(key) && g.inventory.has(door):
 		g.p.Println(dia.CertainKeyDoor)
-	case g.foundKey && !g.foundDoor:
+	case g.inventory.has(key) && !g.inventory.has(door):
 		g.p.Println(dia.MaybeKey)
-	case !g.foundKey && g.foundDoor:
+	case !g.inventory.has(key) && g.inventory.has(door):
 		g.p.Println(dia.MaybeDoor)
 	default:
 		g.p.Println(dia.NowExit)

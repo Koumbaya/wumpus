@@ -679,6 +679,22 @@
         "The Wumpus, teeth bared, lunges at you with terrifying force. Desperately, you block with your shield, bearing the full force of its fury. The powerful blow leaves your shield in pieces, and the Wumpus, disoriented, vanishes into the echoing caverns."
       ],
       "color": "yellow"
+    },
+    {
+      "key": "FoundArrow",
+      "values": [
+        "➴ As you move further into the cavern, you spot a lone arrow on the ground. Without hesitation, you pick it up and slide it into your quiver.",
+        "➴ Nestled in the shadows, you discover an arrow, its tip gleaming ominously. You tuck it safely among your other arrows.",
+        "➴ Your eyes catch the faint shimmer of an arrow lying half-buried in the dirt. Gratefully, you add it to your collection in your quiver.",
+        "➴ Amidst the gloom, you stumble upon an arrow, its shaft worn but sturdy. You feel slightly more prepared as you place it with the rest in your quiver.",
+        "➴ A gleaming arrowhead catches your attention. Retrieving the whole arrow, you ready it for future use, placing it in your quiver.",
+        "➴ There's an unexpected find at your feet – an arrow, seemingly discarded by a previous adventurer. You claim it, bolstering your own supply.",
+        "➴ By the cavern wall, an arrow rests, waiting for its next purpose. You're more than happy to provide it, securing it in your quiver.",
+        "➴ Your fingers brush against the fletching of an abandoned arrow. Picking it up, you slide it into your quiver, ready for the challenges ahead.",
+        "➴ Hidden among the rocks, you find a stray arrow. Its presence increases your chances of survival as you add it to your arsenal.",
+        "➴ A hint of wood and feather beneath a pile of leaves reveals an arrow. The added ammunition is a small, but significant boost to your confidence."
+      ],
+      "color": "yellow"
     }
   ]
 }

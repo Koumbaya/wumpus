@@ -64,26 +64,10 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 	return output
 }
 
-// FoundRepel check if repel is at current location and mark as found, return true only the first time.
-func (l *Labyrinth) FoundRepel() bool {
-	if l.rooms[l.playerLoc].hasEntity(Repel) {
-		l.rooms[l.playerLoc].removeEntity(Repel)
-		return true
-	}
-	return false
-}
-
-func (l *Labyrinth) FoundRope() bool {
-	if l.rooms[l.playerLoc].hasEntity(Rope) {
-		l.rooms[l.playerLoc].removeEntity(Rope)
-		return true
-	}
-	return false
-}
-
-func (l *Labyrinth) FoundShield() bool {
-	if l.rooms[l.playerLoc].hasEntity(Shield) {
-		l.rooms[l.playerLoc].removeEntity(Shield)
+// FoundObject check if entity is at current location and mark as found, return true only the first time.
+func (l *Labyrinth) FoundObject(e entity) bool {
+	if l.rooms[l.playerLoc].hasEntity(e) {
+		l.rooms[l.playerLoc].removeEntity(e)
 		return true
 	}
 	return false

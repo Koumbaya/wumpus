@@ -74,4 +74,5 @@ const (
 	UseRope                 = "UseRope"
 	FoundShield             = "FoundShield"
 	UseShield               = "UseShield"
+	FoundArrow              = "FoundArrow"
 )
