@@ -2,7 +2,6 @@ package labyrinth
 
 import (
 	"fmt"
-	"math/rand"
 )
 
 // Wumpus returns the shuffled location of the wumpus.
@@ -21,12 +20,12 @@ func (l *Labyrinth) FoundWumpus() (killed bool) {
 	// move the wumpus to another room
 	l.relocateWumpus(true)
 
-	return rand.Intn(2) == 0
+	return l.r.Intn(2) == 0
 }
 
 // StartleWumpus usually makes the Wumpus relocate.
 func (l *Labyrinth) StartleWumpus() bool {
-	if rand.Intn(4) != 0 { // 3 times out of 4 the wumpus will relocate
+	if l.r.Intn(4) != 0 { // 3 times out of 4 the wumpus will relocate
 		l.relocateWumpus(false)
 		return true
 	}

@@ -2,7 +2,6 @@ package labyrinth
 
 import (
 	"fmt"
-	"math/rand"
 )
 
 type Entity int
@@ -41,51 +40,6 @@ type room struct {
 }
 
 type filterFunc func(room) bool
-
-// randomRoom return a random room matching filters.
-func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
-	perm := rand.Perm(len(l.rooms))
-
-	for _, index := range perm {
-		candidate := l.rooms[index]
-		match := true
-		for _, f := range filters {
-			if !f(candidate) {
-				match = false
-				break
-			}
-		}
-		if match {
-			return index
-		}
-	}
-	panic("no room matching, shouldn't happen")
-}
-
-func (l *Labyrinth) getRoom(filters ...filterFunc) int {
-	for i := 0; i < len(l.rooms); i++ {
-		for _, f := range filters {
-			candidate := l.rooms[i]
-			if f(candidate) {
-				return i
-			}
-		}
-	}
-	panic("no room matching, shouldn't happen")
-}
-
-func (l *Labyrinth) getRooms(filters ...filterFunc) []int {
-	out := make([]int, 0)
-	for i := 0; i < len(l.rooms); i++ {
-		for _, f := range filters {
-			candidate := l.rooms[i]
-			if f(candidate) {
-				out = append(out, i)
-			}
-		}
-	}
-	return out
-}
 
 // return false if the room already has one entity that can't cohabit with others or is needed to win the game (ex. no pit on a door).
 // technically player can cohabit, but we don't want to add another entity to the player's location (usually).
@@ -165,6 +119,26 @@ func withoutEntity(e Entity) filterFunc {
 		}
 		return false
 	}
+}
+
+// randomRoom return a random room matching filters.
+func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
+	perm := l.r.Perm(len(l.rooms))
+
+	for _, index := range perm {
+		candidate := l.rooms[index]
+		match := true
+		for _, f := range filters {
+			if !f(candidate) {
+				match = false
+				break
+			}
+		}
+		if match {
+			return index
+		}
+	}
+	panic("no room matching, shouldn't happen")
 }
 
 func (r *room) printEntities() {

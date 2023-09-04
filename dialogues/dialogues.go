@@ -24,12 +24,14 @@ type dialogueVariations struct {
 type Printer struct {
 	noDelay   bool
 	dialogues map[string]dialogueVariations
+	r         *rand.Rand
 }
 
-func NewPrinter(noDelay, clean bool) *Printer {
+func NewPrinter(noDelay, clean bool, seed int64) *Printer {
 	return &Printer{
 		noDelay:   noDelay,
 		dialogues: loadDialogues(clean),
+		r:         rand.New(rand.NewSource(seed)),
 	}
 }
 
@@ -126,7 +128,7 @@ func removeSpecialChars(s []string) []string {
 
 // getRandomVal returns one of the dialogue at random for a given key.
 func (p *Printer) getRandomVal(key string) string {
-	return p.dialogues[key].values[rand.Intn(len(p.dialogues[key].values))]
+	return p.dialogues[key].values[p.r.Intn(len(p.dialogues[key].values))]
 }
 
 func color(s []string, color string) []string {
@@ -135,7 +137,7 @@ func color(s []string, color string) []string {
 	}
 
 	for i := range s {
-		s[i] = mapColors(color) + s[i] + reset
+		s[i] = mapColors(color) + s[i] + Reset
 	}
 
 	return s
@@ -143,10 +145,10 @@ func color(s []string, color string) []string {
 
 func mapColors(s string) string {
 	switch s {
-	case "reset":
-		return reset
+	case "Reset":
+		return Reset
 	case "dim":
-		return dim
+		return Dim
 	case "red":
 		return red
 	case "yellow":

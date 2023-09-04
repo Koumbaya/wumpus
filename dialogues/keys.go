@@ -1,8 +1,8 @@
 package dialogues
 
 const (
-	reset  = "\033[0m"
-	dim    = "\033[2m"
+	Reset  = "\033[0m"
+	Dim    = "\033[2m"
 	red    = "\033[31m"
 	yellow = "\033[33m"
 	cyan   = "\033[36m"
@@ -49,6 +49,7 @@ const (
 	TermitesNearby   = "TermitesNearby"
 	TermiteMigration = "TermiteMigration"
 	TermiteEatArrow  = "TermiteEatArrow"
+	Seed             = "Seed"
 )
 
 // advanced features.

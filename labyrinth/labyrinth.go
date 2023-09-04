@@ -26,6 +26,7 @@ type level struct {
 
 // Labyrinth is the collection of cLevel making up the dodecahedron.
 type Labyrinth struct {
+	r *rand.Rand
 	// levels store all the jsons levels
 	levels   map[int]level
 	curLevel int
@@ -47,13 +48,14 @@ type Labyrinth struct {
 }
 
 // NewLabyrinth returns an initialized dodecahedron Labyrinth and game elements in their starting positions.
-func NewLabyrinth(advanced, debug, wump3 bool, level int) Labyrinth {
+func NewLabyrinth(advanced, debug, wump3 bool, level int, seed int64) Labyrinth {
 	l := Labyrinth{
 		// there is probably a way to do this mathematically but is it worth it ?
 		levels:   loadLevels(),
 		advanced: advanced,
 		debug:    debug,
 		wump3:    wump3,
+		r:        rand.New(rand.NewSource(seed)),
 	}
 
 	if _, exist := l.levels[level]; !exist {
@@ -71,7 +73,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 	l.fakeIDs = make(map[int]int)
 	l.visited = make(map[int]struct{}, len(l.rooms))
 	l.cluesGiven = make(map[string]struct{}, nbClues)
-	randRooms := rand.Perm(len(l.rooms))
+	randRooms := l.r.Perm(len(l.rooms))
 
 	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
 	for i := 0; i < len(l.rooms); i++ {
@@ -178,7 +180,7 @@ func (l *Labyrinth) validDestination(location, target int) bool {
 
 // randomDest chooses an edge at random for a given location
 func (l *Labyrinth) randomDest(location int) int {
-	return l.rooms[location].edges[rand.Intn(len(l.rooms[location].edges))]
+	return l.rooms[location].edges[l.r.Intn(len(l.rooms[location].edges))]
 }
 
 // GetFmtNeighbors returns the shuffled (player POV) and formatted list of outgoing edges (tunnels) for a given room.

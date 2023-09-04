@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"time"
 
 	"github.com/koumbaya/wumpus/dialogues"
 	"github.com/koumbaya/wumpus/game"
@@ -16,6 +17,7 @@ var (
 	clean    bool
 	wump3    bool
 	level    int
+	seed     int64
 )
 
 func init() {
@@ -26,12 +28,17 @@ func init() {
 	flag.BoolVar(&clean, "clean", false, "Remove symbols and colors from terminal output")
 	flag.BoolVar(&wump3, "wump3", true, "Features from wumpus III")
 	flag.IntVar(&level, "level", 1, "Start at a specific level")
+	flag.Int64Var(&seed, "seed", 0, "Set a specific seed to the random functions for debug purpose")
 }
 
 func main() {
 	flag.Parse()
 
-	l := labyrinth.NewLabyrinth(advanced, debug, wump3, level)
-	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean), arrows, advanced, wump3)
+	if seed == 0 {
+		seed = time.Now().UnixNano()
+	}
+
+	l := labyrinth.NewLabyrinth(advanced, debug, wump3, level, seed)
+	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean, seed), arrows, advanced, wump3, seed)
 	g.Loop()
 }

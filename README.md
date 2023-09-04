@@ -55,7 +55,8 @@ While the layout remains fixed, the numbers by which the caverns are named do no
 go run .
 ```
 Type `exit` any time to close the game.  
-Type `reset` any time to restart from the first level.
+Type `reset` any time to restart from the first level.  
+Type `seed` to get the seed used for randomness (debug purpose).
 
 There a various flags available :  
 `-advanced=false`: disable advanced mode (play exactly as the original game).  
@@ -64,6 +65,7 @@ There a various flags available :
 `-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)  
 `-level=x`: start at a specific level (1-6).  
 `-arrows`: gives infinite arrows.  
+`-seed=xxxx`: set all the randomness based on the seed for debug purpose.
 `-debug`: cheat/debug mode.  
 
 ![cover](cover.png)

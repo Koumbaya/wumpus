@@ -39,6 +39,8 @@ type Game struct {
 	l labyrinth.Labyrinth
 	p Printer
 	state
+	r              *rand.Rand
+	seed           int64
 	turns          int
 	arrowsFired    int
 	timer          time.Time
@@ -55,7 +57,7 @@ type Game struct {
 	killedWumpus bool
 }
 
-func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, wump3 bool) Game {
+func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, wump3 bool, seed int64) Game {
 	return Game{
 		l:              labyrinth,
 		p:              printer,
@@ -63,6 +65,8 @@ func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, w
 		infiniteArrows: arrows,
 		advanced:       advanced,
 		wump3:          wump3,
+		r:              rand.New(rand.NewSource(seed)),
+		seed:           seed,
 	}
 }
 
@@ -91,6 +95,8 @@ func (g *Game) Loop() {
 		case "debug":
 			g.l.PrintDebug()
 			continue
+		case "seed":
+			g.p.Printf(dia.Seed, g.seed)
 		}
 
 		if g.state == waitShootMove { // todo : ugly way of doing things, refactor
@@ -307,22 +313,22 @@ func (g *Game) events() {
 		return
 	}
 
-	if rand.Intn(randEvent) == 0 {
+	if g.r.Intn(randEvent) == 0 {
 		g.l.Earthquake()
 		g.p.Println(dia.Earthquake)
 	}
 
-	if rand.Intn(randEvent) == 0 {
+	if g.r.Intn(randEvent) == 0 {
 		g.l.BatMigration()
 		g.p.Println(dia.BatMigration)
 	}
 
-	if rand.Intn(randEvent) == 0 {
+	if g.r.Intn(randEvent) == 0 {
 		g.l.TermitesMigration()
 		g.p.Println(dia.TermiteMigration)
 	}
 
-	if rand.Intn(randWumpus) == 0 { // lower probability
+	if g.r.Intn(randWumpus) == 0 { // lower probability
 		g.l.SleepwalkWumpus()
 		g.p.Println(dia.SleepWalkWumpus)
 	}
@@ -360,7 +366,7 @@ func (g *Game) maps() {
 		return
 	}
 
-	if rand.Intn(randMaps) == 0 {
+	if g.r.Intn(randMaps) == 0 {
 		g.p.Printf(dia.PartialMap, g.l.GetFmtMap())
 	}
 }

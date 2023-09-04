@@ -640,6 +640,13 @@
         "A misstep lands you in a trap, but thankfully, the coil you found becomes your temporary savior, though it frays and comes undone once you're safe."
       ],
       "color": "yellow"
+    },
+    {
+      "key": "Seed",
+      "values": [
+        "%d\n"
+      ],
+      "color": "dim"
     }
   ]
 }

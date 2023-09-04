@@ -2,7 +2,6 @@ package labyrinth
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 )
 
@@ -16,29 +15,29 @@ func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
 		nbEntities++ // for termites
 	}
 	for {
-		n := rand.Intn(nbEntities)
+		n := l.r.Intn(nbEntities)
 		switch n {
 		case 0: // pits
-			loc = l.rooms[l.getRoom(withEntity(Pit))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Pit))].fakeID
 			sub := []string{"a pit", "a hole in the ground", "the abyss"}
-			subject = sub[rand.Intn(len(sub))]
+			subject = sub[l.r.Intn(len(sub))]
 		case 1:
-			loc = l.rooms[l.getRoom(withEntity(Bat))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Bat))].fakeID
 			sub := []string{"bats", "winged creatures", "gargoyles"}
-			subject = sub[rand.Intn(len(sub))]
+			subject = sub[l.r.Intn(len(sub))]
 		case 2:
-			loc = l.rooms[l.getRoom(withEntity(Wumpus))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Wumpus))].fakeID
 			subject = "the Wumpus"
 		case 3:
-			loc = l.rooms[l.getRoom(withEntity(Key))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Key))].fakeID
 			subject = "a key"
 		case 4:
-			loc = l.rooms[l.getRoom(withEntity(Door))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Door))].fakeID
 			subject = "a door"
 		case 5:
-			loc = l.rooms[l.getRoom(withEntity(Termite))].fakeID
+			loc = l.rooms[l.randomRoom(withEntity(Termite))].fakeID
 			sub := []string{"insects that eat wood", "termites", "a colony of wood eater"}
-			subject = sub[rand.Intn(len(sub))]
+			subject = sub[l.r.Intn(len(sub))]
 		}
 		key := subject + strconv.Itoa(loc)
 		if _, found := l.cluesGiven[key]; found {
@@ -52,14 +51,14 @@ func (l *Labyrinth) GetClue(clueLoc int) (loc int, subject string) {
 // GetFmtMap returns a random (formatted) partial map.
 // "maps" don't have locations and are not unique.
 func (l *Labyrinth) GetFmtMap() (output string) {
-	n := rand.Intn(3) //how many connections to display
-	n++               // at least 1
+	n := l.r.Intn(3) //how many connections to display
+	n++              // at least 1
 	output += "\n"
 	for i := 0; i < n; i++ {
-		r := rand.Intn(len(l.rooms))
+		r := l.r.Intn(len(l.rooms))
 		output += fmt.Sprintf("%d --> %d\n",
 			l.rooms[r].fakeID,
-			l.rooms[l.rooms[r].edges[rand.Intn(len(l.rooms[r].edges))]].fakeID,
+			l.rooms[l.rooms[r].edges[l.r.Intn(len(l.rooms[r].edges))]].fakeID,
 		)
 	}
 	return output
