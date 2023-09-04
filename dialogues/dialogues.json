@@ -647,6 +647,38 @@
         "%d\n"
       ],
       "color": "dim"
+    },
+    {
+      "key": "FoundShield",
+      "values": [
+        "You stumble upon a gleaming metal shield, its polished surface reflecting the dim light.",
+        "Nestled in a corner, you find a robust wooden shield, etched with ancient symbols.",
+        "Beneath a layer of dust, you uncover a battered shield, its metal still resilient despite the wear.",
+        "Hidden in the shadows, you discover a once-majestic shield, now tarnished but holding a sense of past glory.",
+        "You come across a stout oak shield, reinforced with bands of iron.",
+        "Lying half-buried, you unearth a shield, its once-vibrant paint now faded and chipped.",
+        "A shimmer catches your eye; a silver-plated shield rests against the cavern wall.",
+        "Amidst the debris, you spot a sturdy shield, marked by the scars of many battles.",
+        "You're drawn to a delicately carved wooden shield, bearing the emblem of a forgotten clan.",
+        "There it is - a shield, inlaid with bronze and bearing an intricate design, waiting for a worthy bearer."
+      ],
+      "color": "yellow"
+    },
+    {
+      "key": "UseShield",
+      "values": [
+        "The Wumpus lunges at you with astonishing speed! Bracing for impact, you raise your shield, deflecting its charge. The beast, taken aback, retreats into the shadows, leaving your shield shattered and unusable.",
+        "Suddenly, the Wumpus springs towards you. With mere moments to react, you position your shield, absorbing the brunt of its assault. The creature hisses in frustration and disappears, but not before your protective gear crumbles to pieces.",
+        "With a menacing growl, the Wumpus charges at you! Just in the nick of time, you hold up your shield, diverting its attack. Startled and thwarted, the Wumpus retreats, leaving you with a shield that's splintered beyond repair.",
+        "The Wumpus, with a roar, comes barreling towards you. Instinctively, you raise your shield, taking the full force of its strike. The monster, discouraged, slinks away, but your once-sturdy defense is now in tatters.",
+        "As the Wumpus makes a sudden strike, you swiftly block with your shield, safeguarding yourself from harm. However, the impact is so immense that your shield cracks irreparably. The beast, thwarted for now, flees into the depths.",
+        "The ground trembles as the Wumpus makes a ferocious dash at you. With no time to think, you thrust your shield forward. The collision sends shockwaves through your arm, and although the Wumpus retreats, bewildered, your shield has been rendered useless.",
+        "You barely catch the glint in the Wumpus's eyes before it's upon you. You manage to interpose your shield between you and its vicious assault. While it deflects the worst of the attack, the shield doesn't survive, splintering into fragments as the beast skitters away.",
+        "The very air seems to freeze as the Wumpus leaps at you. In a split-second decision, you hold up your shield, absorbing the creature's wrath. The Wumpus, momentarily stunned, regroups and escapes into the darkness, leaving you with only the remnants of your broken shield.",
+        "With a fierce cry, the Wumpus surges forward, targeting you. Reacting quickly, you use your shield to stave off its attack. The brunt of the impact leaves the shield fractured and useless, as the beast hastily retreats.",
+        "The Wumpus, teeth bared, lunges at you with terrifying force. Desperately, you block with your shield, bearing the full force of its fury. The powerful blow leaves your shield in pieces, and the Wumpus, disoriented, vanishes into the echoing caverns."
+      ],
+      "color": "yellow"
     }
   ]
 }

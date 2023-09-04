@@ -17,8 +17,10 @@ const (
 	Key
 	Door
 	Rope
+	Shield
 )
 
+// todo : refactor
 type entities struct {
 	pit     bool
 	bat     bool
@@ -30,6 +32,7 @@ type entities struct {
 	key     bool
 	door    bool
 	rope    bool
+	shield  bool
 }
 
 // room is a vertex of the graph.
@@ -41,8 +44,7 @@ type room struct {
 
 type filterFunc func(room) bool
 
-// return false if the room already has one entity that can't cohabit with others or is needed to win the game (ex. no pit on a door).
-// technically player can cohabit, but we don't want to add another entity to the player's location (usually).
+// return true if the room doesn't contain items that are needed to win the game (avoid pit on a door for example).
 // used when migrating dangers
 func withoutKeyItem() filterFunc {
 	return func(r room) bool {
@@ -50,10 +52,10 @@ func withoutKeyItem() filterFunc {
 	}
 }
 
-// return false if the room contains a consumable item.
+// return true if the room contains no consumable item.
 func withoutItem() filterFunc {
 	return func(r room) bool {
-		return !r.rope && !r.repel && !r.clue
+		return !r.rope && !r.repel && !r.shield && !r.clue
 	}
 }
 
@@ -88,6 +90,8 @@ func withEntity(e Entity) filterFunc {
 			return r.door
 		case Rope:
 			return r.rope
+		case Shield:
+			return r.shield
 		}
 		return true
 	}
@@ -116,6 +120,8 @@ func withoutEntity(e Entity) filterFunc {
 			return !r.door
 		case Rope:
 			return !r.rope
+		case Shield:
+			return !r.shield
 		}
 		return false
 	}
@@ -171,5 +177,8 @@ func (r *room) printEntities() {
 	}
 	if r.rope {
 		fmt.Printf("rope %d\n", r.fakeID)
+	}
+	if r.shield {
+		fmt.Printf("shield %d\n", r.fakeID)
 	}
 }

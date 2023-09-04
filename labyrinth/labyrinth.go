@@ -16,6 +16,7 @@ const (
 	nbKey      = 1
 	nbDoor     = 1
 	nbRope     = 1
+	nbShield   = 1
 )
 
 type level struct {
@@ -107,17 +108,21 @@ func (l *Labyrinth) Init(targetLvl int) {
 			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].door = true
 		}
 
-		// clues/rope/repel can be in the same room
+		// clues/rope/repel/shield can be in the same room as each other, but we avoid clues on door/key
+		for i := 0; i < nbClues; i++ {
+			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].clue = true
+		}
+
 		for i := 0; i < nbRepel; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Repel))].repel = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].repel = true
 		}
 
 		for i := 0; i < nbRope; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Rope))].rope = true
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].rope = true
 		}
 
-		for i := 0; i < nbClues; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].clue = true
+		for i := 0; i < nbShield; i++ {
+			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].shield = true
 		}
 	}
 
@@ -156,6 +161,8 @@ func (l *Labyrinth) Has(id int, e Entity) bool {
 		return l.rooms[id].door
 	case Rope:
 		return l.rooms[id].rope
+	case Shield:
+		return l.rooms[id].shield
 	}
 	return false
 }

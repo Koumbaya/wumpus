@@ -80,3 +80,11 @@ func (l *Labyrinth) FoundRope() bool {
 	}
 	return false
 }
+
+func (l *Labyrinth) FoundShield() bool {
+	if l.rooms[l.playerLoc].shield {
+		l.rooms[l.playerLoc].shield = false
+		return true
+	}
+	return false
+}

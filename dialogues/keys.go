@@ -72,4 +72,6 @@ const (
 	UseRepel                = "UseRepel"
 	FoundRope               = "FoundRope"
 	UseRope                 = "UseRope"
+	FoundShield             = "FoundShield"
+	UseShield               = "UseShield"
 )

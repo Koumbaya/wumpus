@@ -50,10 +50,12 @@ type Game struct {
 	advanced     bool
 	foundKey     bool
 	foundDoor    bool
-	foundRepel   bool // todo: refactor repel
+	foundRepel   bool // todo: refactor all those booleans
 	usedRepel    bool
 	foundRope    bool
 	usedRope     bool
+	foundShield  bool
+	usedShield   bool
 	killedWumpus bool
 }
 
@@ -196,6 +198,8 @@ func (g *Game) start() {
 	g.usedRepel = false
 	g.foundRope = false
 	g.usedRope = false
+	g.foundShield = false
+	g.usedShield = false
 	g.killedWumpus = false
 	g.timer = time.Now()
 	g.p.Println(dia.Start)
@@ -358,6 +362,11 @@ func (g *Game) clues() {
 		g.foundRope = true
 		g.p.Println(dia.FoundRope)
 	}
+
+	if g.l.FoundShield() {
+		g.foundShield = true
+		g.p.Println(dia.FoundShield)
+	}
 }
 
 // maps randomly gives partial maps tips.
@@ -379,10 +388,16 @@ func (g *Game) hazards() bool {
 	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.killedWumpus {
 		g.p.Println(dia.StumbledWumpus)
 		if dead := g.l.FoundWumpus(); dead {
-			g.p.Println(dia.KilledByWumpus)
-			return true
+			if g.foundShield && !g.usedShield {
+				g.usedShield = true
+				g.p.Println(dia.UseShield) // the wumpus is relocated in any case
+			} else {
+				g.p.Println(dia.KilledByWumpus)
+				return true
+			}
+		} else {
+			g.p.Println(dia.StartledWumpus)
 		}
-		g.p.Println(dia.StartledWumpus)
 	}
 
 	// the bat may teleport to a pit or the wumpus, so we check it second

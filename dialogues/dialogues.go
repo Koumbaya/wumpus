@@ -128,7 +128,11 @@ func removeSpecialChars(s []string) []string {
 
 // getRandomVal returns one of the dialogue at random for a given key.
 func (p *Printer) getRandomVal(key string) string {
-	return p.dialogues[key].values[p.r.Intn(len(p.dialogues[key].values))]
+	k := len(p.dialogues[key].values)
+	if k == 0 {
+		return "missing values in dialogue.json for key:" + key
+	}
+	return p.dialogues[key].values[p.r.Intn(k)]
 }
 
 func color(s []string, color string) []string {
