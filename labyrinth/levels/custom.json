@@ -8,7 +8,37 @@
     "shield": 1,
     "clue": 3,
     "repel": 4,
-    "rope": 1
+    "rope": 1,
+    "wumpus_start_pos": 0,
+    "player_start_pos": 1,
+    "key_pos": 2,
+    "door_pos": 3,
+    "pits_pos": [
+      4,
+      5
+    ],
+    "bats_pos": [
+      6,
+      7
+    ],
+    "termite_pos": [
+      8,
+      9
+    ],
+    "clue_pos": [
+      10,
+      11,
+      12
+    ],
+    "shield_pos": [
+      13
+    ],
+    "rope_pos": [
+      14
+    ],
+    "repel_pos": [
+      15
+    ]
   },
   "rooms": [
     {

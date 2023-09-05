@@ -15,6 +15,10 @@ func (l *Labyrinth) ActivateBat() int {
 
 // Migration triggers the relocation of all instance of entity.
 func (l *Labyrinth) Migration(e entity) {
+	if !l.levels[l.curLevel].setup.migrations {
+		return // todo: return bool to inhibit print of dialogue
+	}
+
 	existing := make([]int, 0)
 	for i := 0; i < len(l.rooms); i++ {
 		if l.rooms[i].hasEntity(e) {

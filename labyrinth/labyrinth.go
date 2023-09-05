@@ -82,52 +82,97 @@ func (l *Labyrinth) Init(targetLvl int) {
 
 	// place pits & bats in distinct locations
 	for i := 0; i < l.levels[l.curLevel].setup.nbPit; i++ {
-		l.rooms[l.randomRoom(withoutHazard())].addEntity(Pit)
+		if len(l.levels[l.curLevel].setup.pitsPos) == 0 {
+			l.rooms[l.randomRoom(withoutHazard())].addEntity(Pit)
+		} else {
+			l.rooms[index(l.levels[l.curLevel].setup.pitsPos, i)].addEntity(Pit)
+		}
 	}
 
 	for i := 0; i < l.levels[l.curLevel].setup.nbBat; i++ {
-		l.rooms[l.randomRoom(withoutHazard())].addEntity(Bat)
+		if len(l.levels[l.curLevel].setup.batsPos) == 0 {
+			l.rooms[l.randomRoom(withoutHazard())].addEntity(Bat)
+		} else {
+			l.rooms[index(l.levels[l.curLevel].setup.batsPos, i)].addEntity(Bat)
+		}
 	}
 
 	if l.wump3 {
 		for i := 0; i < l.levels[l.curLevel].setup.nbTermite; i++ {
-			l.rooms[l.randomRoom(withoutHazard())].addEntity(Termite)
+			if len(l.levels[l.curLevel].setup.termitePos) == 0 {
+				l.rooms[l.randomRoom(withoutHazard())].addEntity(Termite)
+			} else {
+				l.rooms[index(l.levels[l.curLevel].setup.termitePos, i)].addEntity(Termite)
+			}
 		}
 	}
 
 	if l.advanced {
 		for i := 0; i < nbKey; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Key)
+			if l.levels[l.curLevel].setup.keyPos == nil {
+				l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Key)
+			} else {
+				l.rooms[*l.levels[l.curLevel].setup.keyPos].addEntity(Key)
+			}
 		}
 		for i := 0; i < nbDoor; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Door)
+			if l.levels[l.curLevel].setup.doorPos == nil {
+				l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem())].addEntity(Door)
+			} else {
+				l.rooms[*l.levels[l.curLevel].setup.doorPos].addEntity(Door)
+
+			}
 		}
 
 		// clues/rope/repel/shield can be in the same room as each other, but we avoid clues on door/key
 		for i := 0; i < l.levels[l.curLevel].setup.nbClue; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].addEntity(Clue)
+			if len(l.levels[l.curLevel].setup.cluePos) == 0 {
+				l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].addEntity(Clue)
+			} else {
+				l.rooms[index(l.levels[l.curLevel].setup.cluePos, i)].addEntity(Clue)
+			}
 		}
 
 		for i := 0; i < l.levels[l.curLevel].setup.nbRepel; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].addEntity(Repel)
+			if len(l.levels[l.curLevel].setup.repelPos) == 0 {
+				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].addEntity(Repel)
+			} else {
+				l.rooms[index(l.levels[l.curLevel].setup.repelPos, i)].addEntity(Repel)
+			}
 		}
 
 		for i := 0; i < l.levels[l.curLevel].setup.nbRope; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].addEntity(Rope)
+			if len(l.levels[l.curLevel].setup.ropePos) == 0 {
+				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].addEntity(Rope)
+			} else {
+				l.rooms[index(l.levels[l.curLevel].setup.ropePos, i)].addEntity(Rope)
+			}
 		}
 
 		for i := 0; i < l.levels[l.curLevel].setup.nbShield; i++ {
-			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
+			if len(l.levels[l.curLevel].setup.shieldPos) != 0 {
+				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
+			} else {
+				l.rooms[index(l.levels[l.curLevel].setup.shieldPos, i)].addEntity(Shield)
+			}
 		}
 	}
 
 	// place player
-	l.playerLoc = l.randomRoom(withoutHazard(), withoutKeyItem(), withoutItem())
+	if l.levels[l.curLevel].setup.playerStartPos == nil {
+		l.playerLoc = l.randomRoom(withoutHazard(), withoutKeyItem(), withoutItem())
+	} else {
+		l.playerLoc = *l.levels[l.curLevel].setup.playerStartPos
+	}
 	l.rooms[l.playerLoc].addEntity(Player)
 	l.visited[l.playerLoc] = struct{}{}
 
 	// place the Wumpus anywhere but where the player is
-	l.rooms[l.randomRoom(withoutEntity(Player))].addEntity(Wumpus)
+	if l.levels[l.curLevel].setup.wumpusStartPos == nil {
+		l.rooms[l.randomRoom(withoutEntity(Player))].addEntity(Wumpus)
+	} else {
+		l.rooms[*l.levels[l.curLevel].setup.wumpusStartPos].addEntity(Wumpus)
+	}
 
 	if l.debug {
 		l.PrintDebug()
@@ -181,4 +226,9 @@ func (l *Labyrinth) PrintDebug() {
 	for _, r := range l.rooms {
 		r.printEntities()
 	}
+}
+
+// index allow us to never hit out of bounds on user-defined positions
+func index[T any](s []T, i int) T {
+	return s[i%len(s)]
 }
