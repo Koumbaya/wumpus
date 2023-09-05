@@ -13,7 +13,7 @@
     {
       "key": "Room",
       "values": [
-        "You are in cavern %d.\n"
+        "You are in cavern %s (%d).\n"
       ],
       "color": ""
     },
@@ -147,17 +147,17 @@
     {
       "key": "MovedTo",
       "values": [
-        "Venturing forth, you emerge in cavern %d\n",
-        "Navigating the dimly lit tunnels, you find yourself in cavern %d.\n",
-        "With cautious steps, you transition into the embrace of cavern %d.\n",
-        "The winding paths lead you onward to the heart of cavern %d.\n",
-        "A gentle echo announces your arrival in cavern %d.\n",
-        "The path unfolds before you, revealing the secrets of cavern %d.\n",
-        "Pushing forth, the mysteries of cavern %d lay before you.\n",
-        "The tunnel's end opens up to the expanse of cavern %d.\n",
-        "With each step, the ambiance changes, signaling your entry into cavern %d.\n",
-        "Leaving the familiar behind, you're greeted by the sights and sounds of cavern %d.\n",
-        "As the previous chamber fades, the allure of cavern %d beckons.\n"
+        "Venturing forth, you emerge in cavern %s (%d)\n",
+        "Navigating the dimly lit tunnels, you find yourself in cavern %s (%d).\n",
+        "With cautious steps, you transition into the embrace of cavern %s (%d).\n",
+        "The winding paths lead you onward to the heart of cavern %s (%d).\n",
+        "A gentle echo announces your arrival in cavern %s (%d).\n",
+        "The path unfolds before you, revealing the secrets of cavern %s (%d).\n",
+        "Pushing forth, the mysteries of cavern %s (%d) lay before you.\n",
+        "The tunnel's end opens up to the expanse of cavern %s (%d).\n",
+        "With each step, the ambiance changes, signaling your entry into cavern %s (%d).\n",
+        "Leaving the familiar behind, you're greeted by the sights and sounds of cavern %s (%d).\n",
+        "As the previous chamber fades, the allure of cavern %s (%d) beckons.\n"
       ],
       "color": ""
     },

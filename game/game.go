@@ -267,7 +267,7 @@ func (g *Game) tryMove(input string) bool {
 }
 
 func (g *Game) cavern() {
-	g.p.Printf(dia.Room, g.l.PlayerPOV())
+	g.p.Printf(dia.Room, g.l.Name(g.l.Player()), g.l.PlayerPOV())
 }
 
 func (g *Game) describe() {
@@ -326,7 +326,7 @@ func (g *Game) events() {
 }
 
 func (g *Game) explore() bool {
-	g.p.Printf(dia.MovedTo, g.l.PlayerPOV())
+	g.p.Printf(dia.MovedTo, g.l.Name(g.l.Player()), g.l.PlayerPOV())
 	return g.hazards()
 }
 

@@ -73,6 +73,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
 	for i := 0; i < len(l.rooms); i++ {
 		l.rooms[i].fakeID = randRooms[i] + 1 // +1 so the player never sees a room 0.
+		l.rooms[i].name = generateCavernName()
 		// reset entities on restart
 		l.rooms[i].entities = make(map[entity]struct{}, 5) // 10 different entities but few can coexist anyway.
 		// keep track of fakeIds for fast access
@@ -131,6 +132,10 @@ func (l *Labyrinth) Init(targetLvl int) {
 	if l.debug {
 		l.PrintDebug()
 	}
+}
+
+func (l *Labyrinth) Name(id int) string {
+	return l.rooms[id].name
 }
 
 func (l *Labyrinth) Has(id int, e entity) bool {

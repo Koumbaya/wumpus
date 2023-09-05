@@ -2,6 +2,7 @@ package labyrinth
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 type entity string
@@ -24,6 +25,7 @@ const (
 type room struct {
 	edges    []int
 	fakeID   int
+	name     string
 	entities map[entity]struct{}
 }
 
@@ -101,4 +103,28 @@ func (r *room) printEntities() {
 	for e := range r.entities {
 		fmt.Printf("%s %d\n", e, r.fakeID)
 	}
+}
+
+var (
+	prefixes = []string{
+		"Dra", "Bel", "Tor", "Mol", "Ven", "Aer", "Rha", "Gor",
+		"Kal", "Thra", "Nar", "Hel", "For", "Lin", "Ser",
+	}
+
+	middlefixes = []string{
+		"zar", "mir", "lun", "vorn", "ther", "ran", "gar",
+		"kin", "val", "tel", "fyr", "mor", "sil", "din", "rex",
+	}
+
+	suffixes = []string{
+		"gorn", "delve", "depth", "more", "lyn", "stone", "light",
+		"shade", "rift", "vein", "mire", "fall", "peak", "dell", "spire",
+	}
+)
+
+func generateCavernName() string {
+	prefix := prefixes[rand.Intn(len(prefixes))]
+	middle := middlefixes[rand.Intn(len(middlefixes))]
+	suffix := suffixes[rand.Intn(len(suffixes))]
+	return prefix + middle + suffix
 }
