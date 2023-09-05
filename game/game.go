@@ -230,6 +230,13 @@ func (g *Game) handleArrow() state {
 		return waitPlayAgain
 	}
 
+	// once we checked that no wumpus or player is in the room, we check for termites (to avoid protection from arrows)
+	if g.l.Has(g.l.Arrow(), labyrinth.Termite) && g.wump3 {
+		g.p.Println(dia.EatenArrow)
+		g.p.Print(dia.ChoiceShootMove)
+		return waitShootMove
+	}
+
 	if g.l.PowerRemaining() == 0 {
 		if g.l.StartleWumpus() && !g.inventory.has(wumpusHide) {
 			g.p.Println(dia.ArrowStartle)
@@ -305,17 +312,17 @@ func (g *Game) events() {
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.Earthquake()
+		g.l.Migration(labyrinth.Pit)
 		g.p.Println(dia.Earthquake)
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.BatMigration()
+		g.l.Migration(labyrinth.Bat)
 		g.p.Println(dia.BatMigration)
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.TermitesMigration()
+		g.l.Migration(labyrinth.Termite)
 		g.p.Println(dia.TermiteMigration)
 	}
 

@@ -10,7 +10,7 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - **The Wumpus**: This is the main antagonist of the game. If you enter the Wumpus's cave, you may get eaten and lose the game. Or the Wumpus may get disturbed and move to another cave.
    - **Pits**: There are two pits in the cave system. Falling into a pit results in instant death.
    - **Giant Bats**: There are two caves with giant bats. If you enter a cave with a giant bat, you will be carried off to a random cave, which might be dangerous.
-   - **Anaerobic Termite**: A colony of flying termites that loves to eat wooden arrows. If you enter the cavern the colony is occupying, it will eat one of your arrows. (You can shoot through it tho, it flies too fast to be eaten in flight)
+   - **Anaerobic Termite**: A colony of flying termites that loves to eat wooden arrows. If you enter the cavern the colony is occupying, it will eat one of your arrows. It might even eat your arrow in flight!
 
 3. **Player Actions**: On each turn, you can choose to:
    - **Move**: To one of the three connected caves.

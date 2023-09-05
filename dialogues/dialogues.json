@@ -695,6 +695,24 @@
         "➴ A hint of wood and feather beneath a pile of leaves reveals an arrow. The added ammunition is a small, but significant boost to your confidence."
       ],
       "color": "yellow"
+    },
+    {
+      "key": "EatenArrow",
+      "values": [
+        "➵ Swarming termites intercepted and devoured your arrow mid-air!",
+        "➵ Flying insects converged on your arrow, consuming it before it could land!",
+        "➵ The arrow's trajectory was cut short as a colony of bugs engulfed it!",
+        "➵ Before reaching its mark, termites descended, making a meal of your arrow!",
+        "➵ Your arrow was swallowed by a voracious cloud of insects in mid-flight!",
+        "➵ A frenzied mass of termites made quick work of your arrow as it soared!",
+        "➵ Flying pests zipped through the air, catching and devouring your arrow!",
+        "➵ The arrow met an unexpected fate, eaten by ravenous insects mid-journey!",
+        "➵ No sooner had the arrow left your bow than a swarm of bugs consumed it!",
+        "➵ The cavern's flying critters proved a menace, snatching and eating your arrow!",
+        "➵ Your shot was in vain as insects swarmed and overpowered the flying arrow!",
+        "➵ Mid-flight, a hungry colony intercepted, leaving no trace of your arrow!"
+      ],
+      "color": "yellow"
     }
   ]
 }

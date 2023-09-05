@@ -50,6 +50,7 @@ const (
 	TermiteMigration = "TermiteMigration"
 	TermiteEatArrow  = "TermiteEatArrow"
 	Seed             = "Seed"
+	EatenArrow       = "EatenArrow"
 )
 
 // advanced features.
