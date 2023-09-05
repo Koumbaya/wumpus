@@ -19,19 +19,13 @@ const (
 	nbShield   = 1
 )
 
-type level struct {
-	rooms  []room
-	number int
-	name   string
-}
-
 // Labyrinth is the collection of cLevel making up the dodecahedron.
 type Labyrinth struct {
 	r *rand.Rand
 	// levels store all the jsons levels
 	levels   map[int]level
 	curLevel int
-	rooms    []room // current level topology
+	rooms    []room // current level topology // todo : do we need to copy this anyway ?
 	// visited keep track of the # of explored rooms.
 	visited map[int]struct{}
 	// arrowTravel keep track of how many cLevel the arrow can travel.
@@ -73,7 +67,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 	l.rooms = l.levels[targetLvl].rooms
 	l.fakeIDs = make(map[int]int)
 	l.visited = make(map[int]struct{}, len(l.rooms))
-	l.cluesGiven = make(map[string]struct{}, nbClues)
+	l.cluesGiven = make(map[string]struct{}, l.levels[l.curLevel].setup.nbClue)
 	randRooms := l.r.Perm(len(l.rooms))
 
 	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
@@ -86,16 +80,16 @@ func (l *Labyrinth) Init(targetLvl int) {
 	}
 
 	// place pits & bats in distinct locations
-	for i := 0; i < nbPits; i++ {
+	for i := 0; i < l.levels[l.curLevel].setup.nbPit; i++ {
 		l.rooms[l.randomRoom(withoutHazard())].addEntity(Pit)
 	}
 
-	for i := 0; i < nbBats; i++ {
+	for i := 0; i < l.levels[l.curLevel].setup.nbBat; i++ {
 		l.rooms[l.randomRoom(withoutHazard())].addEntity(Bat)
 	}
 
 	if l.wump3 {
-		for i := 0; i < nbTermites; i++ {
+		for i := 0; i < l.levels[l.curLevel].setup.nbTermite; i++ {
 			l.rooms[l.randomRoom(withoutHazard())].addEntity(Termite)
 		}
 	}
@@ -109,19 +103,19 @@ func (l *Labyrinth) Init(targetLvl int) {
 		}
 
 		// clues/rope/repel/shield can be in the same room as each other, but we avoid clues on door/key
-		for i := 0; i < nbClues; i++ {
+		for i := 0; i < l.levels[l.curLevel].setup.nbClue; i++ {
 			l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].addEntity(Clue)
 		}
 
-		for i := 0; i < nbRepel; i++ {
+		for i := 0; i < l.levels[l.curLevel].setup.nbRepel; i++ {
 			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].addEntity(Repel)
 		}
 
-		for i := 0; i < nbRope; i++ {
+		for i := 0; i < l.levels[l.curLevel].setup.nbRope; i++ {
 			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].addEntity(Rope)
 		}
 
-		for i := 0; i < nbShield; i++ {
+		for i := 0; i < l.levels[l.curLevel].setup.nbShield; i++ {
 			l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
 		}
 	}

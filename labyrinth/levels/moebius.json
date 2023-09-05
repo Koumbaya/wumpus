@@ -1,6 +1,15 @@
 {
   "name": "moebius strip",
   "level": 2,
+  "setup": {
+    "termites": 2,
+    "pits": 2,
+    "bats": 2,
+    "shield": 1,
+    "clue": 3,
+    "repel": 4,
+    "rope": 1
+  },
   "rooms": [
     {
       "id": 0,

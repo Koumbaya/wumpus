@@ -9,7 +9,7 @@ const (
 	rope
 	shield
 	arrow
-	wumpusHide
+	wumpusHide // used to keep track of if you killed the wumpus
 )
 
 // inventory keeps tracks of the player's inventory or actions done/memories (wumpus killed, key or door found...)
