@@ -2,6 +2,7 @@
 package labyrinth
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 )
@@ -71,9 +72,10 @@ func (l *Labyrinth) Init(targetLvl int) {
 	randRooms := l.r.Perm(len(l.rooms))
 
 	// use the randomization to give arbitrary numbers to the caves so that each play through is unique.
+	names := getCavernNames(len(l.rooms))
 	for i := 0; i < len(l.rooms); i++ {
 		l.rooms[i].fakeID = randRooms[i] + 1 // +1 so the player never sees a room 0.
-		l.rooms[i].name = generateCavernName()
+		l.rooms[i].name = names[i]
 		// reset entities on restart
 		l.rooms[i].entities = make(map[entity]struct{}, 5) // 10 different entities but few can coexist anyway.
 		// keep track of fakeIds for fast access
@@ -223,7 +225,8 @@ func (l *Labyrinth) GetFmtNeighbors(room int) string {
 }
 
 func (l *Labyrinth) PrintDebug() {
-	for _, r := range l.rooms {
+	for i, r := range l.rooms {
+		fmt.Printf("f: %d, id: %d\n", r.fakeID, i)
 		r.printEntities()
 	}
 }

@@ -101,7 +101,22 @@ func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
 
 func (r *room) printEntities() {
 	for e := range r.entities {
-		fmt.Printf("%s %d\n", e, r.fakeID)
+		fmt.Printf("%s\n", e)
+	}
+}
+
+func getCavernNames(n int) []string {
+	filter := make(map[string]struct{}, n)
+	out := make([]string, 0, n)
+	for {
+		if len(out) == n {
+			return out
+		}
+		name := generateCavernName()
+		if _, exist := filter[name]; !exist {
+			filter[name] = struct{}{}
+			out = append(out, name)
+		}
 	}
 }
 
