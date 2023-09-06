@@ -127,10 +127,10 @@
     {
       "key": "BatTeleport",
       "values": [
-        "A giant bat took you away and dropped you into cavern %d!\n",
-        "With a flurry of wings, a giant bat snatches you up, depositing you in a new cavern %d!\n",
-        "Suddenly, talons grip you! A bat swiftly carries you aloft, dropping you in unfamiliar cavern %d.\n",
-        "The shadows move, and before you realize, a bat has whisked you away, setting you down in cavern %d. Stay alert!\n"
+        "A giant bat took you away and dropped you into cavern %s (%d)!\n",
+        "With a flurry of wings, a giant bat snatches you up, depositing you in a new cavern, %s (%d)!\n",
+        "Suddenly, talons grip you! A bat swiftly carries you aloft, dropping you in unfamiliar cavern %s (%d).\n",
+        "The shadows move, and before you realize, a bat has whisked you away, setting you down in cavern %s (%d). Stay alert!\n"
       ],
       "color": "yellow"
     },

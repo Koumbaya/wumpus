@@ -410,7 +410,8 @@ func (g *Game) hazards() bool {
 		if g.inventory.tryUse(repel) {
 			g.p.Println(dia.UseRepel)
 		} else {
-			g.p.Printf(dia.BatTeleport, g.l.ActivateBat())
+			newLoc := g.l.ActivateBat()
+			g.p.Printf(dia.BatTeleport, g.l.Name(g.l.Player()), newLoc)
 			return g.hazards()
 		}
 	}
