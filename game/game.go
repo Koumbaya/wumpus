@@ -74,6 +74,7 @@ func (g *Game) Loop() {
 		if err != nil {
 			panic(err)
 		}
+
 		input = clean(input)
 
 		// pre-parsing for "meta" commands & shortcut to bypass waitShootMove state and move directly.

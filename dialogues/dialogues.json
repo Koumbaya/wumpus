@@ -169,7 +169,7 @@
         "Will you challenge fate and re-enter the depths? (Y/N):",
         "Are you prepared to tread the perilous paths once more? (Y/N):"
       ],
-      "color": "bold"
+      "color": "red+bold"
     },
     {
       "key": "DontUnderstand",
@@ -290,14 +290,14 @@
       "values": [
         "➴ You don't have any arrows left !"
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "RemainingArrows",
       "values": [
         "➵ You have %d remaining arrows.\n"
       ],
-      "color": ""
+      "color": "dim"
     },
     {
       "key": "FirstDoorDiscoveryNoKey",
@@ -308,7 +308,7 @@
         "The rhythmic echo of your footsteps halts abruptly as you face an ornate door, an obvious relic from ancient times. You're met with a locked barrier, urging you to find its corresponding key.",
         "As you traverse deeper into the labyrinth, a mysterious door stands sentinel, its purpose unknown. You ponder the whereabouts of the key that might unlock its story."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "BackAgainDoorNoKey",
@@ -319,7 +319,7 @@
         "The twists and turns of the cavern converge back to the imposing door you'd stumbled upon earlier. The weight of its locked state is palpable, and the elusive key continues to be a beacon of challenge.",
         "You circle back to the enigmatic door that once held your gaze. Its secrets remain locked behind its grand facade, and without the key, it stands as a monument to the adventure yet to be unraveled."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "FirstKeyDiscoveryNoDoor",
@@ -331,7 +331,7 @@
         "Amongst the relics of the cavern, an ornate key stands out, beckoning to be taken. You grasp it, feeling its cool weight and unspoken promise.",
         "You come across an arcane key, its craftsmanship suggesting age and purpose. Drawn to its mystery, you take it, hoping it'll unlock secrets later on."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "DoorThenKey",
@@ -343,7 +343,7 @@
         "Earlier, the sight of that imposing, locked door had puzzled you. Now, as you hold a mysterious, ornate key that you've just found, hope flickers. Could this be its match? You take the key, eager to find out.",
         "Recalling the enigmatic door you encountered earlier, a sense of purpose fills you as you discover a beautifully crafted key hidden in the shadows. Without a second thought, you pocket it, hoping it might reveal the door's secrets."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "KeyThenDoor",
@@ -354,7 +354,7 @@
         "Before you stands a door, cloaked in mystery and echoing tales of old. The key you'd stumbled upon earlier now feels purposeful, as if it's the missing piece of this puzzle.",
         "The sight of the enigmatic door reminds you of the key you found. With symbols and engravings that seem to tell of a shared history, you can't help but wonder if the key might unlock the door's secrets."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "WumpusStillAlive",
@@ -365,7 +365,7 @@
         "Although freedom beckons, a nagging thought anchors you. The Wumpus is still at large, and you're not one to leave a task half-done.",
         "But you resist the call of the outside world. Somewhere in the shadows, the Wumpus waits, and you're determined to confront it."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "DoorKeyDoor",
@@ -376,7 +376,7 @@
         "The familiar designs of the door beckon as you navigate the cavern once more. The key, now in your possession, promises to shed light on the door's hidden tales.",
         "Back in the chamber where the intricate door first captured your wonder, the key you've discovered feels like the final piece of this puzzle. The anticipation is palpable as you prepare to turn it, bridging the gap between mystery and revelation."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "ExitDoor",
@@ -414,7 +414,7 @@
         "Lost within the labyrinth's embrace, only your wits can guide you out.",
         "The maze's secrets are yet to be unveiled; forge your path to the outside."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "MaybeDoor",
@@ -425,7 +425,7 @@
         "Could this elusive door you encountered be your key to the world outside?",
         "Perhaps the enshrouded door you noticed earlier beckons your escape?"
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "MaybeKey",
@@ -436,7 +436,7 @@
         "Perhaps the detailed key you found offers clues to navigating this labyrinth.",
         "The beautifully-crafted key you came across might be the pivotal piece in this puzzling labyrinth."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "CertainKeyDoor",
@@ -466,7 +466,7 @@
         "Splattered ink drawings on parchment depict scenes with %s. At the margins, a recurrent theme nudges you towards cavern %d.\n",
         "Whispers of past explorers come to mind as you uncover carved notes on the wall, with %s at its core, hinting at the significance of cavern %d.\n"
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "PartialMap",
@@ -484,7 +484,7 @@
         "Nestled in a crevice, a velum awaits your discovery. Its surface is etched with enigmatic symbols and linking pathways:%s",
         "You chance upon a fragile scroll, its designs nearly consumed by time. With care, you trace the interconnected symbols and numerals:%s"
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "SleepWalkWumpus",
@@ -500,7 +500,7 @@
         "A peculiar series of bumps and thuds echo in the dark, signaling the Wumpus's nocturnal roamings.",
         "The muted, rhythmic sound of heavy breathing suggests the Wumpus, in a somnolent state, is on the move."
       ],
-      "color": "cyan"
+      "color": "cyan+dim"
     },
     {
       "key": "Earthquake",
@@ -516,7 +516,7 @@
         "You feel an unsettling shift underfoot, an alarming precursor to the caverns either forming or sealing off its hidden pits.",
         "An ominous vibration courses through the labyrinth, a stark reminder of the volatile nature of the underground and its capricious crevices."
       ],
-      "color": "cyan"
+      "color": "cyan+dim"
     },
     {
       "key": "BatMigration",
@@ -532,7 +532,7 @@
         "The soft patter of bat wings on the move melds with a cool breeze, reminding you of the ever-changing dynamics of the cavern.",
         "A transient gust whispers tales of restless bats, weaving their way through the underground maze."
       ],
-      "color": "cyan"
+      "color": "cyan+dim"
     },
     {
       "key": "TermitesNearby",
@@ -564,7 +564,7 @@
         "An unmistakable thrumming envelops you, heralding the vast migration of termites in the depths beyond.",
         "A subtle, yet pervasive, resonance fills the air – the termites are on the move, journeying through the cavernous expanse."
       ],
-      "color": "cyan"
+      "color": "cyan+dim"
     },
     {
       "key": "TermiteEatArrow",
@@ -596,7 +596,7 @@
         "Deep within the cave, an enchanted feather beckons. Holding it, you sense its power to repel airborne threats.",
         "In the dim light, a shimmering cloak seems to pulse with energy. Draping it around you, you instantly feel a barrier against bats form."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "UseRepel",
@@ -625,7 +625,7 @@
         "Intricately knotted and strong, a rope beckons from a crevice.",
         "Peering into a small alcove, you spot a rope belt that could serve a myriad of purposes."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "UseRope",
@@ -662,7 +662,7 @@
         "You're drawn to a delicately carved wooden shield, bearing the emblem of a forgotten clan.",
         "There it is - a shield, inlaid with bronze and bearing an intricate design, waiting for a worthy bearer."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "UseShield",
@@ -694,7 +694,7 @@
         "➴ Hidden among the rocks, you find a stray arrow. Its presence increases your chances of survival as you add it to your arsenal.",
         "➴ A hint of wood and feather beneath a pile of leaves reveals an arrow. The added ammunition is a small, but significant boost to your confidence."
       ],
-      "color": "yellow"
+      "color": "yellow+dim"
     },
     {
       "key": "EatenArrow",

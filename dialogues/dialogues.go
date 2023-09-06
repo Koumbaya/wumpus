@@ -161,6 +161,12 @@ func mapColors(s string) string {
 		return cyan
 	case "bold":
 		return bold
+	case "cyan+dim":
+		return cyan + Dim
+	case "yellow+dim":
+		return yellow + Dim
+	case "red+bold":
+		return red + bold
 	}
 	return ""
 }
