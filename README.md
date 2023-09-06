@@ -36,14 +36,23 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - **4**: Hex Network : imagine an hexagonal tile floor. Take a rectangle with 20 points (intersections) inside (4x4). Join right & left side to make a cylinder, then join top & bottom to form a torus.
    - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends. Susceptible to severance by pits, you might need to shoot in the unknown to make the Wumpus move! 
    - **6**: One-way lattice : Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
-   - **custom**: Do your own level ! Edit `levels/custom.json` which is an example, give it a level number not already taken and launch the game with the `-level=x` option. (You might need at least 5 rooms without advanced mode and 8 with it because some entities can't coexist on the same room).
-     - a level is defined by numbered rooms, and each room has a list of "edges" (tunnels in the game) that link it to other room. If you specify only X to Y, the tunnel is effectively one way.
-     - you can define how many of each hazards or items to add a specific level in the `setup` field. (be careful to have enough rooms tho)
+   - **custom**: Do your own level ! See bellow.  
+
 
 7. **Advanced**:
    - In advanced mode, you must kill the wumpus then find your way out of the level by finding a key and its door!
    - Various objects will help you defend yourself against enemies and dangers !
    - You might also find clues about your environment...
+
+### Custom
+You can create you on levels by adding files to `labyrinth/levels/`. (see `example.json`)  
+Give them a non-taken number in the `level` field, then add the caverns and tunnels in the `rooms` array.  
+Each cavern is represented by an `id` which start at 0, and has a list of `edges` (one-way tunnels) which connect it to other rooms.
+* _A room with no edge will be impossible to get out of._
+* _A room can have a tunnel to itself._
+* _If you want to connect 2 rooms in both direction, each should have an edge to the other_  
+
+You can also specify the starting position and numbers of a lot of components of the game. (Be sure to have enough rooms for them, some can't coexist on the same room!)
 
 **Notes**: Small differences with the original game :  
 You can move directly by inputting a direction at the `Move or Shoot` question (input `m 8` or `8` or `m8`) .  
@@ -69,7 +78,7 @@ There a various flags available :
 `-clean`: remove symbols/colors (in case your terminal is broken, or you want that oldschool feeling)  
 `-level=x`: start at a specific level (1-6).  
 `-arrows`: gives infinite arrows.  
-`-seed=xxxx`: set all the randomness based on the seed for debug purpose.
+`-seed=xxxx`: set all the randomness based on the seed for debug purpose.  
 `-debug`: cheat/debug mode.  
 
 ![cover](cover.png)
@@ -80,7 +89,6 @@ There a various flags available :
 
 ### TODO:
 * Probably a few refactors of the state machine.
-* Names for caverns.
 * Checks & reroll of pits location on maps where that could be impossible to solve (`5` and `6` only ?). Might be not needed with Wumpus' 3 features.
 * bubble-up the few possibles IO errors
 * Tests
