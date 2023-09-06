@@ -36,31 +36,32 @@ type Printer interface {
 	Println(s string)
 }
 
+type Cfg struct {
+	Seed           int64
+	InfiniteArrows bool
+	Wump3          bool
+	Advanced       bool
+}
+
 type Game struct {
 	l labyrinth.Labyrinth
 	p Printer
 	state
-	r              *rand.Rand
-	seed           int64
-	turns          int
-	arrowsFired    int
-	timer          time.Time
-	infiniteArrows bool
-	wump3          bool
-	advanced       bool
-	inventory      inventory
+	cfg         Cfg
+	r           *rand.Rand
+	turns       int
+	arrowsFired int
+	timer       time.Time
+	inventory   inventory
 }
 
-func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, arrows, advanced, wump3 bool, seed int64) Game {
+func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, cfg Cfg) Game {
 	return Game{
-		l:              labyrinth,
-		p:              printer,
-		state:          waitShootMove,
-		infiniteArrows: arrows,
-		advanced:       advanced,
-		wump3:          wump3,
-		r:              rand.New(rand.NewSource(seed)),
-		seed:           seed,
+		l:     labyrinth,
+		p:     printer,
+		state: waitShootMove,
+		cfg:   cfg,
+		r:     rand.New(rand.NewSource(cfg.Seed)),
 	}
 }
 
@@ -91,7 +92,7 @@ func (g *Game) Loop() {
 			g.l.PrintDebug()
 			continue
 		case "seed":
-			g.p.Printf(dia.Seed, g.seed)
+			g.p.Printf(dia.Seed, g.cfg.Seed)
 		}
 
 		if g.state == waitShootMove { // todo : ugly way of doing things, refactor
@@ -113,7 +114,7 @@ func (g *Game) playerState(input string) bool {
 	switch g.state {
 	case waitShootMove:
 		if strings.EqualFold(input, "S") {
-			if !g.infiniteArrows && !g.inventory.has(arrow) {
+			if !g.cfg.InfiniteArrows && !g.inventory.has(arrow) {
 				g.p.Println(dia.NoMoreArrows)
 				g.p.Print(dia.ChoiceShootMove)
 				break
@@ -158,7 +159,7 @@ func (g *Game) playerState(input string) bool {
 	case waitArrowPower:
 		g.l.FireArrow(input)
 		g.p.Println(dia.FireArrow)
-		if !g.infiniteArrows {
+		if !g.cfg.InfiniteArrows {
 			g.inventory.use(arrow)
 			g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
 		}
@@ -213,7 +214,7 @@ func (g *Game) handleArrow() state {
 	if g.l.Has(g.l.Arrow(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.KilledWumpus)
 		g.inventory.add(wumpusHide)
-		if !g.advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
+		if !g.cfg.Advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
 			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, time.Since(g.timer).String(), g.arrowsFired, g.l.Visited())
 			g.p.Print(dia.PlayAGain)
 			return waitPlayAgain
@@ -232,7 +233,7 @@ func (g *Game) handleArrow() state {
 	}
 
 	// once we checked that no wumpus or player is in the room, we check for termites (to avoid protection from arrows)
-	if g.l.Has(g.l.Arrow(), labyrinth.Termite) && g.wump3 {
+	if g.l.Has(g.l.Arrow(), labyrinth.Termite) && g.cfg.Wump3 {
 		g.p.Println(dia.EatenArrow)
 		g.p.Print(dia.ChoiceShootMove)
 		return waitShootMove
@@ -290,7 +291,7 @@ func (g *Game) describe() {
 		g.p.Println(dia.WumpusNearby)
 	}
 
-	if g.wump3 && g.l.Nearby(labyrinth.Termite) {
+	if g.cfg.Wump3 && g.l.Nearby(labyrinth.Termite) {
 		g.p.Println(dia.TermitesNearby)
 	}
 }
@@ -308,7 +309,7 @@ func (g *Game) whereToArrow() {
 }
 
 func (g *Game) events() {
-	if !g.wump3 {
+	if !g.cfg.Wump3 {
 		return
 	}
 
@@ -339,7 +340,7 @@ func (g *Game) explore() bool {
 }
 
 func (g *Game) clues() {
-	if !g.advanced {
+	if !g.cfg.Advanced {
 		return
 	}
 
@@ -366,7 +367,7 @@ func (g *Game) clues() {
 
 // maps randomly gives partial maps tips.
 func (g *Game) maps() {
-	if !g.advanced {
+	if !g.cfg.Advanced {
 		return
 	}
 
@@ -377,7 +378,7 @@ func (g *Game) maps() {
 
 // arrows randomly gives arrows.
 func (g *Game) arrows() {
-	if !g.advanced {
+	if !g.cfg.Advanced {
 		return
 	}
 
@@ -427,7 +428,7 @@ func (g *Game) hazards() bool {
 		}
 	}
 
-	if g.wump3 && g.l.Has(g.l.Player(), labyrinth.Termite) && g.inventory.tryUse(arrow) {
+	if g.cfg.Wump3 && g.l.Has(g.l.Player(), labyrinth.Termite) && g.inventory.tryUse(arrow) {
 		g.p.Println(dia.TermiteEatArrow)
 		g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
 	}
@@ -438,7 +439,7 @@ func (g *Game) hazards() bool {
 // keyDoor resolve dialogues & handle logic for key & door depending on the order of discovery.
 // return true if all winning conditions are met
 func (g *Game) keyDoor() bool {
-	if !g.advanced {
+	if !g.cfg.Advanced {
 		return false
 	}
 

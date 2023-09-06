@@ -56,7 +56,7 @@ func (l *Labyrinth) GetFmtMap() (output string) {
 	output += "\n"
 	for i := 0; i < n; i++ {
 		r := l.r.Intn(len(l.rooms))
-		output += fmt.Sprintf("%d --> %d\n",
+		output += fmt.Sprintf("%d ⟶ %d\n",
 			l.rooms[r].fakeID,
 			l.rooms[l.rooms[r].edges[l.r.Intn(len(l.rooms[r].edges))]].fakeID,
 		)

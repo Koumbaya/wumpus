@@ -16,7 +16,7 @@ const textDelay = 20 * time.Millisecond
 //go:embed dialogues.json
 var dialogueJSON embed.FS
 
-// dialogueVariations holds the different possibles values for a particular piece of dialogue, as well as the color.
+// dialogueVariations holds the different possibles values for a particular piece of dialogue.
 type dialogueVariations struct {
 	values []string
 }

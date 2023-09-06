@@ -39,6 +39,11 @@ func main() {
 	}
 
 	l := labyrinth.NewLabyrinth(advanced, debug, wump3, level, seed)
-	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean, seed), arrows, advanced, wump3, seed)
+	g := game.NewGame(l, dialogues.NewPrinter(nodelay, clean, seed), game.Cfg{
+		Seed:           seed,
+		InfiniteArrows: arrows,
+		Wump3:          wump3,
+		Advanced:       advanced,
+	})
 	g.Loop()
 }
