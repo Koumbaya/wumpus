@@ -2,13 +2,6 @@
   "name": "dodecahedron",
   "level": 1,
   "setup": {
-    "termites": 2,
-    "pits": 2,
-    "bats": 2,
-    "shield": 1,
-    "clue": 3,
-    "repel": 1,
-    "rope": 1
   },
   "rooms": [
     {

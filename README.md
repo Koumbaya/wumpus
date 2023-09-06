@@ -36,6 +36,7 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - **4**: Hex Network : imagine an hexagonal tile floor. Take a rectangle with 20 points (intersections) inside (4x4). Join right & left side to make a cylinder, then join top & bottom to form a torus.
    - **5**: Is a Dendrite-like cave with a branching pattern and a lot of dead-ends. Susceptible to severance by pits, you might need to shoot in the unknown to make the Wumpus move! 
    - **6**: One-way lattice : Is a grid of one-way tunnels. Each cavern is connected to 2 other cavern. Be careful or you might need to loop around !
+   - **7**: Is a [toroidal polyhedron](https://en.wikipedia.org/wiki/Toroidal_polyhedron).
    - **custom**: Do your own level ! See bellow.  
 
 
