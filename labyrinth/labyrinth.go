@@ -150,7 +150,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 		}
 
 		for i := 0; i < l.levels[l.curLevel].setup.nbShield; i++ {
-			if len(l.levels[l.curLevel].setup.shieldPos) != 0 {
+			if len(l.levels[l.curLevel].setup.shieldPos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
 			} else {
 				l.rooms[index(l.levels[l.curLevel].setup.shieldPos, i)].addEntity(Shield)
