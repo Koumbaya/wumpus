@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
-	"runtime"
 	"strings"
 	"time"
 )
@@ -99,14 +98,14 @@ func loadDialogues(clean bool) map[string]dialogueVariations {
 
 	res := make(map[string]dialogueVariations, len(dialogues.Data))
 	for i := 0; i < len(dialogues.Data); i++ {
-		if runtime.GOOS == "windows" || clean {
+		if clean {
 			// disable all formatting on windows. allow cross-compile without build flags or duplicated files.
 			res[dialogues.Data[i].Key] = dialogueVariations{
 				values: removeSpecialChars(dialogues.Data[i].Values),
 			}
 		} else {
 			res[dialogues.Data[i].Key] = dialogueVariations{
-				values: color(dialogues.Data[i].Values, dialogues.Data[i].Color),
+				values: color(formatSpecialChars(dialogues.Data[i].Values), dialogues.Data[i].Color),
 			}
 		}
 	}
@@ -114,12 +113,24 @@ func loadDialogues(clean bool) map[string]dialogueVariations {
 	return res
 }
 
+func formatSpecialChars(s []string) []string {
+	for i, s2 := range s {
+		s2 = strings.ReplaceAll(s2, SkullPlcHolder, SkullChar)
+		s2 = strings.ReplaceAll(s2, ArrowDownPlcHolder, ArrowDownChar)
+		s2 = strings.ReplaceAll(s2, ArrowStraightPlcHolder, ArrowStraightChar)
+		s2 = strings.ReplaceAll(s2, ArrowUpPlcHolder, ArrowUpChar)
+		s[i] = s2
+	}
+
+	return s
+}
+
 func removeSpecialChars(s []string) []string {
 	for i, s2 := range s {
-		s2 = strings.ReplaceAll(s2, "☠", "")
-		s2 = strings.ReplaceAll(s2, "➴", "->")
-		s2 = strings.ReplaceAll(s2, "➵", "->")
-		s2 = strings.ReplaceAll(s2, "➶", "->")
+		s2 = strings.ReplaceAll(s2, SkullPlcHolder, "*")
+		s2 = strings.ReplaceAll(s2, ArrowDownPlcHolder, "->")
+		s2 = strings.ReplaceAll(s2, ArrowStraightPlcHolder, "->")
+		s2 = strings.ReplaceAll(s2, ArrowUpPlcHolder, "->")
 		s[i] = s2
 	}
 

@@ -72,7 +72,7 @@
     {
       "key": "WhereToArrow",
       "values": [
-        "➵ Aim your arrow towards the next cavern: ( %s ): "
+        "{ARRSTRAIGHT} Aim your arrow towards the next cavern: ( %s ): "
       ],
       "color": "bold"
     },
@@ -114,13 +114,13 @@
     {
       "key": "KilledByWumpus",
       "values": [
-        "☠ The Wumpus, rising from the abyss, tears you apart in its hunger! ☠",
-        "☠ The Wumpus, emerging from the shadows, made you its prey! ☠",
-        "☠ The lurking Wumpus caught you off-guard! Your adventure ends here ☠",
-        "☠ In a fateful encounter, the Wumpus proved to be your doom! ☠",
-        "☠ The Wumpus, swift and silent, ended your journey abruptly! ☠",
-        "☠ Before you can react, the Wumpus's claws and fangs bring your quest to a grisly end! ☠",
-        "☠ The chilling roar of the Wumpus is the last thing you hear as it devours you whole! ☠"
+        "{SKULL} The Wumpus, rising from the abyss, tears you apart in its hunger! {SKULL}",
+        "{SKULL} The Wumpus, emerging from the shadows, made you its prey! {SKULL}",
+        "{SKULL} The lurking Wumpus caught you off-guard! Your adventure ends here {SKULL}",
+        "{SKULL} In a fateful encounter, the Wumpus proved to be your doom! {SKULL}",
+        "{SKULL} The Wumpus, swift and silent, ended your journey abruptly! {SKULL}",
+        "{SKULL} Before you can react, the Wumpus's claws and fangs bring your quest to a grisly end! {SKULL}",
+        "{SKULL} The chilling roar of the Wumpus is the last thing you hear as it devours you whole! {SKULL}"
       ],
       "color": "red"
     },
@@ -137,10 +137,10 @@
     {
       "key": "FellIntoPit",
       "values": [
-        "☠ You lost your footing and plummeted into a bottomless pit!! ☠",
-        "☠ Misstepping, you plummet into the abyss of a bottomless pit! ☠",
-        "☠ The ground betrays you, sending you falling into a dark void! ☠",
-        "☠ You lost your balance and met your end in the depths below! ☠"
+        "{SKULL} You lost your footing and plummeted into a bottomless pit!! {SKULL}",
+        "{SKULL} Misstepping, you plummet into the abyss of a bottomless pit! {SKULL}",
+        "{SKULL} The ground betrays you, sending you falling into a dark void! {SKULL}",
+        "{SKULL} You lost your balance and met your end in the depths below! {SKULL}"
       ],
       "color": "red"
     },
@@ -181,7 +181,7 @@
     {
       "key": "FireArrow",
       "values": [
-        "You fired a curved arrow ➶"
+        "You fired a curved arrow {ARRUP}"
       ],
       "color": ""
     },
@@ -195,69 +195,69 @@
     {
       "key": "ArrowTravel",
       "values": [
-        "➵ The arrow arcs gracefully, eventually reaching cavern %d.\n",
-        "➵ The arrow sails seamlessly, currently soaring through cavern %d.\n",
-        "➵ Gliding smoothly, the arrow traverses the expanse of cavern %d.\n",
-        "➵ With unwavering momentum, the arrow sweeps across cavern %d.\n",
-        "➵ The arrow's flight cuts a path right through the heart of cavern %d.\n",
-        "➵ Whistling through the air, the arrow charts its course via cavern %d.\n",
-        "➵ The arrow continues its airborne journey, now crossing cavern %d.\n",
-        "➵ Casting shadows on the walls, the arrow swiftly passes through cavern %d.\n",
-        "➵ With a swift elegance, the arrow makes its way through the vastness of cavern %d.\n"
+        "{ARRSTRAIGHT} The arrow arcs gracefully, eventually reaching cavern %d.\n",
+        "{ARRSTRAIGHT} The arrow sails seamlessly, currently soaring through cavern %d.\n",
+        "{ARRSTRAIGHT} Gliding smoothly, the arrow traverses the expanse of cavern %d.\n",
+        "{ARRSTRAIGHT} With unwavering momentum, the arrow sweeps across cavern %d.\n",
+        "{ARRSTRAIGHT} The arrow's flight cuts a path right through the heart of cavern %d.\n",
+        "{ARRSTRAIGHT} Whistling through the air, the arrow charts its course via cavern %d.\n",
+        "{ARRSTRAIGHT} The arrow continues its airborne journey, now crossing cavern %d.\n",
+        "{ARRSTRAIGHT} Casting shadows on the walls, the arrow swiftly passes through cavern %d.\n",
+        "{ARRSTRAIGHT} With a swift elegance, the arrow makes its way through the vastness of cavern %d.\n"
       ],
       "color": ""
     },
     {
       "key": "KilledWumpus",
       "values": [
-        "➵ With a triumphant strike, your arrow fells the Wumpus! Victory is yours!",
-        "➵ With a resounding impact, your arrow finds its mark! The Wumpus falls defeated! Victory is yours! ☠",
-        "➵ As the echo of the arrow's flight fades, the Wumpus lets out a final cry! You've vanquished the beast! ☠",
-        "➵ Your aim is true, and the Wumpus is no more! Triumph awaits you! ☠",
-        "➵ Against all odds, you've bested the Wumpus with a single shot! Celebrate your prowess! ☠",
-        "➵ The caverns fall silent as the Wumpus meets its end by your arrow! Well done, adventurer! ☠"
+        "{ARRSTRAIGHT} With a triumphant strike, your arrow fells the Wumpus! Victory is yours!",
+        "{ARRSTRAIGHT} With a resounding impact, your arrow finds its mark! The Wumpus falls defeated! Victory is yours! {SKULL}",
+        "{ARRSTRAIGHT} As the echo of the arrow's flight fades, the Wumpus lets out a final cry! You've vanquished the beast! {SKULL}",
+        "{ARRSTRAIGHT} Your aim is true, and the Wumpus is no more! Triumph awaits you! {SKULL}",
+        "{ARRSTRAIGHT} Against all odds, you've bested the Wumpus with a single shot! Celebrate your prowess! {SKULL}",
+        "{ARRSTRAIGHT} The caverns fall silent as the Wumpus meets its end by your arrow! Well done, adventurer! {SKULL}"
       ],
       "color": "yellow"
     },
     {
       "key": "ArrowStartle",
       "values": [
-        "➴ The curved arrow struck the ground, startling the Wumpus !",
-        "➴ The arrow's descent to the ground unsettles the nearby Wumpus!",
-        "➴ The arrow thuds against the cavern floor, sending the Wumpus into a panic!",
-        "➴ With a resounding clatter, the arrow lands, causing the Wumpus to flinch!"
+        "{ARRDOWN} The curved arrow struck the ground, startling the Wumpus !",
+        "{ARRDOWN} The arrow's descent to the ground unsettles the nearby Wumpus!",
+        "{ARRDOWN} The arrow thuds against the cavern floor, sending the Wumpus into a panic!",
+        "{ARRDOWN} With a resounding clatter, the arrow lands, causing the Wumpus to flinch!"
       ],
       "color": "yellow"
     },
     {
       "key": "ArrowFell",
       "values": [
-        "➴ The arrow loses its momentum, falling harmlessly to the cavern floor.",
-        "➴ Gradually losing speed, the arrow settles quietly onto the ground.",
-        "➴ With a waning velocity, the arrow descends, touching down without incident.",
-        "➴ The arrow's flight falters, causing it to gently land on the cavern's surface."
+        "{ARRDOWN} The arrow loses its momentum, falling harmlessly to the cavern floor.",
+        "{ARRDOWN} Gradually losing speed, the arrow settles quietly onto the ground.",
+        "{ARRDOWN} With a waning velocity, the arrow descends, touching down without incident.",
+        "{ARRDOWN} The arrow's flight falters, causing it to gently land on the cavern's surface."
       ],
       "color": ""
     },
     {
       "key": "ArrowPlayer",
       "values": [
-        "➴ A miscalculation! Your own arrow returns to strike you down! ☠",
-        "➴ A grave error! Your arrow veers back, sealing your fate! ☠",
-        "➴ Fate's cruel twist! The arrow you loosed turns on you! ☠",
-        "➴ Misfortune strikes as your own arrow becomes your undoing! ☠",
-        "➴ A twist of destiny! Your arrow's return course brings your end! ☠"
+        "{ARRDOWN} A miscalculation! Your own arrow returns to strike you down! {SKULL}",
+        "{ARRDOWN} A grave error! Your arrow veers back, sealing your fate! {SKULL}",
+        "{ARRDOWN} Fate's cruel twist! The arrow you loosed turns on you! {SKULL}",
+        "{ARRDOWN} Misfortune strikes as your own arrow becomes your undoing! {SKULL}",
+        "{ARRDOWN} A twist of destiny! Your arrow's return course brings your end! {SKULL}"
       ],
       "color": "red"
     },
     {
       "key": "WumpusTrample",
       "values": [
-        "In its panic, the Wumpus rampages through, trampling you in the process! ☠",
-        "In its frenzied escape, the Wumpus barrels over you, ending your journey! ☠",
-        "Overwhelmed by fear, the Wumpus charges blindly, crushing you beneath! ☠",
-        "The terrified Wumpus's hasty retreat proves fatal for you! ☠",
-        "Caught in the Wumpus's frantic dash, you meet a tragic end! ☠"
+        "In its panic, the Wumpus rampages through, trampling you in the process! {SKULL}",
+        "In its frenzied escape, the Wumpus barrels over you, ending your journey! {SKULL}",
+        "Overwhelmed by fear, the Wumpus charges blindly, crushing you beneath! {SKULL}",
+        "The terrified Wumpus's hasty retreat proves fatal for you! {SKULL}",
+        "Caught in the Wumpus's frantic dash, you meet a tragic end! {SKULL}"
       ],
       "color": "red"
     },
@@ -288,14 +288,14 @@
     {
       "key": "NoMoreArrows",
       "values": [
-        "➴ You don't have any arrows left !"
+        "{ARRDOWN} You don't have any arrows left !"
       ],
       "color": "yellow+dim"
     },
     {
       "key": "RemainingArrows",
       "values": [
-        "➵ You have %d remaining arrows.\n"
+        "{ARRSTRAIGHT} You have %d remaining arrows.\n"
       ],
       "color": "dim"
     },
@@ -683,34 +683,34 @@
     {
       "key": "FoundArrow",
       "values": [
-        "➴ As you move further into the cavern, you spot a lone arrow on the ground. Without hesitation, you pick it up and slide it into your quiver.",
-        "➴ Nestled in the shadows, you discover an arrow, its tip gleaming ominously. You tuck it safely among your other arrows.",
-        "➴ Your eyes catch the faint shimmer of an arrow lying half-buried in the dirt. Gratefully, you add it to your collection in your quiver.",
-        "➴ Amidst the gloom, you stumble upon an arrow, its shaft worn but sturdy. You feel slightly more prepared as you place it with the rest in your quiver.",
-        "➴ A gleaming arrowhead catches your attention. Retrieving the whole arrow, you ready it for future use, placing it in your quiver.",
-        "➴ There's an unexpected find at your feet – an arrow, seemingly discarded by a previous adventurer. You claim it, bolstering your own supply.",
-        "➴ By the cavern wall, an arrow rests, waiting for its next purpose. You're more than happy to provide it, securing it in your quiver.",
-        "➴ Your fingers brush against the fletching of an abandoned arrow. Picking it up, you slide it into your quiver, ready for the challenges ahead.",
-        "➴ Hidden among the rocks, you find a stray arrow. Its presence increases your chances of survival as you add it to your arsenal.",
-        "➴ A hint of wood and feather beneath a pile of leaves reveals an arrow. The added ammunition is a small, but significant boost to your confidence."
+        "{ARRDOWN} As you move further into the cavern, you spot a lone arrow on the ground. Without hesitation, you pick it up and slide it into your quiver.",
+        "{ARRDOWN} Nestled in the shadows, you discover an arrow, its tip gleaming ominously. You tuck it safely among your other arrows.",
+        "{ARRDOWN} Your eyes catch the faint shimmer of an arrow lying half-buried in the dirt. Gratefully, you add it to your collection in your quiver.",
+        "{ARRDOWN} Amidst the gloom, you stumble upon an arrow, its shaft worn but sturdy. You feel slightly more prepared as you place it with the rest in your quiver.",
+        "{ARRDOWN} A gleaming arrowhead catches your attention. Retrieving the whole arrow, you ready it for future use, placing it in your quiver.",
+        "{ARRDOWN} There's an unexpected find at your feet – an arrow, seemingly discarded by a previous adventurer. You claim it, bolstering your own supply.",
+        "{ARRDOWN} By the cavern wall, an arrow rests, waiting for its next purpose. You're more than happy to provide it, securing it in your quiver.",
+        "{ARRDOWN} Your fingers brush against the fletching of an abandoned arrow. Picking it up, you slide it into your quiver, ready for the challenges ahead.",
+        "{ARRDOWN} Hidden among the rocks, you find a stray arrow. Its presence increases your chances of survival as you add it to your arsenal.",
+        "{ARRDOWN} A hint of wood and feather beneath a pile of leaves reveals an arrow. The added ammunition is a small, but significant boost to your confidence."
       ],
       "color": "yellow+dim"
     },
     {
       "key": "EatenArrow",
       "values": [
-        "➵ Swarming termites intercepted and devoured your arrow mid-air!",
-        "➵ Flying insects converged on your arrow, consuming it before it could land!",
-        "➵ The arrow's trajectory was cut short as a colony of bugs engulfed it!",
-        "➵ Before reaching its mark, termites descended, making a meal of your arrow!",
-        "➵ Your arrow was swallowed by a voracious cloud of insects in mid-flight!",
-        "➵ A frenzied mass of termites made quick work of your arrow as it soared!",
-        "➵ Flying pests zipped through the air, catching and devouring your arrow!",
-        "➵ The arrow met an unexpected fate, eaten by ravenous insects mid-journey!",
-        "➵ No sooner had the arrow left your bow than a swarm of bugs consumed it!",
-        "➵ The cavern's flying critters proved a menace, snatching and eating your arrow!",
-        "➵ Your shot was in vain as insects swarmed and overpowered the flying arrow!",
-        "➵ Mid-flight, a hungry colony intercepted, leaving no trace of your arrow!"
+        "{ARRSTRAIGHT} Swarming termites intercepted and devoured your arrow mid-air!",
+        "{ARRSTRAIGHT} Flying insects converged on your arrow, consuming it before it could land!",
+        "{ARRSTRAIGHT} The arrow's trajectory was cut short as a colony of bugs engulfed it!",
+        "{ARRSTRAIGHT} Before reaching its mark, termites descended, making a meal of your arrow!",
+        "{ARRSTRAIGHT} Your arrow was swallowed by a voracious cloud of insects in mid-flight!",
+        "{ARRSTRAIGHT} A frenzied mass of termites made quick work of your arrow as it soared!",
+        "{ARRSTRAIGHT} Flying pests zipped through the air, catching and devouring your arrow!",
+        "{ARRSTRAIGHT} The arrow met an unexpected fate, eaten by ravenous insects mid-journey!",
+        "{ARRSTRAIGHT} No sooner had the arrow left your bow than a swarm of bugs consumed it!",
+        "{ARRSTRAIGHT} The cavern's flying critters proved a menace, snatching and eating your arrow!",
+        "{ARRSTRAIGHT} Your shot was in vain as insects swarmed and overpowered the flying arrow!",
+        "{ARRSTRAIGHT} Mid-flight, a hungry colony intercepted, leaving no trace of your arrow!"
       ],
       "color": "yellow"
     }

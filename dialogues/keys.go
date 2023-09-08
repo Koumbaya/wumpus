@@ -1,15 +1,6 @@
 package dialogues
 
 const (
-	Reset  = "\033[0m"
-	Dim    = "\033[2m"
-	red    = "\033[31m"
-	yellow = "\033[33m"
-	cyan   = "\033[36m"
-	bold   = "\033[1m"
-)
-
-const (
 	Start            = "Start"
 	Room             = "Room"
 	Tunnels          = "Tunnels"
@@ -76,4 +67,12 @@ const (
 	FoundShield             = "FoundShield"
 	UseShield               = "UseShield"
 	FoundArrow              = "FoundArrow"
+)
+
+// placeholders for utf-8
+const (
+	SkullPlcHolder         = "{SKULL}"
+	ArrowDownPlcHolder     = "{ARRDOWN}"
+	ArrowStraightPlcHolder = "{ARRSTRAIGHT}"
+	ArrowUpPlcHolder       = "{ARRUP}"
 )
