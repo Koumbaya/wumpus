@@ -40,10 +40,10 @@ func (p *Printer) Printf(key string, a ...any) {
 		fmt.Printf(value, a...)
 		return
 	}
-
+	delay := p.randDelay()
 	r := fmt.Sprintf(value, a...)
 	for _, c := range r {
-		time.Sleep(textDelay)
+		time.Sleep(delay)
 		fmt.Print(string(c))
 	}
 }
@@ -54,9 +54,9 @@ func (p *Printer) Print(key string) {
 		fmt.Print(value)
 		return
 	}
-
+	delay := p.randDelay()
 	for _, c := range value {
-		time.Sleep(textDelay)
+		time.Sleep(delay)
 		fmt.Print(string(c))
 	}
 }
@@ -67,13 +67,24 @@ func (p *Printer) Println(key string) {
 		fmt.Println(value)
 		return
 	}
-
+	delay := p.randDelay()
 	for _, c := range value {
-		time.Sleep(textDelay)
+		time.Sleep(delay)
 		fmt.Print(string(c))
 	}
 
 	fmt.Println()
+}
+
+func (p *Printer) randDelay() time.Duration {
+	n := p.r.Intn(2)
+	switch n {
+	case 0:
+		return textDelay + time.Millisecond*time.Duration(p.r.Intn(6))
+	case 1:
+		return textDelay - time.Millisecond*time.Duration(p.r.Intn(5))
+	}
+	return textDelay
 }
 
 // loadDialogues parse the json values and put them in a map for instant access.
