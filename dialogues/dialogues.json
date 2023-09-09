@@ -491,13 +491,13 @@
       "values": [
         "A heavy, rhythmic thudding echoes through the tunnels. The Wumpus is on the move...",
         "The ground subtly vibrates beneath your feet, hinting at the Wumpus's restless wanderings.",
-        "A distant, muffled sound of shifting rocks and gravel suggests the Wumpus is sleepwalking.",
+        "A distant, muffled sound of shifting rocks and gravel suggests the Wumpus is walking.",
         "The stillness of the cave is punctuated by the unmistakable shuffle of the Wumpus's movement.",
         "You catch the soft echoes of a large creature stirring in a distant part of the labyrinth.",
         "An eerie silence momentarily fills the air before being replaced by the slow, deliberate sounds of the Wumpus's footsteps.",
         "A faint, dragging noise reverberates through the caverns, suggesting the Wumpus is moving in the abysses...",
-        "The cavern walls carry the distant, resonant sounds of the Wumpus's sleepy wanderings.",
-        "A peculiar series of bumps and thuds echo in the dark, signaling the Wumpus's nocturnal roamings.",
+        "The cavern walls carry the distant, resonant sounds of the Wumpus's slow wanderings.",
+        "A peculiar series of bumps and thuds echo in the dark, signaling the Wumpus's discrete roamings.",
         "The muted, rhythmic sound of heavy breathing suggests the Wumpus, in a somnolent state, is on the move."
       ],
       "color": "cyan+dim"
@@ -713,6 +713,20 @@
         "{ARRSTRAIGHT} Mid-flight, a hungry colony intercepted, leaving no trace of your arrow!"
       ],
       "color": "yellow"
+    },
+    {
+      "key": "ArrowWakeup",
+      "values": [
+        "{ARRDOWN} Your arrow's clattering disturbed the cavern's silence, rousing the Wumpus from its slumber!",
+        "{ARRDOWN} The echo of the fallen arrow reverberated, startling the Wumpus awake!",
+        "{ARRDOWN} The sound of the arrow's impact echoed, causing the Wumpus to stir and awaken!",
+        "{ARRDOWN} As the arrow met the ground with a clink, the Wumpus groggily rose from its sleep.",
+        "{ARRDOWN} Your misfired arrow's noise was enough to disturb the Wumpus's deep rest.",
+        "{ARRDOWN} The subtle thud of the arrow against stone drew the Wumpus from its dreams.",
+        "{ARRDOWN} A wayward arrow's landing sound disrupted the peaceful sleep of the Wumpus!",
+        "{ARRDOWN} The Wumpus, once in peaceful slumber, is now alert due to the dropped arrow's echo."
+      ],
+      "color": "yellow+dim"
     }
   ]
 }

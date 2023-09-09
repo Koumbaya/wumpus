@@ -226,8 +226,12 @@ func (l *Labyrinth) GetFmtNeighbors(room int) string {
 
 func (l *Labyrinth) PrintDebug() {
 	for i, r := range l.rooms {
-		fmt.Printf("f: %d, id: %d\n", r.fakeID, i)
+		fmt.Printf("cave %d (%d): ", r.fakeID, i)
 		r.printEntities()
+		fmt.Println()
+		if r.hasEntity(Wumpus) {
+			fmt.Printf("wumpus neighboring caves: %s\n", l.GetFmtNeighbors(i))
+		}
 	}
 }
 

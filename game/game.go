@@ -51,6 +51,7 @@ type Game struct {
 	r           *rand.Rand
 	turns       int
 	arrowsFired int
+	wumpusAwake bool
 	timer       time.Time
 	inventory   inventory
 }
@@ -188,6 +189,7 @@ func (g *Game) playerState(input string) bool {
 func (g *Game) start() {
 	g.turns = 0
 	g.arrowsFired = 0
+	g.wumpusAwake = false
 	g.inventory.init()
 	g.inventory.addn(arrow, nbArrows)
 	g.timer = time.Now()
@@ -240,13 +242,20 @@ func (g *Game) handleArrow() state {
 	}
 
 	if g.l.PowerRemaining() == 0 {
-		if g.l.StartleWumpus() && !g.inventory.has(wumpusHide) {
-			g.p.Println(dia.ArrowStartle)
-			// check 1/20 odds that the wumpus moved to player's cavern
-			if g.l.Has(g.l.Player(), labyrinth.Wumpus) {
-				g.p.Println(dia.WumpusTrample)
-				g.p.Print(dia.PlayAGain)
-				return waitPlayAgain
+		// 3 out of 4 time an arrow falling will have an effect on the wumpus.
+		if g.r.Intn(4) != 0 && !g.inventory.has(wumpusHide) {
+			if g.wumpusAwake {
+				g.p.Println(dia.ArrowStartle)
+				g.l.StartleWumpus() // make the wumpus move randomly
+				// check 1/20 odds that the wumpus moved to player's cavern
+				if g.l.Has(g.l.Player(), labyrinth.Wumpus) {
+					g.p.Println(dia.WumpusTrample)
+					g.p.Print(dia.PlayAGain)
+					return waitPlayAgain
+				}
+			} else {
+				g.p.Println(dia.ArrowWakeup)
+				g.wumpusAwake = true
 			}
 		} else {
 			g.p.Println(dia.ArrowFell)
@@ -328,8 +337,8 @@ func (g *Game) events() {
 		g.p.Println(dia.TermiteMigration)
 	}
 
-	if g.r.Intn(randWumpus) == 0 { // lower probability
-		g.l.SleepwalkWumpus()
+	if g.r.Intn(randWumpus) == 0 && g.wumpusAwake { // lower probability
+		g.l.MigrateWumpus() // move 1 cave over
 		g.p.Println(dia.SleepWalkWumpus)
 	}
 }
@@ -395,7 +404,7 @@ func (g *Game) hazards() bool {
 	// the wumpus is immune to hazards, so we check for it first
 	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
 		g.p.Println(dia.StumbledWumpus)
-		if dead := g.l.FoundWumpus(); dead {
+		if attack := g.l.FoundWumpus(g.wumpusAwake); attack {
 			if g.inventory.tryUse(shield) {
 				g.p.Println(dia.UseShield) // the wumpus is relocated in any case
 			} else {
@@ -405,6 +414,7 @@ func (g *Game) hazards() bool {
 		} else {
 			g.p.Println(dia.StartledWumpus)
 		}
+		g.wumpusAwake = true
 	}
 
 	// the bat may teleport to a pit or the wumpus, so we check it second

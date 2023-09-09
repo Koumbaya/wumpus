@@ -101,7 +101,7 @@ func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
 
 func (r *room) printEntities() {
 	for e := range r.entities {
-		fmt.Printf("%s\n", e)
+		fmt.Printf("%s ", e)
 	}
 }
 
