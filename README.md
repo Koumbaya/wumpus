@@ -28,7 +28,7 @@ It includes all the levels from **Wumpus II**, mechanisms from **Wumpus III** an
    - Various hints will also tell you when enemies or dangers are changing position.
 
 
-5. **Migrations**: Hazards and enemies have a small chancr to move randomly between caverns!
+5. **Migrations**: Hazards and enemies have a small chance to move randomly between caverns!
    - **Bats, Pits and Termites** will move randomly.
    - **The Wumpus** will move over to once adjacent cavern (if it's not sleeping).
 
