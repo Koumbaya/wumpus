@@ -1,49 +1,41 @@
 package game
 
-type item int
-
-const (
-	repel item = iota
-	key
-	door
-	rope
-	shield
-	arrow
-	wumpusHide // used to keep track of if you killed the wumpus
+import (
+	. "github.com/koumbaya/wumpus/model"
 )
 
 // inventory keeps tracks of the player's inventory or actions done/memories (wumpus killed, key or door found...)
-type inventory map[item]int
+type inventory map[Entity]int
 
 func (i *inventory) init() {
-	*i = make(map[item]int)
+	*i = make(map[Entity]int)
 }
 
-func (i *inventory) add(it item) {
-	(*i)[it]++
+func (i *inventory) add(e Entity) {
+	(*i)[e]++
 }
 
-func (i *inventory) addn(it item, n int) {
-	(*i)[it] += n
+func (i *inventory) addn(e Entity, n int) {
+	(*i)[e] += n
 }
 
-func (i *inventory) use(it item) {
-	(*i)[it]--
+func (i *inventory) use(e Entity) {
+	(*i)[e]--
 }
 
-func (i *inventory) tryUse(it item) bool {
-	n, exist := (*i)[it]
+func (i *inventory) tryUse(e Entity) bool {
+	n, exist := (*i)[e]
 	if !exist || n == 0 {
 		return false
 	}
-	(*i)[it]--
+	(*i)[e]--
 	return true
 }
 
-func (i *inventory) has(it item) bool {
-	return (*i)[it] > 0
+func (i *inventory) has(e Entity) bool {
+	return (*i)[e] > 0
 }
 
-func (i *inventory) count(it item) int {
-	return (*i)[it]
+func (i *inventory) count(e Entity) int {
+	return (*i)[e]
 }

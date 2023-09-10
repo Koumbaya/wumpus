@@ -727,6 +727,47 @@
         "{ARRDOWN} The Wumpus, once in peaceful slumber, is now alert due to the dropped arrow's echo."
       ],
       "color": "yellow+dim"
+    },
+    {
+      "key": "SubjectPit",
+      "values": [
+        "a pit", "an immense hole in the ground", "a shaft", "a chasm"
+      ],
+      "color": ""
+    },
+    {
+      "key": "SubjectBat",
+      "values": [
+      "bats", "giant winged creatures", "a colony of bats"
+      ],
+      "color": ""
+    },{
+      "key": "SubjectWumpus",
+      "values": [
+        "the Wumpus", "a giant creature", "a mythical creature"
+      ],
+      "color": ""
+    },
+    {
+      "key": "SubjectKey",
+      "values": [
+        "a key", "an ornate key", "a rusted key"
+      ],
+      "color": ""
+    },
+    {
+      "key": "SubjectDoor",
+      "values": [
+        "a door", "a giant door"
+      ],
+      "color": ""
+    },
+    {
+      "key": "SubjectTermite",
+      "values": [
+        "termites", "insects that eat wood", "a colony of wood eaters"
+      ],
+      "color": ""
     }
   ]
 }

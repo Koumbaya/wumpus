@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+
+	. "github.com/koumbaya/wumpus/model"
 )
 
 const (
@@ -28,12 +30,10 @@ type Labyrinth struct {
 	curLevel int
 	rooms    []room // current level topology // todo : do we need to copy this anyway ?
 	// visited keep track of the # of explored rooms.
-	visited map[int]struct{}
-	// arrowTravel keep track of how many cLevel the arrow can travel.
-	arrowTravel int
-	advanced    bool // experimental
-	wump3       bool
-	debug       bool
+	visited  map[int]struct{}
+	advanced bool // experimental
+	wump3    bool
+	debug    bool
 
 	// locations
 	playerLoc int         // keep a reference as to the player location to avoid looping at each move
@@ -77,7 +77,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 		l.rooms[i].fakeID = randRooms[i] + 1 // +1 so the player never sees a room 0.
 		l.rooms[i].name = names[i]
 		// reset entities on restart
-		l.rooms[i].entities = make(map[entity]struct{}, 5) // 10 different entities but few can coexist anyway.
+		l.rooms[i].entities = make(map[Entity]struct{}, 5) // 10 different entities but few can coexist anyway.
 		// keep track of fakeIds for fast access
 		l.fakeIDs[l.rooms[i].fakeID] = i
 	}
@@ -87,7 +87,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 		if len(l.levels[l.curLevel].setup.pitsPos) == 0 {
 			l.rooms[l.randomRoom(withoutHazard())].addEntity(Pit)
 		} else {
-			l.rooms[index(l.levels[l.curLevel].setup.pitsPos, i)].addEntity(Pit)
+			l.rooms[rollIndex(l.levels[l.curLevel].setup.pitsPos, i)].addEntity(Pit)
 		}
 	}
 
@@ -95,7 +95,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 		if len(l.levels[l.curLevel].setup.batsPos) == 0 {
 			l.rooms[l.randomRoom(withoutHazard())].addEntity(Bat)
 		} else {
-			l.rooms[index(l.levels[l.curLevel].setup.batsPos, i)].addEntity(Bat)
+			l.rooms[rollIndex(l.levels[l.curLevel].setup.batsPos, i)].addEntity(Bat)
 		}
 	}
 
@@ -104,7 +104,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 			if len(l.levels[l.curLevel].setup.termitePos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard())].addEntity(Termite)
 			} else {
-				l.rooms[index(l.levels[l.curLevel].setup.termitePos, i)].addEntity(Termite)
+				l.rooms[rollIndex(l.levels[l.curLevel].setup.termitePos, i)].addEntity(Termite)
 			}
 		}
 	}
@@ -131,7 +131,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 			if len(l.levels[l.curLevel].setup.cluePos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard(), withoutKeyItem(), withoutEntity(Clue))].addEntity(Clue)
 			} else {
-				l.rooms[index(l.levels[l.curLevel].setup.cluePos, i)].addEntity(Clue)
+				l.rooms[rollIndex(l.levels[l.curLevel].setup.cluePos, i)].addEntity(Clue)
 			}
 		}
 
@@ -139,7 +139,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 			if len(l.levels[l.curLevel].setup.repelPos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Repel))].addEntity(Repel)
 			} else {
-				l.rooms[index(l.levels[l.curLevel].setup.repelPos, i)].addEntity(Repel)
+				l.rooms[rollIndex(l.levels[l.curLevel].setup.repelPos, i)].addEntity(Repel)
 			}
 		}
 
@@ -147,7 +147,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 			if len(l.levels[l.curLevel].setup.ropePos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Rope))].addEntity(Rope)
 			} else {
-				l.rooms[index(l.levels[l.curLevel].setup.ropePos, i)].addEntity(Rope)
+				l.rooms[rollIndex(l.levels[l.curLevel].setup.ropePos, i)].addEntity(Rope)
 			}
 		}
 
@@ -155,7 +155,7 @@ func (l *Labyrinth) Init(targetLvl int) {
 			if len(l.levels[l.curLevel].setup.shieldPos) == 0 {
 				l.rooms[l.randomRoom(withoutHazard(), withoutEntity(Shield))].addEntity(Shield)
 			} else {
-				l.rooms[index(l.levels[l.curLevel].setup.shieldPos, i)].addEntity(Shield)
+				l.rooms[rollIndex(l.levels[l.curLevel].setup.shieldPos, i)].addEntity(Shield)
 			}
 		}
 	}
@@ -185,11 +185,11 @@ func (l *Labyrinth) Name(id int) string {
 	return l.rooms[id].name
 }
 
-func (l *Labyrinth) Has(id int, e entity) bool {
+func (l *Labyrinth) Has(id int, e Entity) bool {
 	return l.rooms[id].hasEntity(e)
 }
 
-func (l *Labyrinth) Nearby(e entity) bool {
+func (l *Labyrinth) Nearby(e Entity) bool {
 	for _, i := range l.rooms[l.playerLoc].edges {
 		if l.Has(i, e) {
 			return true
@@ -235,7 +235,7 @@ func (l *Labyrinth) PrintDebug() {
 	}
 }
 
-// index allow us to never hit out of bounds on user-defined positions
-func index[T any](s []T, i int) T {
+// rollIndex allow us to never hit out of bounds on user-defined positions
+func rollIndex[T any](s []T, i int) T {
 	return s[i%len(s)]
 }

@@ -3,22 +3,8 @@ package labyrinth
 import (
 	"fmt"
 	"math/rand"
-)
 
-type entity string
-
-const (
-	Player  entity = "player"
-	Wumpus  entity = "wumpus"
-	Bat     entity = "bat"
-	Pit     entity = "pit"
-	Termite entity = "termite"
-	Clue    entity = "clue"
-	Repel   entity = "repel"
-	Key     entity = "key"
-	Door    entity = "door"
-	Rope    entity = "rope"
-	Shield  entity = "shield"
+	. "github.com/koumbaya/wumpus/model"
 )
 
 // room is a vertex of the graph.
@@ -26,18 +12,18 @@ type room struct {
 	edges    []int
 	fakeID   int
 	name     string
-	entities map[entity]struct{}
+	entities map[Entity]struct{}
 }
 
-func (r *room) addEntity(e entity) {
+func (r *room) addEntity(e Entity) {
 	r.entities[e] = struct{}{}
 }
 
-func (r *room) removeEntity(e entity) {
+func (r *room) removeEntity(e Entity) {
 	delete(r.entities, e)
 }
 
-func (r *room) hasEntity(e entity) bool {
+func (r *room) hasEntity(e Entity) bool {
 	_, present := r.entities[e]
 	return present
 }
@@ -67,13 +53,13 @@ func withoutHazard() filterFunc {
 	}
 }
 
-func withEntity(e entity) filterFunc {
+func withEntity(e Entity) filterFunc {
 	return func(r *room) bool {
 		return r.hasEntity(e)
 	}
 }
 
-func withoutEntity(e entity) filterFunc {
+func withoutEntity(e Entity) filterFunc {
 	return func(r *room) bool {
 		return !r.hasEntity(e)
 	}
@@ -96,7 +82,7 @@ func (l *Labyrinth) randomRoom(filters ...filterFunc) int {
 			return index
 		}
 	}
-	panic("no room matching, shouldn't happen")
+	return -1
 }
 
 func (r *room) printEntities() {

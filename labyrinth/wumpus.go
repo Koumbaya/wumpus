@@ -2,6 +2,8 @@ package labyrinth
 
 import (
 	"fmt"
+
+	. "github.com/koumbaya/wumpus/model"
 )
 
 // Wumpus returns the shuffled location of the wumpus.

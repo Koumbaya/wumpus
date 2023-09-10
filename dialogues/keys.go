@@ -43,6 +43,12 @@ const (
 	Seed             = "Seed"
 	EatenArrow       = "EatenArrow"
 	ArrowWakeup      = "ArrowWakeup"
+	SubjectPit       = "SubjectPit"
+	SubjectBat       = "SubjectBat"
+	SubjectWumpus    = "SubjectWumpus"
+	SubjectKey       = "SubjectKey"
+	SubjectDoor      = "SubjectDoor"
+	SubjectTermite   = "SubjectTermite"
 )
 
 // advanced features.

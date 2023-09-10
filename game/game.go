@@ -9,7 +9,7 @@ import (
 	"time"
 
 	dia "github.com/koumbaya/wumpus/dialogues"
-	"github.com/koumbaya/wumpus/labyrinth"
+	. "github.com/koumbaya/wumpus/model"
 )
 
 type state int
@@ -34,6 +34,7 @@ type Printer interface {
 	Printf(f string, a ...any)
 	Print(s string)
 	Println(s string)
+	Get(s string) string
 }
 
 type Cfg struct {
@@ -44,7 +45,7 @@ type Cfg struct {
 }
 
 type Game struct {
-	l labyrinth.Labyrinth
+	l Labyrinth
 	p Printer
 	state
 	cfg         Cfg
@@ -54,9 +55,11 @@ type Game struct {
 	wumpusAwake bool
 	timer       time.Time
 	inventory   inventory
+	// keep track of the arrow remaining distance
+	arrowTravel int
 }
 
-func NewGame(labyrinth labyrinth.Labyrinth, printer Printer, cfg Cfg) Game {
+func NewGame(labyrinth Labyrinth, printer Printer, cfg Cfg) Game {
 	return Game{
 		l:     labyrinth,
 		p:     printer,
@@ -114,69 +117,26 @@ func (g *Game) Loop() {
 func (g *Game) playerState(input string) bool {
 	switch g.state {
 	case waitShootMove:
-		if strings.EqualFold(input, "S") {
-			if !g.cfg.InfiniteArrows && !g.inventory.has(arrow) {
-				g.p.Println(dia.NoMoreArrows)
-				g.p.Print(dia.ChoiceShootMove)
-				break
-			}
-			g.p.Print(dia.SelectPower)
-			g.state = waitArrowPower
-		} else if strings.EqualFold(input, "M") {
-			g.whereTo()
-			g.state = waitWhereTo
-		} else {
-			g.p.Println(dia.DontUnderstand)
-			g.p.Print(dia.ChoiceShootMove)
-		}
+		g.state = g.handleChoice(input)
 	case waitWhereTo:
-		if !g.tryMove(input) {
-			break // error parsing
-		}
-		g.turns++
-		g.events()
-		if g.explore() { //dead
-			g.p.Print(dia.PlayAGain)
-			g.state = waitPlayAgain
-			break
-		}
-		g.describe()
-		if g.keyDoor() { // won this level
-			if !g.l.HasNextLevel() {
-				g.p.Print(dia.PlayAGain)
-				g.state = waitPlayAgain
-			} else {
-				g.l.Init(g.l.CurrentLevel() + 1)
-				g.start()
-				g.state = waitShootMove
-			}
-			break
-		}
-		g.clues()
-		g.maps()
-		g.arrows()
-		g.p.Print(dia.ChoiceShootMove)
-		g.state = waitShootMove
+		g.state = g.handleMovement(input)
 	case waitArrowPower:
-		g.l.FireArrow(input)
+		g.l.FireArrow()
+		g.arrowTravel = parsePower(input)
 		g.p.Println(dia.FireArrow)
 		if !g.cfg.InfiniteArrows {
-			g.inventory.use(arrow)
-			g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
+			g.inventory.use(Arrow)
+			g.p.Printf(dia.RemainingArrows, g.inventory.count(Arrow))
 		}
 		g.arrowsFired++
 		g.whereToArrow()
 		g.state = waitArrowWhereTo
 	case waitArrowWhereTo:
-		if !g.tryArrow(input) {
-			break
-		}
-		g.state = g.handleArrow()
+		g.state = g.handleArrow(input)
 	case waitPlayAgain:
 		if strings.EqualFold(input, "Y") {
 			g.l.Init(g.l.CurrentLevel())
 			g.start()
-			g.state = waitShootMove
 		} else {
 			g.p.Println(dia.Exit)
 			return true
@@ -191,31 +151,79 @@ func (g *Game) start() {
 	g.arrowsFired = 0
 	g.wumpusAwake = false
 	g.inventory.init()
-	g.inventory.addn(arrow, nbArrows)
+	g.inventory.addn(Arrow, nbArrows)
 	g.timer = time.Now()
 	g.p.Println(dia.Start)
 	g.cavern()
 	g.describe()
 	g.p.Print(dia.ChoiceShootMove)
+	g.state = waitShootMove
 }
 
-func (g *Game) tryArrow(input string) bool {
-	d, err := strconv.Atoi(input)
-	if err != nil {
-		g.p.Println(dia.NotNumber)
-		g.whereToArrow()
-		return false
+func (g *Game) handleChoice(input string) state {
+	if strings.EqualFold(input, "S") {
+		if !g.cfg.InfiniteArrows && !g.inventory.has(Arrow) {
+			g.p.Println(dia.NoMoreArrows)
+			g.p.Print(dia.ChoiceShootMove)
+			return waitShootMove
+		}
+		g.p.Print(dia.SelectPower)
+		return waitArrowPower
 	}
 
-	g.l.MoveArrow(d)
-	return true
+	if strings.EqualFold(input, "M") {
+		g.whereTo()
+		return waitWhereTo
+	}
+
+	g.p.Println(dia.DontUnderstand)
+	g.p.Print(dia.ChoiceShootMove)
+
+	return waitShootMove
 }
 
-func (g *Game) handleArrow() state {
+func (g *Game) handleMovement(input string) state {
+	if !g.tryMove(input) {
+		// invalid input
+		return waitWhereTo
+	}
+
+	g.turns++
+	g.events() // check random events.
+
+	if g.explore() { //dead
+		g.p.Print(dia.PlayAGain)
+		return waitPlayAgain
+	}
+
+	g.describe()
+
+	if g.keyDoor() { // won this level
+		if !g.l.HasNextLevel() {
+			g.p.Print(dia.PlayAGain)
+			return waitPlayAgain
+		}
+		// load next level
+		g.l.Init(g.l.CurrentLevel() + 1)
+		g.start()
+		return waitShootMove
+	}
+
+	g.items()
+	g.p.Print(dia.ChoiceShootMove)
+	return waitShootMove
+}
+
+func (g *Game) handleArrow(input string) state {
+	d, _ := strconv.Atoi(input) // we don't care for invalid input, it'll be moved at random.
+	g.l.MoveArrow(d)
+
+	g.arrowTravel--
 	g.p.Printf(dia.ArrowTravel, g.l.ArrowPOV())
-	if g.l.Has(g.l.Arrow(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
+
+	if g.l.Has(g.l.Arrow(), Wumpus) && !g.inventory.has(Wumpus) {
 		g.p.Println(dia.KilledWumpus)
-		g.inventory.add(wumpusHide)
+		g.inventory.add(Wumpus)
 		if !g.cfg.Advanced || g.keyDoor() { // check the edge case that player is already standing in the room with the door and has the key.
 			g.p.Printf(dia.Turns, g.l.CurrentLevel(), g.turns, time.Since(g.timer).String(), g.arrowsFired, g.l.Visited())
 			g.p.Print(dia.PlayAGain)
@@ -235,20 +243,20 @@ func (g *Game) handleArrow() state {
 	}
 
 	// once we checked that no wumpus or player is in the room, we check for termites (to avoid protection from arrows)
-	if g.l.Has(g.l.Arrow(), labyrinth.Termite) && g.cfg.Wump3 {
+	if g.l.Has(g.l.Arrow(), Termite) && g.cfg.Wump3 {
 		g.p.Println(dia.EatenArrow)
 		g.p.Print(dia.ChoiceShootMove)
 		return waitShootMove
 	}
 
-	if g.l.PowerRemaining() == 0 {
+	if g.arrowTravel == 0 {
 		// 3 out of 4 time an arrow falling will have an effect on the wumpus.
-		if g.r.Intn(4) != 0 && !g.inventory.has(wumpusHide) {
+		if g.r.Intn(4) != 0 && !g.inventory.has(Wumpus) {
 			if g.wumpusAwake {
 				g.p.Println(dia.ArrowStartle)
 				g.l.StartleWumpus() // make the wumpus move randomly
 				// check 1/20 odds that the wumpus moved to player's cavern
-				if g.l.Has(g.l.Player(), labyrinth.Wumpus) {
+				if g.l.Has(g.l.Player(), Wumpus) {
 					g.p.Println(dia.WumpusTrample)
 					g.p.Print(dia.PlayAGain)
 					return waitPlayAgain
@@ -290,17 +298,17 @@ func (g *Game) cavern() {
 
 func (g *Game) describe() {
 	g.p.Printf(dia.Tunnels, g.l.GetFmtNeighbors(g.l.Player()))
-	if g.l.Nearby(labyrinth.Bat) {
+	if g.l.Nearby(Bat) {
 		g.p.Println(dia.BatsNearby)
 	}
-	if g.l.Nearby(labyrinth.Pit) {
+	if g.l.Nearby(Pit) {
 		g.p.Println(dia.PitsNearby)
 	}
-	if g.l.Nearby(labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
+	if g.l.Nearby(Wumpus) && !g.inventory.has(Wumpus) {
 		g.p.Println(dia.WumpusNearby)
 	}
 
-	if g.cfg.Wump3 && g.l.Nearby(labyrinth.Termite) {
+	if g.cfg.Wump3 && g.l.Nearby(Termite) {
 		g.p.Println(dia.TermitesNearby)
 	}
 }
@@ -323,17 +331,17 @@ func (g *Game) events() {
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.Migration(labyrinth.Pit)
+		g.l.Migration(Pit)
 		g.p.Println(dia.Earthquake)
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.Migration(labyrinth.Bat)
+		g.l.Migration(Bat)
 		g.p.Println(dia.BatMigration)
 	}
 
 	if g.r.Intn(randEvent) == 0 {
-		g.l.Migration(labyrinth.Termite)
+		g.l.Migration(Termite)
 		g.p.Println(dia.TermiteMigration)
 	}
 
@@ -348,51 +356,37 @@ func (g *Game) explore() bool {
 	return g.hazards()
 }
 
-func (g *Game) clues() {
+func (g *Game) items() {
 	if !g.cfg.Advanced {
 		return
 	}
 
-	if g.l.Has(g.l.Player(), labyrinth.Clue) {
-		loc, subject := g.l.GetClue(g.l.Player())
-		g.p.Printf(dia.FoundClue, subject, loc)
+	if g.l.Has(g.l.Player(), Clue) {
+		loc, sub := g.l.GetClue(g.l.Player())
+		g.p.Printf(dia.FoundClue, g.p.Get(subject(sub)), loc)
 	}
 
-	if g.l.FoundObject(labyrinth.Repel) {
-		g.inventory.add(repel)
+	if g.l.FoundObject(Repel) {
+		g.inventory.add(Repel)
 		g.p.Println(dia.FoundRepel)
 	}
 
-	if g.l.FoundObject(labyrinth.Rope) {
-		g.inventory.add(rope)
+	if g.l.FoundObject(Rope) {
+		g.inventory.add(Rope)
 		g.p.Println(dia.FoundRope)
 	}
 
-	if g.l.FoundObject(labyrinth.Shield) {
-		g.inventory.add(shield)
+	if g.l.FoundObject(Shield) {
+		g.inventory.add(Shield)
 		g.p.Println(dia.FoundShield)
-	}
-}
-
-// maps randomly gives partial maps tips.
-func (g *Game) maps() {
-	if !g.cfg.Advanced {
-		return
 	}
 
 	if g.r.Intn(randMaps) == 0 {
 		g.p.Printf(dia.PartialMap, g.l.GetFmtMap())
 	}
-}
-
-// arrows randomly gives arrows.
-func (g *Game) arrows() {
-	if !g.cfg.Advanced {
-		return
-	}
 
 	if g.r.Intn(randArrows) == 0 {
-		g.inventory.add(arrow)
+		g.inventory.add(Arrow)
 		g.p.Println(dia.FoundArrow)
 	}
 }
@@ -402,10 +396,10 @@ func (g *Game) arrows() {
 // If a bat moves the player, call recursively.
 func (g *Game) hazards() bool {
 	// the wumpus is immune to hazards, so we check for it first
-	if g.l.Has(g.l.Player(), labyrinth.Wumpus) && !g.inventory.has(wumpusHide) {
+	if g.l.Has(g.l.Player(), Wumpus) && !g.inventory.has(Wumpus) {
 		g.p.Println(dia.StumbledWumpus)
 		if attack := g.l.FoundWumpus(g.wumpusAwake); attack {
-			if g.inventory.tryUse(shield) {
+			if g.inventory.tryUse(Shield) {
 				g.p.Println(dia.UseShield) // the wumpus is relocated in any case
 			} else {
 				g.p.Println(dia.KilledByWumpus)
@@ -418,8 +412,8 @@ func (g *Game) hazards() bool {
 	}
 
 	// the bat may teleport to a pit or the wumpus, so we check it second
-	if g.l.Has(g.l.Player(), labyrinth.Bat) {
-		if g.inventory.tryUse(repel) {
+	if g.l.Has(g.l.Player(), Bat) {
+		if g.inventory.tryUse(Repel) {
 			g.p.Println(dia.UseRepel)
 		} else {
 			newLoc := g.l.ActivateBat()
@@ -428,8 +422,8 @@ func (g *Game) hazards() bool {
 		}
 	}
 
-	if g.l.Has(g.l.Player(), labyrinth.Pit) {
-		if g.inventory.tryUse(rope) {
+	if g.l.Has(g.l.Player(), Pit) {
+		if g.inventory.tryUse(Rope) {
 			g.p.Println(dia.UseRope)
 		} else {
 			g.p.Println(dia.FellIntoPit)
@@ -438,9 +432,9 @@ func (g *Game) hazards() bool {
 		}
 	}
 
-	if g.cfg.Wump3 && g.l.Has(g.l.Player(), labyrinth.Termite) && g.inventory.tryUse(arrow) {
+	if g.cfg.Wump3 && g.l.Has(g.l.Player(), Termite) && g.inventory.tryUse(Arrow) {
 		g.p.Println(dia.TermiteEatArrow)
-		g.p.Printf(dia.RemainingArrows, g.inventory.count(arrow))
+		g.p.Printf(dia.RemainingArrows, g.inventory.count(Arrow))
 	}
 
 	return false
@@ -453,8 +447,8 @@ func (g *Game) keyDoor() bool {
 		return false
 	}
 
-	doorRoom := g.l.Has(g.l.Player(), labyrinth.Door)
-	keyRoom := g.l.Has(g.l.Player(), labyrinth.Key)
+	doorRoom := g.l.Has(g.l.Player(), Door)
+	keyRoom := g.l.Has(g.l.Player(), Key)
 
 	if !doorRoom && !keyRoom {
 		return false
@@ -462,33 +456,33 @@ func (g *Game) keyDoor() bool {
 
 	canUnlock := false // in the door room with the key.
 	switch {
-	case doorRoom && g.inventory.has(key) && g.inventory.has(door):
+	case doorRoom && g.inventory.has(Key) && g.inventory.has(Door):
 		// found the door, then the key, and are back to the room with the door
 		g.p.Println(dia.DoorKeyDoor)
 		canUnlock = true
-	case doorRoom && g.inventory.has(key):
+	case doorRoom && g.inventory.has(Key):
 		// found the key first then the door (first time seeing it)
 		g.p.Println(dia.KeyThenDoor)
-		g.inventory.add(door)
+		g.inventory.add(Door)
 		canUnlock = true
-	case doorRoom && !g.inventory.has(door):
+	case doorRoom && !g.inventory.has(Door):
 		// first time seeing the door, no key
 		g.p.Println(dia.FirstDoorDiscoveryNoKey)
-		g.inventory.add(door)
+		g.inventory.add(Door)
 	case doorRoom:
 		// back in the cavern with the door again
 		g.p.Println(dia.BackAgainDoorNoKey)
-	case keyRoom && g.inventory.has(door) && !g.inventory.has(key):
+	case keyRoom && g.inventory.has(Door) && !g.inventory.has(Key):
 		// found the door first, then this key
 		g.p.Println(dia.DoorThenKey)
-		g.inventory.add(key)
-	case keyRoom && !g.inventory.has(door) && !g.inventory.has(key):
+		g.inventory.add(Key)
+	case keyRoom && !g.inventory.has(Door) && !g.inventory.has(Key):
 		// found the key first
 		g.p.Println(dia.FirstKeyDiscoveryNoDoor)
-		g.inventory.add(key)
+		g.inventory.add(Key)
 	}
 
-	if canUnlock && !g.inventory.has(wumpusHide) {
+	if canUnlock && !g.inventory.has(Wumpus) {
 		g.p.Println(dia.WumpusStillAlive)
 	} else if canUnlock {
 		if !g.l.HasNextLevel() {
@@ -506,11 +500,11 @@ func (g *Game) keyDoor() bool {
 // mustExit resolve the dialogues for the next step of the game in advanced mode.
 func (g *Game) mustExit() {
 	switch {
-	case g.inventory.has(key) && g.inventory.has(door):
+	case g.inventory.has(Key) && g.inventory.has(Door):
 		g.p.Println(dia.CertainKeyDoor)
-	case g.inventory.has(key) && !g.inventory.has(door):
+	case g.inventory.has(Key) && !g.inventory.has(Door):
 		g.p.Println(dia.MaybeKey)
-	case !g.inventory.has(key) && g.inventory.has(door):
+	case !g.inventory.has(Key) && g.inventory.has(Door):
 		g.p.Println(dia.MaybeDoor)
 	default:
 		g.p.Println(dia.NowExit)
@@ -544,4 +538,30 @@ func isMoveCommand(input string) (bool, string) {
 	}
 	return true, output
 
+}
+
+func parsePower(input string) int {
+	p, err := strconv.Atoi(input)
+	if err != nil || p > 5 || p == 0 {
+		p = 5
+	}
+	return p
+}
+
+func subject(e Entity) string {
+	switch e {
+	case Pit:
+		return dia.SubjectPit
+	case Bat:
+		return dia.SubjectBat
+	case Wumpus:
+		return dia.SubjectWumpus
+	case Key:
+		return dia.SubjectKey
+	case Door:
+		return dia.SubjectDoor
+	case Termite:
+		return dia.SubjectTermite
+	}
+	return ""
 }

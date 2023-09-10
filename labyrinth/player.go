@@ -1,5 +1,9 @@
 package labyrinth
 
+import (
+	. "github.com/koumbaya/wumpus/model"
+)
+
 // Player return the player location.
 func (l *Labyrinth) Player() int {
 	return l.playerLoc

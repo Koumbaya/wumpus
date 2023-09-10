@@ -2,6 +2,8 @@ package labyrinth
 
 import (
 	"fmt"
+
+	. "github.com/koumbaya/wumpus/model"
 )
 
 // ActivateBat teleports the player to a different room.
@@ -13,8 +15,8 @@ func (l *Labyrinth) ActivateBat() int {
 	return l.rooms[n].fakeID
 }
 
-// Migration triggers the relocation of all instance of entity.
-func (l *Labyrinth) Migration(e entity) {
+// Migration triggers the relocation of all instance of Entity.
+func (l *Labyrinth) Migration(e Entity) {
 	if !l.levels[l.curLevel].setup.migrations {
 		return // todo: return bool to inhibit print of dialogue
 	}

@@ -76,6 +76,10 @@ func (p *Printer) Println(key string) {
 	fmt.Println()
 }
 
+func (p *Printer) Get(key string) string {
+	return p.getRandomVal(key)
+}
+
 func (p *Printer) randDelay() time.Duration {
 	n := p.r.Intn(2)
 	switch n {
